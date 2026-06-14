@@ -1,20 +1,51 @@
-function safeBtoa(str) {
-  try {
-    return btoa(unescape(encodeURIComponent(str)));
-  } catch (e) {
-    console.error('Error encoding Base64:', e);
-    return btoa(str);
-  }
-}
+fetch("navbar.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("navbar").innerHTML = data;
 
-function safeAtob(str) {
-  try {
-    return decodeURIComponent(escape(atob(str)));
-  } catch (e) {
-    console.error('Error decoding Base64:', e);
-    return atob(str);
-  }
-}
+    const isIndex = window.location.pathname.endsWith("index.html") || 
+                    window.location.pathname === "/" || 
+                    window.location.pathname.endsWith("/");
+    if (!isIndex) {
+      const navLinks = document.querySelectorAll("#navbar .nav-link, #navbar .navbar-brand");
+      navLinks.forEach(link => {
+        const href = link.getAttribute("href");
+        if (href && href.startsWith("#")) {
+          link.setAttribute("href", "index.html" + href);
+        }
+      });
+    }
+    
+    //  menú hamburguesa
+    const hamburger = document.getElementById('hamburger-menu');
+    const navbarMenu = document.getElementById('navbar-menu');
+    const navMobile = document.getElementById('nav-mobile');
+    
+    if (hamburger && navbarMenu) {
+      hamburger.addEventListener('click', function() {
+        this.classList.toggle('active');
+        navbarMenu.classList.toggle('active');
+      });
+
+      // cierra el menu alk hacer click en un link
+      if (navMobile) {
+        const mobileLinks = navMobile.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            hamburger.classList.remove('active');
+            navbarMenu.classList.remove('active');
+          });
+        });
+      }
+    }
+  });
+
+fetch("footer.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("footer").innerHTML = data;
+  });
+
 
 // Días laborables: 0=Dom, 1=Lun, 2=Mar, 3=Mié, 4=Jue, 5=Vie, 6=Sáb
 // Ajustar según los días que trabaja el salón (por ej. sin lunes → quitar el 1)
@@ -466,322 +497,7 @@ function confirmBooking(event) {
 
 
 
-fetch("navbar.html")
-  .then(res => res.text())
-  .then(data => {
-    document.getElementById("navbar").innerHTML = data;
 
-    const isIndex = window.location.pathname.endsWith("index.html") || 
-                    window.location.pathname === "/" || 
-                    window.location.pathname.endsWith("/");
-    if (!isIndex) {
-      const navLinks = document.querySelectorAll("#navbar .nav-link, #navbar .navbar-brand");
-      navLinks.forEach(link => {
-        const href = link.getAttribute("href");
-        if (href && href.startsWith("#")) {
-          link.setAttribute("href", "index.html" + href);
-        }
-      });
-    }
-    
-    //  menú hamburguesa
-    const hamburger = document.getElementById('hamburger-menu');
-    const navbarMenu = document.getElementById('navbar-menu');
-    const navMobile = document.getElementById('nav-mobile');
-    
-    if (hamburger && navbarMenu) {
-      hamburger.addEventListener('click', function() {
-        this.classList.toggle('active');
-        navbarMenu.classList.toggle('active');
-      });
-
-      // cierra el menu alk hacer click en un link
-      if (navMobile) {
-        const mobileLinks = navMobile.querySelectorAll('a');
-        mobileLinks.forEach(link => {
-          link.addEventListener('click', function() {
-            hamburger.classList.remove('active');
-            navbarMenu.classList.remove('active');
-          });
-
-          if (navMobile) {
-            const mobileLinks = navMobile.querySelectorAll('a');
-            mobileLinks.forEach(link => {
-              link.addEventListener('click', function () {
-                hamburger.classList.remove('active');
-                navbarMenu.classList.remove('active');
-              });
-            });
-          }
-        }
-      }
-    })
-    .catch(err => console.error('Error cargando', path, err));
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  // --- Procesamiento de parámetros URL para compatibilidad file:// ---
-  const urlParams = new URLSearchParams(window.location.search);
-  let stateChanged = false;
-
-  // 1. Registro exitoso recibido en login.html
-  if (urlParams.has('reg') && urlParams.has('u') && urlParams.has('p') && urlParams.has('e')) {
-    const u = urlParams.get('u');
-    const p = urlParams.get('p');
-    const e = urlParams.get('e');
-    localStorage.setItem('adminName', u);
-    localStorage.setItem('adminPassword', p);
-    localStorage.setItem('adminEmail', e);
-    sessionStorage.setItem('adminName', u);
-    sessionStorage.setItem('adminPassword', p);
-    sessionStorage.setItem('adminEmail', e);
-    stateChanged = true;
-    console.log('Parámetros de registro leídos e integrados en almacenamiento local.');
-  }
-
-  // 2. Cambio de contraseña recibido en login.html
-  if (urlParams.has('passUpdate') && urlParams.has('p')) {
-    const p = urlParams.get('p');
-    localStorage.setItem('adminPassword', p);
-    sessionStorage.setItem('adminPassword', p);
-    stateChanged = true;
-    console.log('Cambio de contraseña leído e integrado en almacenamiento local.');
-  }
-
-  // 3. Recepción de código de verificación en verificacion.html
-  if (urlParams.has('c') && urlParams.has('e')) {
-    const c = urlParams.get('c');
-    const e = urlParams.get('e');
-    localStorage.setItem('verificationCode', c);
-    localStorage.setItem('verificationEmail', e);
-    localStorage.setItem('verificationTime', Date.now().toString());
-    sessionStorage.setItem('verificationCode', c);
-    sessionStorage.setItem('verificationEmail', e);
-    sessionStorage.setItem('verificationTime', Date.now().toString());
-    stateChanged = true;
-    console.log('Código de verificación temporal leído e integrado.');
-  }
-
-  // 4. Recepción de autorización para registrarse o cambiar contraseña
-  if (urlParams.has('codeVerified') && urlParams.get('codeVerified') === 'true') {
-    sessionStorage.setItem('isAdminCodeVerified', 'true');
-    stateChanged = true;
-    console.log('Acceso de administrador autorizado por parámetro de URL.');
-  }
-
-  // Si leímos algún parámetro, limpiamos la barra de direcciones para mantener la estética y seguridad
-  if (stateChanged) {
-    try {
-      window.history.replaceState({}, document.title, window.location.pathname);
-    } catch (err) {
-      console.warn('No se pudo limpiar la barra de direcciones:', err);
-    }
-  }
-  // -------------------------------------------------------------
-
-  const EMAILJS_PUBLIC_KEY = 'nT3RJhFUfjBhzDJI8';
-  const EMAILJS_SERVICE_ID = 'service_2pchi1s';
-  const EMAILJS_TEMPLATE_ID = 'template_h3chgdh';
-  const EMAILJS_AVAILABLE = window.emailjs && typeof window.emailjs.send === 'function';
-
-  if (EMAILJS_AVAILABLE) {
-    emailjs.init(EMAILJS_PUBLIC_KEY);
-    console.log('EmailJS inicializado correctamente');
-  } else {
-    console.warn('EmailJS no está disponible en esta página');
-  }
-
-  function createCustomAlert() {
-    if (document.getElementById('customAlertOverlay')) return;
-
-    const overlay = document.createElement('div');
-    overlay.id = 'customAlertOverlay';
-    overlay.className = 'custom-alert-overlay hidden';
-    overlay.innerHTML = `
-      <div class="custom-alert-box">
-        <h2 class="custom-alert-title" id="customAlertTitle"></h2>
-        <div class="custom-alert-message" id="customAlertMessage"></div>
-        <div class="custom-alert-actions">
-          <button type="button" class="custom-alert-button" id="customAlertOk">Aceptar</button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(overlay);
-
-    overlay.querySelector('#customAlertOk').addEventListener('click', () => {
-      overlay.classList.add('hidden');
-      const callback = overlay.dataset.callback;
-      if (callback === 'redirectLogin') {
-        window.location.href = 'login.html';
-      }
-      if (callback === 'redirectLoginFromRegister') {
-        const u = localStorage.getItem('adminName') || sessionStorage.getItem('adminName') || '';
-        const p = localStorage.getItem('adminPassword') || sessionStorage.getItem('adminPassword') || '';
-        const e = localStorage.getItem('adminEmail') || sessionStorage.getItem('adminEmail') || '';
-        window.location.href = 'login.html?reg=1&u=' + encodeURIComponent(u) + '&p=' + encodeURIComponent(p) + '&e=' + encodeURIComponent(e);
-      }
-      if (callback === 'redirectLoginFromPasswordChange') {
-        const p = localStorage.getItem('adminPassword') || sessionStorage.getItem('adminPassword') || '';
-        window.location.href = 'login.html?passUpdate=1&p=' + encodeURIComponent(p);
-      }
-      if (callback === 'redirectVerify') {
-        const c = localStorage.getItem('verificationCode') || sessionStorage.getItem('verificationCode') || '';
-        const e = localStorage.getItem('verificationEmail') || sessionStorage.getItem('verificationEmail') || '';
-        window.location.href = 'verificacion.html?c=' + encodeURIComponent(c) + '&e=' + encodeURIComponent(e);
-      }
-      if (callback === 'redirectChangePassword') {
-        window.location.href = 'cambiarcontrase\u00f1a.html?codeVerified=true';
-      }
-      overlay.dataset.callback = '';
-    });
-  }
-
-  function showCustomAlert(title, message, action) {
-    createCustomAlert();
-    const overlay = document.getElementById('customAlertOverlay');
-    document.getElementById('customAlertTitle').textContent = title;
-    document.getElementById('customAlertMessage').innerHTML = message.replace(/\n/g, '<br>');
-    overlay.classList.remove('hidden');
-    overlay.dataset.callback = action || '';
-  }
-
-  function fallbackSendCode(email, verificationCode) {
-    const encCode = safeBtoa(verificationCode);
-    const encEmail = safeBtoa(email);
-    const timeStr = Date.now().toString();
-    localStorage.setItem('verificationCode', encCode);
-    localStorage.setItem('verificationEmail', encEmail);
-    localStorage.setItem('verificationTime', timeStr);
-    sessionStorage.setItem('verificationCode', encCode);
-    sessionStorage.setItem('verificationEmail', encEmail);
-    sessionStorage.setItem('verificationTime', timeStr);
-    showCustomAlert('Envío alternativo', 'No se pudo enviar el email automáticamente.\nCódigo de verificación: ' + verificationCode + '\nCorreo: ' + email, 'redirectVerify');
-  }
-
-  const verifyButton = document.getElementById('verifyAdminCodeButton');
-  if (verifyButton) {
-    verifyButton.addEventListener('click', () => {
-      const code = document.getElementById('adminCodeInput').value.trim();
-      const error = document.getElementById('adminCodeError');
-      const modalEl = document.getElementById('adminCodeModal');
-      const modal = bootstrap.Modal.getInstance(modalEl);
-      const encodedAdminCode = 'UEVMVVFVRVJBMTIz';
-      const adminCode = safeAtob(encodedAdminCode);
-
-      if (code === adminCode) {
-        error.classList.add('d-none');
-        modal.hide();
-        sessionStorage.setItem('isAdminCodeVerified', 'true');
-        window.location.href = 'register.html?codeVerified=true';
-      } else {
-        error.classList.remove('d-none');
-      }
-    });
-  }
-
-  // Validación de email para restablecer contraseña
-  const resetPasswordButton = document.getElementById('resetPasswordButton');
-  if (resetPasswordButton) {
-    resetPasswordButton.addEventListener('click', () => {
-      const email = document.getElementById('resetEmailInput').value.trim();
-      const error = document.getElementById('resetEmailError');
-      const encodedEmails = ['cGFyYXRpcGVsdXF1ZXJpYTA0QGdtYWlsLmNvbQ=='];
-      const registeredEmails = encodedEmails.map(e => safeAtob(e));
-
-      // Agregar email registrado en localStorage o sessionStorage si existe
-      const customEmailEncoded = localStorage.getItem('adminEmail') || sessionStorage.getItem('adminEmail');
-      if (customEmailEncoded) {
-        registeredEmails.push(safeAtob(customEmailEncoded));
-      }
-
-      if (registeredEmails.includes(email)) {
-        error.classList.add('d-none');
-
-        // Generar código aleatorio de 6 dígitos
-        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-
-        // Guardar en localStorage y sessionStorage de forma codificada
-        const encCode = safeBtoa(verificationCode);
-        const encEmail = safeBtoa(email);
-        const timeStr = Date.now().toString();
-        localStorage.setItem('verificationCode', encCode);
-        localStorage.setItem('verificationEmail', encEmail);
-        localStorage.setItem('verificationTime', timeStr);
-        sessionStorage.setItem('verificationCode', encCode);
-        sessionStorage.setItem('verificationEmail', encEmail);
-        sessionStorage.setItem('verificationTime', timeStr);
-
-        const templateParams = {
-          email: email,
-          to_email: email,
-          verification_code: verificationCode,
-          code: verificationCode
-        };
-
-        console.log('EmailJS enviar:', EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-
-        const sendCodePromise = EMAILJS_AVAILABLE
-          ? emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-          : Promise.reject(new Error('EmailJS no disponible'));
-
-        sendCodePromise.then(() => {
-          showCustomAlert('Código enviado', 'Se envió el código a:\n' + email, 'redirectVerify');
-
-          // Deshabilitar botón por 60 segundos
-          resetPasswordButton.disabled = true;
-          resetPasswordButton.classList.add('disabled');
-          const cooldownTimer = document.getElementById('cooldownTimer');
-          cooldownTimer.classList.remove('d-none');
-
-          let remainingTime = 60;
-          const countdownSpan = document.getElementById('countdown');
-          const interval = setInterval(() => {
-            remainingTime--;
-            countdownSpan.textContent = remainingTime;
-
-            if (remainingTime <= 0) {
-              clearInterval(interval);
-              resetPasswordButton.disabled = false;
-              resetPasswordButton.classList.remove('disabled');
-              cooldownTimer.classList.add('d-none');
-            }
-          }, 1000);
-        }).catch(err => {
-          console.error('Error enviando email:', err);
-          fallbackSendCode(email, verificationCode);
-
-          // Deshabilitar botón por 60 segundos incluso si el envío falla
-          resetPasswordButton.disabled = true;
-          resetPasswordButton.classList.add('disabled');
-          const cooldownTimer = document.getElementById('cooldownTimer');
-          cooldownTimer.classList.remove('d-none');
-
-          let remainingTime = 60;
-          const countdownSpan = document.getElementById('countdown');
-          const interval = setInterval(() => {
-            remainingTime--;
-            countdownSpan.textContent = remainingTime;
-
-            if (remainingTime <= 0) {
-              clearInterval(interval);
-              resetPasswordButton.disabled = false;
-              resetPasswordButton.classList.remove('disabled');
-              cooldownTimer.classList.add('d-none');
-            }
-          }, 1000);
-        });
-      } else {
-        error.classList.remove('d-none');
-        showCustomAlert('Email no válido', 'El email ingresado no está registrado.');
-      }
-    });
-  }
-
-fetch("footer.html")
-  .then(res => res.text())
-  .then(data => {
-    document.getElementById("footer").innerHTML = data;
-  });
 
 /* =============================================================================
    ADMIN PANEL — Solo corre en admin.html
@@ -1051,6 +767,284 @@ function toggleSidebar() {
     const isCollapsed = sidebar.classList.contains("collapsed");
     icon.className = isCollapsed ? "bi bi-chevron-right" : "bi bi-chevron-left";
 }
+
+
+function safeBtoa(str) {
+  try {
+    return btoa(unescape(encodeURIComponent(str)));
+  } catch (e) {
+    console.error('Error encoding Base64:', e);
+    return btoa(str);
+  }
+}
+
+function safeAtob(str) {
+  try {
+    return decodeURIComponent(escape(atob(str)));
+  } catch (e) {
+    console.error('Error decoding Base64:', e);
+    return atob(str);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // --- Procesamiento de parámetros URL para compatibilidad file:// ---
+  const urlParams = new URLSearchParams(window.location.search);
+  let stateChanged = false;
+
+  // 1. Registro exitoso recibido en login.html
+  if (urlParams.has('reg') && urlParams.has('u') && urlParams.has('p') && urlParams.has('e')) {
+    const u = urlParams.get('u');
+    const p = urlParams.get('p');
+    const e = urlParams.get('e');
+    localStorage.setItem('adminName', u);
+    localStorage.setItem('adminPassword', p);
+    localStorage.setItem('adminEmail', e);
+    sessionStorage.setItem('adminName', u);
+    sessionStorage.setItem('adminPassword', p);
+    sessionStorage.setItem('adminEmail', e);
+    stateChanged = true;
+    console.log('Parámetros de registro leídos e integrados en almacenamiento local.');
+  }
+
+  // 2. Cambio de contraseña recibido en login.html
+  if (urlParams.has('passUpdate') && urlParams.has('p')) {
+    const p = urlParams.get('p');
+    localStorage.setItem('adminPassword', p);
+    sessionStorage.setItem('adminPassword', p);
+    stateChanged = true;
+    console.log('Cambio de contraseña leído e integrado en almacenamiento local.');
+  }
+
+  // 3. Recepción de código de verificación en verificacion.html
+  if (urlParams.has('c') && urlParams.has('e')) {
+    const c = urlParams.get('c');
+    const e = urlParams.get('e');
+    localStorage.setItem('verificationCode', c);
+    localStorage.setItem('verificationEmail', e);
+    localStorage.setItem('verificationTime', Date.now().toString());
+    sessionStorage.setItem('verificationCode', c);
+    sessionStorage.setItem('verificationEmail', e);
+    sessionStorage.setItem('verificationTime', Date.now().toString());
+    stateChanged = true;
+    console.log('Código de verificación temporal leído e integrado.');
+  }
+
+  // 4. Recepción de autorización para registrarse o cambiar contraseña
+  if (urlParams.has('codeVerified') && urlParams.get('codeVerified') === 'true') {
+    sessionStorage.setItem('isAdminCodeVerified', 'true');
+    stateChanged = true;
+    console.log('Acceso de administrador autorizado por parámetro de URL.');
+  }
+
+  // Si leímos algún parámetro, limpiamos la barra de direcciones para mantener la estética y seguridad
+  if (stateChanged) {
+    try {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } catch (err) {
+      console.warn('No se pudo limpiar la barra de direcciones:', err);
+    }
+  }
+  // -------------------------------------------------------------
+
+  const EMAILJS_PUBLIC_KEY = 'nT3RJhFUfjBhzDJI8';
+  const EMAILJS_SERVICE_ID = 'service_2pchi1s';
+  const EMAILJS_TEMPLATE_ID = 'template_h3chgdh';
+  const EMAILJS_AVAILABLE = window.emailjs && typeof window.emailjs.send === 'function';
+
+  if (EMAILJS_AVAILABLE) {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+    console.log('EmailJS inicializado correctamente');
+  } else {
+    console.warn('EmailJS no está disponible en esta página');
+  }
+
+  function createCustomAlert() {
+    if (document.getElementById('customAlertOverlay')) return;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'customAlertOverlay';
+    overlay.className = 'custom-alert-overlay hidden';
+    overlay.innerHTML = `
+      <div class="custom-alert-box">
+        <h2 class="custom-alert-title" id="customAlertTitle"></h2>
+        <div class="custom-alert-message" id="customAlertMessage"></div>
+        <div class="custom-alert-actions">
+          <button type="button" class="custom-alert-button" id="customAlertOk">Aceptar</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    overlay.querySelector('#customAlertOk').addEventListener('click', () => {
+      overlay.classList.add('hidden');
+      const callback = overlay.dataset.callback;
+      if (callback === 'redirectLogin') {
+        window.location.href = 'login.html';
+      }
+      if (callback === 'redirectLoginFromRegister') {
+        const u = localStorage.getItem('adminName') || sessionStorage.getItem('adminName') || '';
+        const p = localStorage.getItem('adminPassword') || sessionStorage.getItem('adminPassword') || '';
+        const e = localStorage.getItem('adminEmail') || sessionStorage.getItem('adminEmail') || '';
+        window.location.href = 'login.html?reg=1&u=' + encodeURIComponent(u) + '&p=' + encodeURIComponent(p) + '&e=' + encodeURIComponent(e);
+      }
+      if (callback === 'redirectLoginFromPasswordChange') {
+        const p = localStorage.getItem('adminPassword') || sessionStorage.getItem('adminPassword') || '';
+        window.location.href = 'login.html?passUpdate=1&p=' + encodeURIComponent(p);
+      }
+      if (callback === 'redirectVerify') {
+        const c = localStorage.getItem('verificationCode') || sessionStorage.getItem('verificationCode') || '';
+        const e = localStorage.getItem('verificationEmail') || sessionStorage.getItem('verificationEmail') || '';
+        window.location.href = 'verificacion.html?c=' + encodeURIComponent(c) + '&e=' + encodeURIComponent(e);
+      }
+      if (callback === 'redirectChangePassword') {
+        window.location.href = 'cambiarcontrase\u00f1a.html?codeVerified=true';
+      }
+      overlay.dataset.callback = '';
+    });
+  }
+
+  function showCustomAlert(title, message, action) {
+    createCustomAlert();
+    const overlay = document.getElementById('customAlertOverlay');
+    document.getElementById('customAlertTitle').textContent = title;
+    document.getElementById('customAlertMessage').innerHTML = message.replace(/\n/g, '<br>');
+    overlay.classList.remove('hidden');
+    overlay.dataset.callback = action || '';
+  }
+
+  function fallbackSendCode(email, verificationCode) {
+    const encCode = safeBtoa(verificationCode);
+    const encEmail = safeBtoa(email);
+    const timeStr = Date.now().toString();
+    localStorage.setItem('verificationCode', encCode);
+    localStorage.setItem('verificationEmail', encEmail);
+    localStorage.setItem('verificationTime', timeStr);
+    sessionStorage.setItem('verificationCode', encCode);
+    sessionStorage.setItem('verificationEmail', encEmail);
+    sessionStorage.setItem('verificationTime', timeStr);
+    showCustomAlert('Envío alternativo', 'No se pudo enviar el email automáticamente.\nCódigo de verificación: ' + verificationCode + '\nCorreo: ' + email, 'redirectVerify');
+  }
+
+  const verifyButton = document.getElementById('verifyAdminCodeButton');
+  if (verifyButton) {
+    verifyButton.addEventListener('click', () => {
+      const code = document.getElementById('adminCodeInput').value.trim();
+      const error = document.getElementById('adminCodeError');
+      const modalEl = document.getElementById('adminCodeModal');
+      const modal = bootstrap.Modal.getInstance(modalEl);
+      const encodedAdminCode = 'UEVMVVFVRVJBMTIz';
+      const adminCode = safeAtob(encodedAdminCode);
+
+      if (code === adminCode) {
+        error.classList.add('d-none');
+        modal.hide();
+        sessionStorage.setItem('isAdminCodeVerified', 'true');
+        window.location.href = 'register.html?codeVerified=true';
+      } else {
+        error.classList.remove('d-none');
+      }
+    });
+  }
+
+  // Validación de email para restablecer contraseña
+  const resetPasswordButton = document.getElementById('resetPasswordButton');
+  if (resetPasswordButton) {
+    resetPasswordButton.addEventListener('click', () => {
+      const email = document.getElementById('resetEmailInput').value.trim();
+      const error = document.getElementById('resetEmailError');
+      const encodedEmails = ['cGFyYXRpcGVsdXF1ZXJpYTA0QGdtYWlsLmNvbQ=='];
+      const registeredEmails = encodedEmails.map(e => safeAtob(e));
+
+      // Agregar email registrado en localStorage o sessionStorage si existe
+      const customEmailEncoded = localStorage.getItem('adminEmail') || sessionStorage.getItem('adminEmail');
+      if (customEmailEncoded) {
+        registeredEmails.push(safeAtob(customEmailEncoded));
+      }
+
+      if (registeredEmails.includes(email)) {
+        error.classList.add('d-none');
+
+        // Generar código aleatorio de 6 dígitos
+        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+        // Guardar en localStorage y sessionStorage de forma codificada
+        const encCode = safeBtoa(verificationCode);
+        const encEmail = safeBtoa(email);
+        const timeStr = Date.now().toString();
+        localStorage.setItem('verificationCode', encCode);
+        localStorage.setItem('verificationEmail', encEmail);
+        localStorage.setItem('verificationTime', timeStr);
+        sessionStorage.setItem('verificationCode', encCode);
+        sessionStorage.setItem('verificationEmail', encEmail);
+        sessionStorage.setItem('verificationTime', timeStr);
+
+        const templateParams = {
+          email: email,
+          to_email: email,
+          verification_code: verificationCode,
+          code: verificationCode
+        };
+
+        console.log('EmailJS enviar:', EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+
+        const sendCodePromise = EMAILJS_AVAILABLE
+          ? emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+          : Promise.reject(new Error('EmailJS no disponible'));
+
+        sendCodePromise.then(() => {
+          showCustomAlert('Código enviado', 'Se envió el código a:\n' + email, 'redirectVerify');
+
+          // Deshabilitar botón por 60 segundos
+          resetPasswordButton.disabled = true;
+          resetPasswordButton.classList.add('disabled');
+          const cooldownTimer = document.getElementById('cooldownTimer');
+          cooldownTimer.classList.remove('d-none');
+
+          let remainingTime = 60;
+          const countdownSpan = document.getElementById('countdown');
+          const interval = setInterval(() => {
+            remainingTime--;
+            countdownSpan.textContent = remainingTime;
+
+            if (remainingTime <= 0) {
+              clearInterval(interval);
+              resetPasswordButton.disabled = false;
+              resetPasswordButton.classList.remove('disabled');
+              cooldownTimer.classList.add('d-none');
+            }
+          }, 1000);
+        }).catch(err => {
+          console.error('Error enviando email:', err);
+          fallbackSendCode(email, verificationCode);
+
+          // Deshabilitar botón por 60 segundos incluso si el envío falla
+          resetPasswordButton.disabled = true;
+          resetPasswordButton.classList.add('disabled');
+          const cooldownTimer = document.getElementById('cooldownTimer');
+          cooldownTimer.classList.remove('d-none');
+
+          let remainingTime = 60;
+          const countdownSpan = document.getElementById('countdown');
+          const interval = setInterval(() => {
+            remainingTime--;
+            countdownSpan.textContent = remainingTime;
+
+            if (remainingTime <= 0) {
+              clearInterval(interval);
+              resetPasswordButton.disabled = false;
+              resetPasswordButton.classList.remove('disabled');
+              cooldownTimer.classList.add('d-none');
+            }
+          }, 1000);
+        });
+      } else {
+        error.classList.remove('d-none');
+        showCustomAlert('Email no válido', 'El email ingresado no está registrado.');
+      }
+    });
+  }
+
   // Verificación de código
   const verifyCodeButton = document.getElementById('verifyCodeButton');
   if (verifyCodeButton) {
@@ -1284,3 +1278,5 @@ function toggleSidebar() {
     });
   }
 });
+
+
