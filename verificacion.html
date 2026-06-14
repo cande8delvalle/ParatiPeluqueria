@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!--Especifica el Idioma-->
+<html lang="es">
+<!--contine toda la config de la pagina-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <title>Para Ti Peluquería</title>
+    <link rel="icon" type="image/png" href="img/logo.ico" />
+</head>
+
+<body class="login-page">
+
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-xl-10">
+                <div class="card" style="border-radius: 1rem; background-color: #F6EEE8;">
+                    <div class="row g-0">
+                        <div class="col-md-6 col-lg-5 d-none d-md-block">
+                            <img src="img/sing up.png" alt="login form" class="img-fluid login-card-img" />
+                        </div>
+                        <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                            <div class="card-body p-4 p-lg-5 ">
+
+                                <form>
+
+                                    
+
+                                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px; color: #7A3E4E;">Verificar Código</h5>
+
+                                    <div data-mdb-input-init class="form-outline mb-4" >
+                                        <input type="text" id="verificationCodeInput" class="form-control form-control-lg"  />
+                                        <label class="form-label" for="verificationCodeInput">Código enviado al mail</label>
+                                    </div>
+                                    <div id="verificationError" class="text-danger mb-3 d-none">El código ingresado no es válido</div>
+
+                                    <div class="pt-1 mb-4">
+                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-lg btn-block button" type="button" id="verifyCodeButton">Verificar</button>
+                                    </div>
+
+                                    <div class="pt-1 mb-4">
+                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-lg btn-block btn-outline-secondary" type="button" id="resendCodeButton">Reenviar Código</button>
+                                        <small id="resendCooldown" class="text-muted d-none">Puedes reenviar en <span id="resendCountdown">60</span>s</small>
+                                    </div>
+
+
+                                    <p class="mb-5 pb-lg-2" >¿Ya tenes una cuenta? 
+                                          <a href="login.html">Iniciar Sesión</a>
+                                    </p>
+                                    
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
