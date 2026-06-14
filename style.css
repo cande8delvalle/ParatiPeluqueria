@@ -41,6 +41,9 @@ h5 {
   font-size: 3rem;
 }
 
+a{
+  color:#7A3E4E
+}
 .navbar {
 
   display: flex;
@@ -336,12 +339,18 @@ footer a:hover {
   color: #1E1E1E;
   font-size: 0.95rem;
 }
-
+/*Login*/
 body.login-page {
   background-image: url("img/servicios.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  min-height: 100vh;
+}
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
 }
 
@@ -1594,7 +1603,161 @@ body.admin-page {
   border-color: #5A2A3A;
 }
 
-.service-select-card.selected .btn-select-service:hover {
+
+
+.button {
+  background-color: #5A2A3A;
+  color: #FBEEE6;
+  padding: 10px 25px;
+  text-decoration: none;
+  font-family: "Playfair Display", serif;
+}
+.btn:hover{
+  background-color:#7A3E4E;
+}
+
+/* Botones deshabilitados */
+.btn.disabled,
+.btn:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+
+/* Alertas personalizadas */
+.custom-alert-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+}
+.custom-alert-overlay.hidden {
+  display: none;
+}
+.custom-alert-box {
+  background: rgba(251, 238, 230, 0.98);
+  border: 1px solid #d7b2b7;
+  border-radius: 22px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  max-width: 420px;
+  width: 100%;
+  padding: 28px;
+  text-align: center;
+  font-family: "Playfair Display", serif;
+}
+.custom-alert-title {
+  margin-bottom: 16px;
+  font-size: 1.6rem;
+  color: #7A3E4E;
+}
+.custom-alert-message {
+  color: #4a4043;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 24px;
+  white-space: pre-wrap;
+}
+.custom-alert-actions {
+  display: flex;
+  justify-content: center;
+}
+.custom-alert-button {
+  background-color: #5A2A3A;
+  color: #FBEEE6;
+  padding: 0.9rem 1.8rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: "Playfair Display", serif;
+}
+.custom-alert-button:hover {
+  background-color: #7A3E4E;
+}
+
+/* Estilo personalizado para el modal de código de administrador */
+#adminCodeModal .modal-content {
+  background: rgba(251, 238, 230, 0.98);
+  border: 1px solid #d7b2b7;
+  border-radius: 22px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  font-family: "Playfair Display", serif;
+  color: #4a4043;
+}
+
+#adminCodeModal .modal-header {
+  border-bottom: 1px solid #e2d2ca;
+  padding: 20px 28px 10px;
+}
+
+#adminCodeModal .modal-title {
+  color: #7A3E4E;
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+#adminCodeModal .modal-body {
+  padding: 20px 28px;
+}
+
+#adminCodeModal .modal-body p {
+  color: #4a4043;
+  font-size: 1rem;
+}
+
+#adminCodeModal .modal-footer {
+  border-top: 1px solid #e2d2ca;
+  padding: 15px 28px 20px;
+}
+
+/* Campos de entrada del modal */
+#adminCodeModal .form-control {
+  border: 1px solid #d7b2b7;
+  border-radius: 12px;
+  padding: 10px 15px;
+  background-color: #ffffff;
+  color: #5A2A3A;
+}
+
+#adminCodeModal .form-control:focus {
+  border-color: #7A3E4E;
+  box-shadow: 0 0 0 0.2rem rgba(122, 62, 78, 0.25);
+}
+
+/* Botones del modal */
+#adminCodeModal .btn-primary {
+  background-color: #5A2A3A;
+  border-color: #5A2A3A;
+  color: #FBEEE6;
+  border-radius: 12px;
+  padding: 8px 20px;
+  font-family: "Playfair Display", serif;
+}
+
+#adminCodeModal .btn-primary:hover {
   background-color: #7A3E4E;
   border-color: #7A3E4E;
 }
+
+#adminCodeModal .btn-secondary {
+  background-color: transparent;
+  border: 1px solid #7A3E4E;
+  color: #7A3E4E;
+  border-radius: 12px;
+  padding: 8px 20px;
+  font-family: "Playfair Display", serif;
+}
+
+#adminCodeModal .btn-secondary:hover {
+  background-color: rgba(122, 62, 78, 0.1);
+  color: #7A3E4E;
+  border-color: #7A3E4E;
+}
+
+#adminCodeModal .btn-close {
+  color: #7A3E4E;
+}
+
