@@ -28,6 +28,60 @@ let selectedDate = null;
 let selectedTime = null;
 let currentStep  = 1;
 
+// Listado de servicios dinámicos con precio y duración
+const SERVICES_DATA = [
+    {
+        id: "semipermanente",
+        name: "Semipermanente",
+        price: 15000,
+        duration: "45 min",
+        desc: "Color duradero y brillo perfecto por más tiempo.",
+        img: "img/corte.jpg"
+    },
+    {
+        id: "tradicional",
+        name: "Esmaltado Tradicional",
+        price: 10000,
+        duration: "30 min",
+        desc: "Opción clásica y delicada para un look natural.",
+        img: "img/tradii.jpeg"
+    },
+    {
+        id: "capping",
+        name: "Capping U-Dip",
+        price: 18000,
+        duration: "60 min",
+        desc: "Refuerza tus uñas naturales con mayor resistencia y duración.",
+        img: "img/cappiPortada.jpeg"
+    },
+    {
+        id: "construccion",
+        name: "Sistema de Construcción",
+        price: 25000,
+        duration: "90 min",
+        desc: "Largo, forma y estructura para uñas más definidas y duraderas.",
+        img: "img/contrucion.jpeg"
+    },
+    {
+        id: "spa_manos",
+        name: "Spa de Manos",
+        price: 12000,
+        duration: "40 min",
+        desc: "Cuidado, hidratación y suavidad para manos impecables.",
+        img: "img/spamanos.jpeg"
+    },
+    {
+        id: "spa_pies",
+        name: "Spa de Pies",
+        price: 15000,
+        duration: "50 min",
+        desc: "Relajación y cuidado profundo para lucir pies impecables.",
+        img: "img/spaP.jpeg"
+    }
+];
+
+let selectedServices = []; // Almacena los IDs de servicios seleccionados
+
 // Cache de feriados: { "YYYY": Set(["YYYY-MM-DD", ...]) }
 const holidaysCache = {};
 
@@ -57,7 +111,6 @@ async function fetchHolidays(year) {
 }
 
 function isHoliday(year, month, day, holidaySet) {
-    // month en JS es 0-indexed; la API devuelve "YYYY-MM-DD" con mes 1-indexed
     const mm = String(month + 1).padStart(2, "0");
     const dd = String(day).padStart(2, "0");
     return holidaySet.has(`${year}-${mm}-${dd}`);
@@ -65,13 +118,25 @@ function isHoliday(year, month, day, holidaySet) {
 
 //disponibilidad- se podria ampliar para tomar desde backend o desde google calendar
 
+function isDayFullyBooked(year, month, day) {
+    const yStr = String(year);
+    const mStr = String(month + 1).padStart(2, "0");
+    const dStr = String(day).padStart(2, "0");
+    const dateISO = `${yStr}-${mStr}-${dStr}`;
+    
+    // Considerar ocupados los turnos pendientes o aceptados
+    const bookings = getBookings().filter(b => b.dateISO === dateISO && b.status !== "rejected");
+    return bookings.length >= ALL_TIMES.length;
+}
+
 function isDateAvailable(year, month, day, holidaySet) {
     const date = new Date(year, month, day);
     date.setHours(0, 0, 0, 0);
     return (
         date >= today &&                              // no es pasado
         WORKING_DAYS.includes(date.getDay()) &&       // es día laborable
-        !isHoliday(year, month, day, holidaySet)      // no es feriado
+        !isHoliday(year, month, day, holidaySet) &&   // no es feriado
+        !isDayFullyBooked(year, month, day)           // no está completamente ocupado
     );
 }
 
@@ -88,6 +153,7 @@ async function initBookingPage() {
     await fetchHolidays(currentYear);
     fetchHolidays(currentYear + 1); // en background, sin await
 
+    renderServicesList();
     renderCalendar(currentYear, currentMonth);
     populateHours();
 }
@@ -188,8 +254,29 @@ function populateHours() {
     if (!container) return;
     container.innerHTML = "";
 
-    // FUTURO: filtrar con turnos ya ocupados desde backend o consumir de alguna api 
-    const availableTimes = ALL_TIMES;
+    // Filtrar horarios ya reservados para el día seleccionado
+    let availableTimes = ALL_TIMES;
+    if (selectedDate) {
+        const y = selectedDate.getFullYear();
+        const m = String(selectedDate.getMonth() + 1).padStart(2, "0");
+        const d = String(selectedDate.getDate()).padStart(2, "0");
+        const dateISO = `${y}-${m}-${d}`;
+        
+        const bookedTimes = getBookings()
+            .filter(b => b.dateISO === dateISO && b.status !== "rejected")
+            .map(b => b.time);
+            
+        availableTimes = ALL_TIMES.filter(time => !bookedTimes.includes(time));
+    }
+
+    if (availableTimes.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-4 text-muted">
+                <i class="bi bi-exclamation-circle d-block mb-2" style="font-size: 1.5rem;"></i>
+                No hay horarios disponibles para este día
+            </div>`;
+        return;
+    }
 
     availableTimes.forEach(time => {
         const item = document.createElement("div");
@@ -210,6 +297,52 @@ function selectTime(time, element) {
     document.querySelectorAll(".hour-item").forEach(i => i.classList.remove("selected"));
     element.classList.add("selected");
     document.getElementById("btnNextToData").disabled = false;
+}
+
+// Renderizado de servicios
+function renderServicesList() {
+    const container = document.getElementById("servicesGrid");
+    if (!container) return;
+    
+    container.innerHTML = SERVICES_DATA.map(s => `
+        <div class="col-12 col-sm-6">
+            <div class="card service-select-card ${selectedServices.includes(s.id) ? 'selected' : ''}" data-service-id="${s.id}">
+                <img src="${s.img}" class="card-img-top service-select-img" alt="${s.name}">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="service-select-title">${s.name}</h5>
+                        <div class="text-end">
+                            <div class="service-select-price">$${s.price.toFixed(2).replace(".", ",")}</div>
+                            <div class="service-select-duration">${s.duration}</div>
+                        </div>
+                    </div>
+                    <p class="service-select-text">${s.desc}</p>
+                    <button class="btn-select-service" type="button" onclick="toggleService('${s.id}')">SELECCIONAR</button>
+                </div>
+            </div>
+        </div>
+    `).join("");
+}
+
+function toggleService(id) {
+    const idx = selectedServices.indexOf(id);
+    if (idx === -1) {
+        selectedServices.push(id);
+    } else {
+        selectedServices.splice(idx, 1);
+    }
+    
+    // Cambiar clase selected
+    const card = document.querySelector(`.service-select-card[data-service-id="${id}"]`);
+    if (card) {
+        card.classList.toggle("selected");
+    }
+    
+    // Habilitar/deshabilitar botón Siguiente del Step 1
+    const btnNext = document.getElementById("btnNextToCalendar");
+    if (btnNext) {
+        btnNext.disabled = selectedServices.length === 0;
+    }
 }
 
 //navegacion step by step
@@ -277,6 +410,12 @@ function confirmBooking(event) {
     let dateStr = selectedDate.toLocaleDateString("es-ES", options);
     dateStr = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
 
+    // Obtener nombres de servicios seleccionados
+    const serviceNames = selectedServices.map(id => {
+        const s = SERVICES_DATA.find(x => x.id === id);
+        return s ? s.name : id;
+    });
+
     // Guardar en localStorage
     const booking = {
         id: Date.now(),                            // ID único por timestamp
@@ -284,6 +423,7 @@ function confirmBooking(event) {
         dateISO: selectedDate.toISOString().split("T")[0],
         dateStr,
         time: selectedTime,
+        services: serviceNames,
         name,
         email,
         phone,
@@ -296,6 +436,7 @@ function confirmBooking(event) {
     saveBookings(bookings);
 
     // Mostrar pantalla de éxito
+    document.getElementById("summaryServices").innerText = serviceNames.join(", ");
     document.getElementById("summaryDate").innerText = dateStr;
     document.getElementById("summaryTime").innerText = selectedTime;
     document.getElementById("summaryName").innerText = name;
@@ -508,6 +649,9 @@ function bookingCard(b, showActions) {
             <div class="booking-item-meta">
                 <span><i class="bi bi-calendar3 me-1"></i>${b.dateStr}</span>
                 <span><i class="bi bi-clock me-1"></i>${b.time}</span>
+            </div>
+            <div class="booking-item-meta">
+                <span><i class="bi bi-scissors me-1"></i>${b.services ? b.services.join(", ") : "Sin especificar"}</span>
             </div>
             <div class="booking-item-meta">
                 <span><i class="bi bi-envelope me-1"></i>${b.email}</span>
