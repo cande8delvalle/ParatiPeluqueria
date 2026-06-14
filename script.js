@@ -408,6 +408,14 @@ function doLogout() {
 function showAdmin() {
     document.getElementById("loginScreen").style.display = "none";
     document.getElementById("adminShell").style.display  = "block";
+
+    // Carga navbar (que ya sabe mostrarse en modo admin por body.admin-page)
+    fetch("navbar.html")
+        .then(r => r.text())
+        .then(html => {
+            document.getElementById("navbar").innerHTML = html;
+        });
+
     renderAll();
     renderAdminCalendar(calYear, calMonth);
 }
@@ -420,17 +428,55 @@ function updateBookingStatus(id, status) {
     renderAdminCalendar(calYear, calMonth);
 }
 
-/* --- Tabs --- */
-function switchTab(name) {
-    ["pending", "calendar", "history"].forEach(t => {
-        const key = t.charAt(0).toUpperCase() + t.slice(1);
-        document.getElementById(`tab${key}`).classList.remove("active");
-        document.getElementById(`pane${key}`).classList.remove("active");
+/* --- Navegación de secciones (navbar + sidebar) --- */
+function switchSection(section) {
+    // Navbar links
+    document.querySelectorAll(".admin-nav-link").forEach(l => l.classList.remove("active"));
+    const navLink = document.querySelector(`.admin-nav-link[onclick*="'${section}'"]`);
+    if (navLink) navLink.classList.add("active");
+
+    // Sidebar links
+    ["sidebarServicios", "sidebarTurnos"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove("active");
     });
-    const key = name.charAt(0).toUpperCase() + name.slice(1);
-    document.getElementById(`tab${key}`).classList.add("active");
-    document.getElementById(`pane${key}`).classList.add("active");
+    const sidebarId = section === "turnos" ? "sidebarTurnos" : "sidebarServicios";
+    const sidebarEl = document.getElementById(sidebarId);
+    if (sidebarEl) sidebarEl.classList.add("active");
+
+    // Submenú turnos visible solo cuando la sección es turnos
+    const submenu = document.getElementById("submenuTurnos");
+    if (submenu) submenu.classList.toggle("open", section === "turnos");
+
+    // Sections
+    document.querySelectorAll(".admin-section").forEach(s => s.classList.remove("active"));
+    const sectionEl = document.getElementById(`section${section.charAt(0).toUpperCase() + section.slice(1)}`);
+    if (sectionEl) sectionEl.classList.add("active");
+
+    // Si cambia a turnos, activar Pendientes por default
+    if (section === "turnos") switchSubPanel("turnos", "pending");
 }
+
+/* --- Navegación de sub-paneles (sidebar sub-items) --- */
+function switchSubPanel(section, panel) {
+    // Sub-links del sidebar
+    ["subPending", "subCalendar", "subHistory"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove("active");
+    });
+    const subMap = { pending: "subPending", calendar: "subCalendar", history: "subHistory" };
+    const subEl = document.getElementById(subMap[panel]);
+    if (subEl) subEl.classList.add("active");
+
+    // Sub-paneles de contenido
+    document.querySelectorAll(".admin-sub-panel").forEach(p => p.classList.remove("active"));
+    const panelMap = { pending: "panelPending", calendar: "panelCalendar", history: "panelHistory" };
+    const panelEl = document.getElementById(panelMap[panel]);
+    if (panelEl) panelEl.classList.add("active");
+}
+
+/* --- LEGACY: switchTab alias (por compatibilidad) --- */
+function switchTab(name) { switchSubPanel("turnos", name); }
 
 /* --- Render listas --- */
 function renderAll() {
@@ -439,7 +485,9 @@ function renderAll() {
     const accepted = bookings.filter(b => b.status === "accepted");
     const rejected = bookings.filter(b => b.status === "rejected");
 
-    document.getElementById("pendingCount").innerText = pending.length;
+    const badge = document.getElementById("pendingCount");
+    if (badge) badge.innerText = pending.length;
+
     renderList("pendingList", pending, true);
     renderList("historyList", [...accepted, ...rejected].sort((a, b) => b.id - a.id), false);
 }
@@ -583,3 +631,14 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     document.getElementById("adminPassword").focus();
 });
+
+/* --- Toggle sidebar --- */
+function toggleSidebar() {
+    const sidebar = document.getElementById("adminSidebar");
+    const icon    = document.getElementById("sidebarToggleIcon");
+    if (!sidebar) return;
+
+    sidebar.classList.toggle("collapsed");
+    const isCollapsed = sidebar.classList.contains("collapsed");
+    icon.className = isCollapsed ? "bi bi-chevron-right" : "bi bi-chevron-left";
+}

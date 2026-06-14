@@ -14,19 +14,17 @@
 </head>
 <body class="admin-page">
 
-<!-- ===================== LOGIN ===================== -->
+<!--login temporal-->
 <div id="loginScreen">
     <div class="login-card">
         <div class="login-logo">Para Ti</div>
         <div class="login-sub">Panel de peluquera</div>
-
         <input type="password" id="adminPassword" class="login-input"
                placeholder="Contraseña" onkeydown="if(event.key==='Enter') doLogin()">
         <button class="login-btn" onclick="doLogin()">
             <i class="bi bi-lock-fill me-2"></i> Ingresar
         </button>
         <div class="login-error" id="loginError">Contraseña incorrecta</div>
-
         <div style="margin-top:1.5rem; font-size:0.75rem; color:#aaa;">
             <a href="index.html" style="color:#aaa;">← Volver al sitio</a>
         </div>
@@ -36,56 +34,128 @@
 <!-- ===================== ADMIN SHELL ===================== -->
 <div id="adminShell">
 
-    <!-- Topbar -->
-    <div class="admin-topbar">
-        <div>
-            <div class="admin-topbar-brand">Para Ti — Panel Admin</div>
-            <div class="admin-topbar-sub">Vista de la peluquera</div>
-        </div>
-        <button class="logout-btn" onclick="doLogout()">
-            <i class="bi bi-box-arrow-right me-1"></i> Salir
-        </button>
-    </div>
+    <!-- Navbar inyectado (sticky en admin-page) -->
+    <div id="navbar"></div>
 
-    <!-- Tabs -->
-    <div class="admin-tabs">
-        <div class="admin-tab active" id="tabPending" onclick="switchTab('pending')">
-            <i class="bi bi-clock"></i> Pendientes
-            <span class="tab-badge" id="pendingCount">0</span>
-        </div>
-        <div class="admin-tab" id="tabCalendar" onclick="switchTab('calendar')">
-            <i class="bi bi-calendar3"></i> Calendario
-        </div>
-        <div class="admin-tab" id="tabHistory" onclick="switchTab('history')">
-            <i class="bi bi-archive"></i> Historial
-        </div>
-    </div>
+    <!-- Layout: sidebar + toggle + main -->
+    <div class="admin-shell-layout" id="adminShellLayout">
 
-    <!-- Contenido -->
-    <div class="admin-content">
+        <!-- ---- SIDEBAR ---- -->
+        <aside class="admin-sidebar" id="adminSidebar">
 
-        <!-- PENDIENTES -->
-        <div class="tab-pane active" id="panePending">
-            <div id="pendingList"></div>
-        </div>
-
-        <!-- CALENDARIO -->
-        <div class="tab-pane" id="paneCalendar">
-            <div class="calendar-month-header">
-                <div class="cal-nav" onclick="calPrev()"><i class="bi bi-chevron-left"></i></div>
-                <span id="calMonthLabel"></span>
-                <div class="cal-nav" onclick="calNext()"><i class="bi bi-chevron-right"></i></div>
+            <!-- Perfil peluquera -->
+            <div class="admin-sidebar-profile">
+                <img src="img/sobreMi.png" alt="Raquel Rodríguez" class="sidebar-avatar">
+                <div class="sidebar-profile-text">
+                    <div class="admin-sidebar-role">Peluquera</div>
+                    <div class="admin-sidebar-name">Raquel Rodríguez</div>
+                </div>
             </div>
-            <div class="cal-grid" id="adminCalGrid"></div>
-            <div class="day-bookings-list" id="dayBookingsList"></div>
-        </div>
 
-        <!-- HISTORIAL -->
-        <div class="tab-pane" id="paneHistory">
-            <div id="historyList"></div>
-        </div>
+            <!-- Menú -->
+            <div class="admin-sidebar-section-label sidebar-collapsible-text">Menú</div>
 
+            <!-- Servicios -->
+            <button class="admin-sidebar-link" id="sidebarServicios"
+                    onclick="switchSection('servicios')">
+                <i class="bi bi-grid"></i>
+                <span class="sidebar-collapsible-text">Servicios</span>
+            </button>
+
+            <!-- Turnos -->
+            <button class="admin-sidebar-link active" id="sidebarTurnos"
+                    onclick="switchSection('turnos')">
+                <i class="bi bi-calendar3"></i>
+                <span class="sidebar-collapsible-text">Turnos</span>
+            </button>
+
+            <!-- Submenú Turnos -->
+            <ul class="admin-sidebar-submenu open" id="submenuTurnos">
+                <li>
+                    <button class="admin-sidebar-sublink active" id="subPending"
+                            onclick="switchSubPanel('turnos','pending')">
+                        <i class="bi bi-clock"></i>
+                        <span class="sidebar-collapsible-text">Pendientes</span>
+                        <span class="tab-badge ms-auto sidebar-collapsible-text" id="pendingCount">0</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="admin-sidebar-sublink" id="subCalendar"
+                            onclick="switchSubPanel('turnos','calendar')">
+                        <i class="bi bi-calendar-week"></i>
+                        <span class="sidebar-collapsible-text">Calendario</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="admin-sidebar-sublink" id="subHistory"
+                            onclick="switchSubPanel('turnos','history')">
+                        <i class="bi bi-archive"></i>
+                        <span class="sidebar-collapsible-text">Historial</span>
+                    </button>
+                </li>
+            </ul>
+
+        </aside>
+
+        <!-- Botón toggle FUERA del sidebar (no lo clippea overflow) -->
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" onclick="toggleSidebar()">
+            <i class="bi bi-chevron-left" id="sidebarToggleIcon"></i>
+        </button>
+
+        <!-- ---- MAIN CONTENT ---- -->
+        <main class="admin-main">
+
+            <!-- SECCIÓN: Servicios -->
+            <div class="admin-section" id="sectionServicios">
+                <h4 style="font-family:'DM Serif Display',serif; color:#5A2A3A; margin-bottom:1.5rem;">
+                    Administrar Servicios
+                </h4>
+                <div class="empty-state" style="opacity:0.5;">
+                    <i class="bi bi-tools"></i>
+                    Próximamente disponible
+                </div>
+            </div>
+
+            <!-- SECCIÓN: Turnos -->
+            <div class="admin-section active" id="sectionTurnos">
+
+                <!-- Pendientes -->
+                <div class="admin-sub-panel active" id="panelPending">
+                    <h4 style="font-family:'DM Serif Display',serif; color:#5A2A3A; margin-bottom:1.5rem;">
+                        Turnos Pendientes
+                    </h4>
+                    <div id="pendingList"></div>
+                </div>
+
+                <!-- Calendario -->
+                <div class="admin-sub-panel" id="panelCalendar">
+                    <h4 style="font-family:'DM Serif Display',serif; color:#5A2A3A; margin-bottom:1rem;">
+                        Calendario
+                    </h4>
+                    <div class="cal-admin-wrap">
+                        <div class="calendar-month-header">
+                            <div class="cal-nav" onclick="calPrev()"><i class="bi bi-chevron-left"></i></div>
+                            <span id="calMonthLabel"></span>
+                            <div class="cal-nav" onclick="calNext()"><i class="bi bi-chevron-right"></i></div>
+                        </div>
+                        <div class="cal-grid" id="adminCalGrid"></div>
+                    </div>
+                    <div class="day-bookings-list" id="dayBookingsList"></div>
+                </div>
+
+                <!-- Historial -->
+                <div class="admin-sub-panel" id="panelHistory">
+                    <h4 style="font-family:'DM Serif Display',serif; color:#5A2A3A; margin-bottom:1.5rem;">
+                        Historial de Turnos
+                    </h4>
+                    <div id="historyList"></div>
+                </div>
+
+            </div>
+
+        </main>
     </div>
+
 </div>
 
 <script src="script.js"></script>

@@ -3,6 +3,28 @@ body{
   color:#7A3E4E ;
 }
 
+/* Navbar: ocultar items según contexto */
+.nav-admin { display: none; }
+body.admin-page .nav-public { display: none !important; }
+body.admin-page .nav-admin  { display: flex; align-items: center; }
+
+/* Admin nav link activo */
+body.admin-page .admin-nav-link.active {
+  color: #5A2A3A;
+  border-bottom: 2px solid #5A2A3A;
+  font-weight: 600;
+}
+
+/* En admin el navbar es sticky (no fixed) para que el layout quede debajo */
+body.admin-page,
+body.admin-page html { height: 100%; }
+body.admin-page .navbar {
+  position: sticky !important;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+
 h5{
   font-size: 3rem;
 }
@@ -863,6 +885,229 @@ body.admin-page {
 }
 .cal-cell.cal-has-booking:hover { background: #7A3E4E; }
 
-.day-bookings-list { margin-top: 1rem; }
+.day-bookings-list {
+    margin: 2rem auto 0;
+    width: 70%;
+    max-width: 700px;
+    min-width: 320px;
+}
 .empty-state { text-align: center; padding: 3rem 1rem; color: #7A3E4E; opacity: 0.6; }
 .empty-state i { font-size: 3rem; display: block; margin-bottom: 0.5rem; }
+
+/* ==========================================================================
+   Admin Layout: Sidebar + main  (altura exacta de pantalla)
+   ========================================================================== */
+
+/* Shell: columna que llena la pantalla. Con navbar sticky, el layout ocupa el resto. */
+#adminShell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.admin-shell-layout {
+    display: flex;
+    flex: 1;
+    background: #f0e8e2;
+    position: relative;    /* para el toggle button absoluto */
+    /* Altura = viewport - altura del navbar (~80px) */
+    height: calc(100vh - 80px);
+    overflow: hidden;
+}
+
+/* --- Sidebar --- */
+.admin-sidebar {
+    width: 210px;
+    min-width: 210px;
+    background: #FBEEE6;
+    border-right: 1px solid #d7a7aa;
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+    overflow-y: auto;
+    overflow-x: clip;          /* clip no crea stacking context, no corta z-index */
+    transition: width 0.2s ease, min-width 0.2s ease;
+    flex-shrink: 0;
+    height: 100%;
+}
+
+/* Sidebar colapsado — solo iconos */
+.admin-sidebar.collapsed {
+    width: 56px;
+    min-width: 56px;
+}
+.admin-sidebar.collapsed .sidebar-collapsible-text { display: none; }
+.admin-sidebar.collapsed .admin-sidebar-profile     { justify-content: center; padding: 0 0 1rem; }
+.admin-sidebar.collapsed .sidebar-profile-text      { display: none; }
+.admin-sidebar.collapsed .sidebar-avatar            { margin: 0 auto; }
+.admin-sidebar.collapsed .admin-sidebar-link        { justify-content: center; padding: 9px 0; }
+.admin-sidebar.collapsed .admin-sidebar-sublink     { justify-content: center; padding: 7px 0; }
+.admin-sidebar.collapsed .admin-sidebar-submenu     { display: none !important; }
+
+/* Botón toggle — posicionado sobre el borde del sidebar desde el layout container */
+.sidebar-toggle-btn {
+    position: absolute;
+    top: 50%;
+    left: 210px;              /* = ancho del sidebar expandido */
+    transform: translate(-50%, -50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #FBEEE6;
+    border: 1px solid #d7a7aa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #5A2A3A;
+    font-size: 0.65rem;
+    z-index: 20;
+    transition: left 0.2s ease, background 0.15s;
+}
+.sidebar-toggle-btn:hover { background: #5A2A3A; color: #FBEEE6; }
+/* Cuando el sidebar está colapsado, el botón se mueve */
+.admin-sidebar.collapsed + .sidebar-toggle-btn { left: 56px; }
+
+/* Avatar peluquera */
+.sidebar-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+    border: 2px solid #d7a7aa;
+    flex-shrink: 0;
+}
+
+/* Perfil */
+.admin-sidebar-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 1rem 1rem;
+    border-bottom: 1px solid #d7a7aa;
+    margin-bottom: 0.5rem;
+}
+.sidebar-profile-text { overflow: hidden; }
+.admin-sidebar-role {
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #a07080;
+    white-space: nowrap;
+}
+.admin-sidebar-name {
+    font-family: "DM Serif Display", serif;
+    color: #5A2A3A;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.admin-sidebar-section-label {
+    font-size: 0.62rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #b08090;
+    padding: 0 1rem;
+    margin: 0.75rem 0 0.3rem;
+}
+
+.admin-sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 1rem;
+    color: #7A3E4E;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: none;
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    width: 100%;
+    text-align: left;
+    white-space: nowrap;
+}
+.admin-sidebar-link:hover  { color: #5A2A3A; background: rgba(90,42,58,0.05); }
+.admin-sidebar-link.active { color: #5A2A3A; border-left-color: #5A2A3A; background: rgba(90,42,58,0.07); font-weight: 700; }
+
+.admin-sidebar-submenu {
+    padding-left: 0;
+    list-style: none;
+    margin: 0;
+    display: none;
+}
+.admin-sidebar-submenu.open { display: block; }
+
+.admin-sidebar-sublink {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 1rem 7px 2.2rem;
+    color: #9a5060;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    white-space: nowrap;
+}
+.admin-sidebar-sublink:hover  { color: #5A2A3A; background: rgba(90,42,58,0.04); }
+.admin-sidebar-sublink.active { color: #5A2A3A; font-weight: 700; }
+
+/* --- Main content area --- */
+.admin-main {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+/* --- Sections & sub-panels --- */
+.admin-section    { display: none; }
+.admin-section.active { display: block; }
+.admin-sub-panel  { display: none; }
+.admin-sub-panel.active { display: block; }
+
+/* --- Calendario admin --- */
+.cal-admin-wrap {
+    width: 70%;
+    max-width: 700px;
+    min-width: 320px;
+    margin: 1.5rem auto;
+}
+.cal-admin-wrap .calendar-month-header {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+    justify-content: center;
+}
+.cal-admin-wrap .cal-grid {
+    gap: 4px;
+    margin-bottom: 1.2rem;
+}
+.cal-admin-wrap .cal-cell {
+    aspect-ratio: 1;
+    height: auto;
+    font-size: 0.95rem;
+}
+.cal-admin-wrap .cal-cell.cal-header {
+    font-size: 0.85rem;
+}
+
+/* --- Navbar logout button (fondo claro) --- */
+.nav-admin .logout-btn {
+    border: 1px solid #d7a7aa;
+    color: #5A2A3A;
+    background: transparent;
+    border-radius: 50px;
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: "Montserrat", sans-serif;
+    transition: all 0.2s;
+}
+.nav-admin .logout-btn:hover { background: rgba(90,42,58,0.07); }
