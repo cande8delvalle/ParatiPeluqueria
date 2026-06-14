@@ -25,8 +25,8 @@
             <div class="col-xl-10">
                 <div class="card booking-card">
                     <div class="row g-0">
-                        <!-- Lado izquierdo: Proceso de Reserva -->
-                        <div class="col-md-7 p-4 p-md-5">
+                        <!-- Proceso de Reserva (Ancho Completo) -->
+                        <div class="col-12 p-4 p-md-5">
                             
                             <!-- Progreso barrita -->
                             <div class="stepper-container">
@@ -77,7 +77,9 @@
                                 <!-- Calendario -->
                                 <div id="subStepCalendar">
                                     <h3 class="booking-title-main">Seleccioná un Día</h3>
-                                    
+                                    <p class="text-muted mb-4" style="font-family: 'Montserrat', sans-serif; font-size: 0.95rem;">
+                                    Elegí el dia y la hora que mejor se adapte a tu agenda.
+                                    </p>
                                     <div class="calendar-container">
                                         <div class="calendar-header">
                                             <button class="calendar-nav-btn" onclick="prevMonth()"><i class="bi bi-chevron-left"></i></button>
@@ -175,16 +177,6 @@
                                 </div>
                             </div>
 
-                        </div>
-
-                        <!-- Lado derecho: Imagen Estática de Acompañamiento -->
-                        <div class="col-md-5 d-none d-md-block position-relative booking-right-col">
-                            <img src="img/Hair Salon Guide for a Perfect Style Makeover.jpg" alt="Hair Salon" class="booking-right-img">
-                            <div class="booking-right-gradient"></div>
-                            <div class="booking-right-text-container">
-                                <h3 class="booking-right-title" id="rightColTitle">Tu mejor versión empieza acá</h3>
-                                <p class="booking-right-subtitle" id="rightColSubtitle">Elegí el servicio que mejor se adapte a vos.</p>
-                            </div>
                         </div>
 
                     </div>

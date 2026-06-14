@@ -31,19 +31,16 @@
     </div>
 </div>
 
-<!-- ===================== ADMIN SHELL ===================== -->
 <div id="adminShell">
 
-    <!-- Navbar inyectado (sticky en admin-page) -->
     <div id="navbar"></div>
 
-    <!-- Layout: sidebar + toggle + main -->
     <div class="admin-shell-layout" id="adminShellLayout">
 
-        <!-- ---- SIDEBAR ---- -->
+        <!-- sidebar -->
         <aside class="admin-sidebar" id="adminSidebar">
 
-            <!-- Perfil peluquera -->
+            <!--  peluquera -->
             <div class="admin-sidebar-profile">
                 <img src="img/sobreMi.png" alt="Raquel Rodríguez" class="sidebar-avatar">
                 <div class="sidebar-profile-text">
@@ -52,24 +49,20 @@
                 </div>
             </div>
 
-            <!-- Menú -->
             <div class="admin-sidebar-section-label sidebar-collapsible-text">Menú</div>
 
-            <!-- Servicios -->
             <button class="admin-sidebar-link" id="sidebarServicios"
                     onclick="switchSection('servicios')">
                 <i class="bi bi-grid"></i>
                 <span class="sidebar-collapsible-text">Servicios</span>
             </button>
 
-            <!-- Turnos -->
             <button class="admin-sidebar-link active" id="sidebarTurnos"
                     onclick="switchSection('turnos')">
                 <i class="bi bi-calendar3"></i>
                 <span class="sidebar-collapsible-text">Turnos</span>
             </button>
 
-            <!-- Submenú Turnos -->
             <ul class="admin-sidebar-submenu open" id="submenuTurnos">
                 <li>
                     <button class="admin-sidebar-sublink active" id="subPending"
@@ -97,15 +90,14 @@
 
         </aside>
 
-        <!-- Botón toggle FUERA del sidebar (no lo clippea overflow) -->
         <button class="sidebar-toggle-btn" id="sidebarToggleBtn" onclick="toggleSidebar()">
             <i class="bi bi-chevron-left" id="sidebarToggleIcon"></i>
         </button>
 
-        <!-- ---- MAIN CONTENT ---- -->
+        <!-- ---- container main---- -->
         <main class="admin-main">
 
-            <!-- SECCIÓN: Servicios -->
+            <!-- Servicios -->
             <div class="admin-section" id="sectionServicios">
                 <h4 style="font-family:'DM Serif Display',serif; color:#5A2A3A; margin-bottom:1.5rem;">
                     Administrar Servicios
@@ -116,7 +108,7 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN: Turnos -->
+            <!--  Turnos -->
             <div class="admin-section active" id="sectionTurnos">
 
                 <!-- Pendientes -->

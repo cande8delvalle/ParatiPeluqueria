@@ -90,7 +90,6 @@ async function initBookingPage() {
 
     renderCalendar(currentYear, currentMonth);
     populateHours();
-    updateRightColText(1);
 }
 
 async function renderCalendar(year, month) {
@@ -221,20 +220,17 @@ function goToStep(step) {
     document.getElementById(`stepContent${step}`).classList.add("active");
     if (step === 2) goToCalendar();
     updateStepper(step);
-    updateRightColText(step);
 }
 
 function goToHours() {
     document.getElementById("subStepCalendar").style.display = "none";
     document.getElementById("subStepHours").style.display = "block";
     populateHours();
-    updateRightColText(2, "hours");
 }
 
 function goToCalendar() {
     document.getElementById("subStepHours").style.display = "none";
     document.getElementById("subStepCalendar").style.display = "block";
-    updateRightColText(2, "calendar");
 }
 
 function backToHours() {
@@ -253,22 +249,7 @@ function updateStepper(step) {
     fill.style.width = step === 1 ? "0%" : step === 2 ? "50%" : "100%";
 }
 
-function updateRightColText(step, subStep = null) {
-    const titleEl    = document.getElementById("rightColTitle");
-    const subtitleEl = document.getElementById("rightColSubtitle");
-    if (!titleEl) return;
 
-    titleEl.innerText = "Tu mejor versión empieza acá";
-    if (step === 1) {
-        subtitleEl.innerText = "Elegí el servicio que mejor se adapte a vos.";
-    } else if (step === 2) {
-        subtitleEl.innerText = subStep === "hours"
-            ? "Belleza, confianza y bienestar en cada detalle."
-            : "Elegí el día que mejor se adapte a tu agenda.";
-    } else if (step === 3) {
-        subtitleEl.innerText = "Ingresá tus datos para finalizar tu reserva.";
-    }
-}
 
 /* --- PERSISTENCIA EN LOCALSTORAGE ----------------------------------------- */
 
@@ -322,9 +303,6 @@ function confirmBooking(event) {
     document.querySelectorAll(".booking-step-content").forEach(c => c.classList.remove("active"));
     document.getElementById("stepContentSuccess").classList.add("active");
     document.querySelector(".stepper-container").style.display = "none";
-
-    document.getElementById("rightColTitle").innerText  = "¡Todo Listo!";
-    document.getElementById("rightColSubtitle").innerText = "Tu reserva ha sido procesada con éxito.";
 }
 
 
