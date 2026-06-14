@@ -1,29 +1,44 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-light" style="background-color: #FBEEE6;">
-        <div class="container-fluid">
-            <a href="#Home" class="navbar-brand">
-                <img src="img/logo.png" height="50" alt="CoolBrand">
-            </a>
-            
-            
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="nav nav-underline justify-content-start">
-                    <a href="#Servicios" class="nav-link">Servicios</a>
-                    <a href="#SobreMi" class="nav-link">Sobre Mí</a>
-                    <a href="#Portafolio" class="nav-link">Portafolio</a>
-                    <a href="#Contacto" class="nav-link">Contacto</a>
-                </div>
+    <div class="container-fluid">
+        <a href="#Home" class="navbar-brand">
+            <img src="img/logo.png" height="50" alt="CoolBrand">
+        </a>
 
-                <div class="navbar-nav ms-auto">
-                    <form class="d-flex ms-auto">
-                    </form> <a href="login.html" class="nav-item nav-link">Inicia Sesión</a>
-                </div>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
 
+            <!--  sitio público  -->
+            <div class="nav nav-underline justify-content-start nav-public">
+                <a href="#Servicios" class="nav-link">Servicios</a>
+                <a href="#SobreMi" class="nav-link">Sobre Mí</a>
+                <a href="#Portafolio" class="nav-link">Portafolio</a>
+                <a href="#Contacto" class="nav-link">Contacto</a>
             </div>
 
-          
+            <!-- panel admin  -->
+            <div class="nav nav-underline justify-content-center flex-grow-1 nav-admin">
+                <a href="#" class="nav-link admin-nav-link" onclick="switchSection('servicios')">Administrar
+                    Servicios</a>
+                <a href="#" class="nav-link admin-nav-link active" onclick="switchSection('turnos')">Administrar
+                    Turnos</a>
+            </div>
+
+            <div class="navbar-nav ms-auto">
+                <!-- Botón login público (oculto en admin) -->
+                <div class="nav-public">
+                    <!-- <a href="login.html" class="nav-item nav-link">Inicia Sesión</a> -->
+                    <a href="admin.html" class="nav-item nav-link">Inicia Sesión</a>
+                </div>
+                <!-- Botón cerrar sesión admin -->
+                <div class="nav-admin">
+                    <a href="#" class="nav-item nav-link" onclick="doLogout(); return false;">
+                        <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
+                    </a>
+                </div>
+            </div>
+
         </div>
-    </nav>
-    
+    </div>
+</nav>

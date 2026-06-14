@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Panel Admin - Para Ti Peluquería</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="img/logo.ico"/>
+</head>
+<body class="admin-page">
+
+<!--login temporal-->
+<div id="loginScreen">
+    <div class="login-card">
+        <div class="login-logo">Para Ti</div>
+        <div class="login-sub">Panel de peluquera</div>
+        <input type="password" id="adminPassword" class="login-input"
+               placeholder="Contraseña" onkeydown="if(event.key==='Enter') doLogin()">
+        <button class="login-btn" onclick="doLogin()">
+            <i class="bi bi-lock-fill me-2"></i> Ingresar
+        </button>
+        <div class="login-error" id="loginError">Contraseña incorrecta</div>
+        <div style="margin-top:1.5rem; font-size:0.75rem; color:#aaa;">
+            <a href="index.html" style="color:#aaa;">← Volver al sitio</a>
+        </div>
+    </div>
+</div>
+
+<div id="adminShell">
+
+    <div id="navbar"></div>
+
+    <div class="admin-shell-layout" id="adminShellLayout">
+
+        <!-- sidebar -->
+        <aside class="admin-sidebar" id="adminSidebar">
+
+            <!--  peluquera -->
+            <div class="admin-sidebar-profile">
+                <img src="img/sobreMi.png" alt="Raquel Rodríguez" class="sidebar-avatar">
+                <div class="sidebar-profile-text">
+                    <div class="admin-sidebar-role">Peluquera</div>
+                    <div class="admin-sidebar-name">Raquel Rodríguez</div>
+                </div>
+            </div>
+
+            <div class="admin-sidebar-section-label sidebar-collapsible-text">Menú</div>
+
+            <button class="admin-sidebar-link" id="sidebarServicios"
+                    onclick="switchSection('servicios')">
+                <i class="bi bi-grid"></i>
+                <span class="sidebar-collapsible-text">Servicios</span>
+            </button>
+
+            <button class="admin-sidebar-link active" id="sidebarTurnos"
+                    onclick="switchSection('turnos')">
+                <i class="bi bi-calendar3"></i>
+                <span class="sidebar-collapsible-text">Turnos</span>
+            </button>
+
+            <ul class="admin-sidebar-submenu open" id="submenuTurnos">
+                <li>
+                    <button class="admin-sidebar-sublink active" id="subPending"
+                            onclick="switchSubPanel('turnos','pending')">
+                        <i class="bi bi-clock"></i>
+                        <span class="sidebar-collapsible-text">Pendientes</span>
+                        <span class="tab-badge ms-auto sidebar-collapsible-text" id="pendingCount">0</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="admin-sidebar-sublink" id="subCalendar"
+                            onclick="switchSubPanel('turnos','calendar')">
+                        <i class="bi bi-calendar-week"></i>
+                        <span class="sidebar-collapsible-text">Calendario</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="admin-sidebar-sublink" id="subHistory"
+                            onclick="switchSubPanel('turnos','history')">
+                        <i class="bi bi-archive"></i>
+                        <span class="sidebar-collapsible-text">Historial</span>
+                    </button>
+                </li>
+            </ul>
+
+        </aside>
+
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" onclick="toggleSidebar()">
+            <i class="bi bi-chevron-left" id="sidebarToggleIcon"></i>
+        </button>
+
+        <!-- ---- container main---- -->
+        <main class="admin-main">
+
+            <!-- Servicios -->
+            <div class="admin-section" id="sectionServicios">
+                <h4 style="font-family:'DM Serif Display',serif; color:#5A2A3A; margin-bottom:1.5rem;">
+                    Administrar Servicios
+                </h4>
+                <div class="empty-state" style="opacity:0.5;">
+                    <i class="bi bi-tools"></i>
+                    Próximamente disponible
+                </div>
+            </div>
+
+            <!--  Turnos -->
+            <div class="admin-section active" id="sectionTurnos">
+
+                <!-- Pendientes -->
+                <div class="admin-sub-panel active" id="panelPending">
+                    <h4 style="font-family:'DM Serif Display',serif; color:#5A2A3A; margin-bottom:1.5rem;">
+                        Turnos Pendientes
+                    </h4>
+                    <div id="pendingList"></div>
+                </div>
+
+                <!-- Calendario -->
+                <div class="admin-sub-panel" id="panelCalendar">
+                    <h4 style="font-family:'DM Serif Display',serif; color:#5A2A3A; margin-bottom:1rem;">
+                        Calendario
+                    </h4>
+                    <div class="cal-admin-wrap">
+                        <div class="calendar-month-header">
+                            <div class="cal-nav" onclick="calPrev()"><i class="bi bi-chevron-left"></i></div>
+                            <span id="calMonthLabel"></span>
+                            <div class="cal-nav" onclick="calNext()"><i class="bi bi-chevron-right"></i></div>
+                        </div>
+                        <div class="cal-grid" id="adminCalGrid"></div>
+                    </div>
+                    <div class="day-bookings-list" id="dayBookingsList"></div>
+                </div>
+
+                <!-- Historial -->
+                <div class="admin-sub-panel" id="panelHistory">
+                    <h4 style="font-family:'DM Serif Display',serif; color:#5A2A3A; margin-bottom:1.5rem;">
+                        Historial de Turnos
+                    </h4>
+                    <div id="historyList"></div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

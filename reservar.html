@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Reservar Turno - Para Ti Peluquería</title>
+    <link rel="icon" type="image/png" href="img/logo.ico"/>
+</head>
+
+<body class="booking-page">
+    <!-- El navbar dinámico se inyecta aquí -->
+    <div id="navbar"></div>
+
+    <main class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-xl-10">
+                <div class="card booking-card">
+                    <div class="row g-0">
+                        <!-- Proceso de Reserva (Ancho Completo) -->
+                        <div class="col-12 p-4 p-md-5">
+                            
+                            <!-- Progreso barrita -->
+                            <div class="stepper-container">
+                                <div class="stepper-line"></div>
+                                <div class="stepper-line-fill" id="stepperLineFill"></div>
+                                
+                                <div class="stepper-step active" id="stepIndicator1">
+                                    <div class="stepper-circle">
+                                        <i class="bi bi-grid-fill"></i>
+                                    </div>
+                                    <div class="stepper-text">1. Servicio</div>
+                                </div>
+                                
+                                <div class="stepper-step" id="stepIndicator2">
+                                    <div class="stepper-circle">
+                                        <i class="bi bi-calendar3"></i>
+                                    </div>
+                                    <div class="stepper-text">2. Fecha y hora</div>
+                                </div>
+                                
+                                <div class="stepper-step" id="stepIndicator3">
+                                    <div class="stepper-circle">
+                                        <i class="bi bi-person-fill"></i>
+                                    </div>
+                                    <div class="stepper-text">3. Tus Datos</div>
+                                </div>
+                            </div>
+
+                            <!-- Primer paso- seleccionar servicio -->
+                            <div class="booking-step-content active" id="stepContent1">
+                                <h3 class="booking-title-main">¿Qué servicio deseás?</h3>
+                                <p class="text-muted mb-4" style="font-family: 'Montserrat', sans-serif; font-size: 0.95rem;">
+                                    Elegí el servicio que mejor se adapte a vos.
+                                </p>
+                                <div class="row g-3" id="servicesGrid">
+                                    <!-- Las tarjetas se generan dinámicamente desde script.js -->
+                                </div>
+                                <div class="d-flex justify-content-end mt-4">
+                                    <button class="btn-booking-next" id="btnNextToCalendar" onclick="goToStep(2)" disabled>Siguiente <i class="bi bi-arrow-right"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Segundo paso - Seleccionar Día y Hora  -->
+                            <div class="booking-step-content" id="stepContent2">
+                                
+                                <!-- Calendario -->
+                                <div id="subStepCalendar">
+                                    <h3 class="booking-title-main">Seleccioná un Día</h3>
+                                    <p class="text-muted mb-4" style="font-family: 'Montserrat', sans-serif; font-size: 0.95rem;">
+                                    Elegí el dia y la hora que mejor se adapte a tu agenda.
+                                    </p>
+                                    <div class="calendar-container">
+                                        <div class="calendar-header">
+                                            <button class="calendar-nav-btn" onclick="prevMonth()"><i class="bi bi-chevron-left"></i></button>
+                                            <h4 id="calendarMonthYear">Junio 2026</h4>
+                                            <button class="calendar-nav-btn" onclick="nextMonth()"><i class="bi bi-chevron-right"></i></button>
+                                        </div>
+                                        <div class="calendar-grid" id="calendarGrid">
+                                            <!-- Rellenado dinámicamente con JS -->
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <button class="btn-booking-prev" onclick="goToStep(1)">Atrás</button>
+                                        <button class="btn-booking-next" id="btnNextToHours" onclick="goToHours()" disabled>Siguiente <i class="bi bi-arrow-right"></i></button>
+                                    </div>
+                                </div>
+
+                                <!-- lista de  Horarios Disponibles -->
+                                <div id="subStepHours" style="display: none;">
+                                    <h3 class="hours-title">Elegí tu horario</h3>
+                                    <p class="hours-subtitle">Seleccioná el horario que mejor se adapte a vos.</p>
+                                    
+                                    <div class="hours-list" id="hoursList">
+                                        <!-- Rellenado dinámicamente con JS -->
+                                    </div>
+                                    <p class="hours-scroll-text">Desliza hacia abajo para ver más horarios disponibles <i class="bi bi-chevron-down"></i></p>
+                                    
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <button class="btn-booking-prev" onclick="goToCalendar()">Atrás</button>
+                                        <button class="btn-booking-next" id="btnNextToData" onclick="goToStep(3)" disabled>Siguiente <i class="bi bi-arrow-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tercer paso tus Datos personales -->
+                            <div class="booking-step-content" id="stepContent3">
+                                <h3 class="booking-title-main">Ingresá tus datos</h3>
+                                <p class="text-muted mb-4" style="font-family: 'Montserrat', sans-serif; font-size: 0.95rem;">
+                                    Completá la información para finalizar la reserva de tu turno.
+                                </p>
+                                
+                                <form id="bookingForm" onsubmit="confirmBooking(event)">
+                                    <div class="form-pill-group">
+                                        <i class="bi bi-person form-pill-icon"></i>
+                                        <input type="text" class="form-pill-control" id="clientName" placeholder="Nombre completo" required>
+                                    </div>
+                                    <div class="form-pill-group">
+                                        <i class="bi bi-envelope form-pill-icon"></i>
+                                        <input type="email" class="form-pill-control" id="clientEmail" placeholder="Correo electrónico" required>
+                                    </div>
+                                    <div class="form-pill-group">
+                                        <i class="bi bi-whatsapp form-pill-icon"></i>
+                                        <input type="tel" class="form-pill-control" id="clientPhone" placeholder="Teléfono / WhatsApp" required>
+                                    </div>
+                                    <div class="form-pill-group">
+                                        <i class="bi bi-chat-left-text form-pill-icon"></i>
+                                        <textarea class="form-pill-control form-pill-textarea" id="clientNotes" rows="3" placeholder="Notas o aclaraciones adicionales (opcional)"></textarea>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <button type="button" class="btn-booking-prev" onclick="backToHours()">Atrás</button>
+                                        <button type="submit" class="btn-booking-next">Confirmar Turno <i class="bi bi-check-lg"></i></button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Pantalla de Éxito / Confirmación (Modal Overlay) -->
+    <div class="booking-step-content booking-success-overlay" id="stepContentSuccess">
+        <div class="booking-success-modal">
+            <a href="index.html" class="modal-close-btn">
+                <i class="bi bi-x-lg"></i>
+            </a>
+            
+            <div class="modal-logo-circle">
+                <img src="img/logo.png" alt="Para Ti Logo">
+            </div>
+            
+            <h3 class="modal-title">Turno Reservado</h3>
+            
+            <div class="modal-summary-box">
+                <div class="modal-summary-item">
+                    <span class="modal-summary-label">Servicios:</span>
+                    <span class="modal-summary-val" id="summaryServices">-</span>
+                </div>
+                <div class="modal-summary-item">
+                    <span class="modal-summary-label">Fecha:</span>
+                    <span class="modal-summary-val" id="summaryDate">-</span>
+                </div>
+                <div class="modal-summary-item">
+                    <span class="modal-summary-label">Horario:</span>
+                    <span class="modal-summary-val" id="summaryTime">-</span>
+                </div>
+                <div class="modal-summary-item">
+                    <span class="modal-summary-label">Cliente:</span>
+                    <span class="modal-summary-val" id="summaryName">-</span>
+                </div>
+            </div>
+            
+            <p class="modal-thankyou">
+                Gracias por elegirnos.<br>
+                ¡Nos vemos pronto!
+            </p>
+            
+            <a href="index.html" class="btn-modal-home">
+                Volver al Inicio
+            </a>
+        </div>
+    </div>
+
+    <!-- El footer dinámico se inyecta aquí -->
+    <div id="footer"></div>
+
+    <script src="script.js"></script>
+    
+</body>
+</html>

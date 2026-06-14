@@ -1,9 +1,43 @@
-body{
+body {
   font-family: "DM Serif Display", serif;
-  color:#7A3E4E ;
+  color: #7A3E4E;
 }
 
-h5{
+/* Navbar: ocultar items según contexto */
+.nav-admin {
+  display: none;
+}
+
+body.admin-page .nav-public {
+  display: none !important;
+}
+
+body.admin-page .nav-admin {
+  display: flex;
+  align-items: center;
+}
+
+/* Admin nav link activo */
+body.admin-page .admin-nav-link.active {
+  color: #5A2A3A;
+  border-bottom: 2px solid #5A2A3A;
+  font-weight: 600;
+}
+
+/* En admin el navbar es sticky (no fixed) para que el layout quede debajo */
+body.admin-page,
+body.admin-page html {
+  height: 100%;
+}
+
+body.admin-page .navbar {
+  position: sticky !important;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+h5 {
   font-size: 3rem;
 }
 
@@ -11,7 +45,7 @@ a{
   color:#7A3E4E
 }
 .navbar {
- 
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -30,6 +64,7 @@ a{
   transition: color 0.3s ease;
   color: #552D3F;
 }
+
 .nav-link:hover {
   color: #816f7a;
 }
@@ -39,9 +74,11 @@ a{
   margin-bottom: 1rem;
   color: #6a11cb;
 }
+
 .cta {
   background-color: #f8f9fa;
 }
+
 .app-screenshot {
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
@@ -49,19 +86,26 @@ a{
 
 
 
-footer h5 {
+footer {
+  background-color: #FBEEE6;
+  padding: 40px 0 20px;
+}
+
+footer h5,
+.footer-title {
   font-size: 20px;
+  font-family: "DM Serif Display", serif;
   color: #552D3F;
   margin-bottom: 15px;
   padding-left: 0;
   margin-left: 0;
 }
 
-footer p{
+footer p {
   color: #552D3F;
 }
 
-.footer-brand p{
+.footer-brand p {
   font-family: "Playfair Display", serif;
   color: #4A5053;
   font-size: 14px;
@@ -74,6 +118,7 @@ footer a {
   font-size: 18px;
 
 }
+
 footer a:hover {
   opacity: 0.7;
 }
@@ -84,193 +129,215 @@ footer a:hover {
   font-size: 24px;
   transition: opacity 0.3s ease;
 }
+
 .social-icons li a:hover {
-    opacity: 0.7;
+  opacity: 0.7;
 }
 
 .linea-footer {
-    border: none; /* elimina estilo default */
-    height: 1px;
-    width: 60%;
-    margin: 0 auto;
-    background: linear-gradient(to right, transparent, #552D3F, transparent);
+  border: none;
+  height: 1px;
+  width: 60%;
+  margin: 0 auto;
+  background: linear-gradient(to right, transparent, #552D3F, transparent);
+}
+
+.copy-text p {
+  font-family: "Playfair Display", serif;
+  color: #552D3F;
+  font-size: 14px;
 }
 
 
 #mobileMenu {
-      display: none;
-      background-color: #f8f9fa;
-      padding: 1rem;
-    }
-    @media (min-width: 768px) {
-      #mobileMenu {
-        display: none !important;
-      }
-    }
-    .nav-link {
-      padding: 0.5rem 1rem;
-    }
+  display: none;
+  background-color: #f8f9fa;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  #mobileMenu {
+    display: none !important;
+  }
+}
+
+.nav-link {
+  padding: 0.5rem 1rem;
+}
 
 /*servicios*/
 
 .servicios-section {
-    background-color: #E8CDCC;
-    padding: 80px 0;
-    
+  background-color: #E8CDCC;
+  padding: 80px 0;
+
 }
 
-.servicios-barra{
-    background: #f6d2d1;
-    width: 80%;
-    margin: 30px auto;
-    padding: 8px 0;
-    text-align: center;
-    font-family: "DM Serif Display", serif;
-    color: #1E1E1E;
-    font-size: 1.2rem;
-    letter-spacing: 1px;
+.servicios-barra {
+  background: #f6d2d1;
+  width: 80%;
+  margin: 30px auto;
+  padding: 8px 0;
+  text-align: center;
+  font-family: "DM Serif Display", serif;
+  color: #1E1E1E;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
 }
 
 .servicio-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-    background-color:#f6d2d1;
-    padding-bottom: 15px;
-    box-shadow: 0 2px 8px rgba(150, 53, 65, 0.08);
-    border: none;
-    border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  background-color: #f6d2d1;
+  padding-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(150, 53, 65, 0.08);
+  border: none;
+  border-radius: 12px;
 }
 
 .servicio-img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 0;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0;
 }
 
 .servicio-card .card-title {
-    font-family: "DM Serif Display", serif;
-    color: #1e1e1e;
-    font-size: 1.4rem;
-    margin-top: 20px;
+  font-family: "DM Serif Display", serif;
+  color: #1e1e1e;
+  font-size: 1.4rem;
+  margin-top: 20px;
 }
 
 .servicio-card .card-text {
-    font-family: "Playfair Display", serif;
-    color: #1E1E1E;
-    font-size: 0.95rem;
+  font-family: "Playfair Display", serif;
+  color: #1E1E1E;
+  font-size: 0.95rem;
 }
 
 /*Contacto*/
 .contact-card {
-    background-color: #F7F5F2;
-    padding: 40px 35px;
-    border-radius: 25px;
-    max-width: 420px;
-    width: 100%;
+  background-color: #F7F5F2;
+  padding: 40px 35px;
+  border-radius: 25px;
+  max-width: 420px;
+  width: 100%;
 }
 
 .contact-title {
-    font-family: "DM Serif Display", serif;
-    color: #963541;
-    font-size: 1.8rem;
-    text-align: center;
-    margin-bottom: 30px;
+  font-family: "DM Serif Display", serif;
+  color: #963541;
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 .contact-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: "Playfair Display", serif;
-    color: #C65C6A;
-    text-decoration: none;
-    border-bottom: 1px solid #C65C6A;
-    padding-bottom: 10px;
-    margin-bottom: 25px;
-    
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Playfair Display", serif;
+  color: #C65C6A;
+  text-decoration: none;
+  border-bottom: 1px solid #C65C6A;
+  padding-bottom: 10px;
+  margin-bottom: 25px;
+
 }
 
 .contact-item i {
-    color: #C65C6A;
-    font-size: 1.3rem;
-    transition: opacity 0.3s ease;
+  color: #C65C6A;
+  font-size: 1.3rem;
+  transition: opacity 0.3s ease;
 }
 
 .contact-item:hover {
-    
-    opacity: 0.7;
+
+  opacity: 0.7;
 }
 
 
 .faq-section {
-    background-color: #f8d8d8;
-    padding: 90px 0;
+  background-color: #f8d8d8;
+  padding: 90px 0;
 }
 
 .faq-intro {
-    text-align: center;
-    padding-left: 20px;
+  text-align: center;
+  padding-left: 20px;
 }
 
 .faq-label {
-    font-family: "Playfair Display", serif;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    color: #963541;
-    background-color: #f7f6f2;
-    padding: 4px 8px;
+  font-family: "Playfair Display", serif;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #963541;
+  background-color: #f7f6f2;
+  padding: 4px 8px;
 }
 
 .faq-intro h2 {
-    font-family: "DM Serif Display", serif;
-    color: #C65C6A;
-    font-size: 2.2rem;
-    margin: 15px 0;
+  font-family: "DM Serif Display", serif;
+  color: #C65C6A;
+  font-size: 2.2rem;
+  margin: 15px 0;
 }
 
 .faq-intro p {
-    font-family: "Playfair Display", serif;
-    color: #1E1E1E;
-    max-width: 320px;
-    margin: 0 auto 25px;
+  font-family: "Playfair Display", serif;
+  color: #1E1E1E;
+  max-width: 320px;
+  margin: 0 auto 25px;
 }
 
 .faq-btn {
-    background-color: #5A2A3A;
-    color: #FBEEE6;
-    padding: 10px 25px;
-    text-decoration: none;
-    font-family: "Playfair Display", serif;
+  background-color: #C65C6A;
+  color: #F7F5F2;
+  padding: 10px 25px;
+  text-decoration: none;
+  font-family: "Playfair Display", serif;
+}
+
+.button {
+  background-color: #5A2A3A;
+  color: #FBEEE6;
+  padding: 10px 25px;
+  text-decoration: none;
+  font-family: "Playfair Display", serif;
+}
+
+.button.btn :hover {
+  color: #d7a7aa;
 }
 
 .faq-btn:hover {
-  background-color: #7A3E4E;
+  background-color: #963541;
+  color: #F7F5F2;
 }
 
 .accordion-item {
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid #d7a7aa;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #d7a7aa;
 }
 
 .accordion-button {
-    background-color: transparent;
-    font-family:  "DM Serif Display", serif;
-    color: #1E1E1E;
-    box-shadow: none;
+  background-color: transparent;
+  font-family: "DM Serif Display", serif;
+  color: #1E1E1E;
+  box-shadow: none;
 }
 
 .accordion-button:not(.collapsed) {
-    background-color: transparent;
-    color: #963541;
-    box-shadow: none;
+  background-color: transparent;
+  color: #963541;
+  box-shadow: none;
 }
 
 .accordion-body {
-    font-family: "Playfair Display", serif;
-    color: #1E1E1E;
-    font-size: 0.95rem;
+  font-family: "Playfair Display", serif;
+  color: #1E1E1E;
+  font-size: 0.95rem;
 }
 /*Login*/
 body.login-page {
@@ -293,14 +360,1250 @@ body.login-page {
   object-fit: cover;
   border-radius: 1rem 0 0 1rem;
   display: block;
-  
+
 }
 
-.form-label{
+.form-label {
   color: #4e0230;
-  font-family:"Playfair Display", serif;
+  font-family: "Playfair Display", serif;
 
 }
+
+
+body.booking-page {
+  background-image: url("img/contact.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  padding-top: 100px;
+  padding-bottom: 50px;
+}
+
+body.booking-page #navbar nav {
+  background-color: #FBEEE6 !important;
+}
+
+.booking-card {
+  background-color: #F6EEE8;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* --- Stepper --- */
+.stepper-container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+.stepper-line {
+  position: absolute;
+  top: 25px;
+  left: 45px;
+  right: 45px;
+  height: 2px;
+  background-color: #d7a7aa;
+  z-index: 0;
+}
+
+.stepper-line-fill {
+  position: absolute;
+  top: 25px;
+  left: 45px;
+  width: 0%;
+  height: 2px;
+  background-color: #5A2A3A;
+  z-index: 0;
+  transition: width 0.4s ease;
+}
+
+.stepper-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+  flex: 1;
+}
+
+.stepper-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #FBEEE6;
+  border: 2px solid #d7a7aa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7A3E4E;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.stepper-step.active .stepper-circle,
+.stepper-step.completed .stepper-circle {
+  background-color: #5A2A3A;
+  border-color: #5A2A3A;
+  color: #FBEEE6;
+}
+
+.stepper-text {
+  margin-top: 8px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #7A3E4E;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  text-align: center;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+.stepper-step.active .stepper-text {
+  opacity: 1;
+  font-weight: 700;
+  color: #5A2A3A;
+}
+
+/* --- Contenido de Pasos --- */
+.booking-step-content {
+  display: none;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.booking-step-content.active {
+  display: block;
+}
+
+/* --- Calendario Inline --- */
+.calendar-container {
+  background-color: #FBEEE6;
+  border: 1px solid #d7a7aa;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 1.5rem;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.calendar-nav-btn {
+  background-color: #FBEEE6;
+  border: 1px solid #d7a7aa;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5A2A3A;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar-nav-btn:hover {
+  background-color: #5A2A3A;
+  color: #FBEEE6;
+  border-color: #5A2A3A;
+}
+
+.calendar-row {
+  display: flex;
+  width: 100%;
+}
+
+.calendar-cell {
+  flex: 1;
+  aspect-ratio: 1.1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.88rem;
+  border: 1px solid #e8cdcc;
+  background-color: #FBEEE6;
+  transition: all 0.2s ease;
+}
+
+.calendar-cell.header {
+  border: none;
+  background-color: transparent;
+  color: #5A2A3A;
+  font-weight: 600;
+}
+
+.calendar-cell.day-disabled {
+  color: #c0b0b8;
+  background-color: #f2e7e0;
+  cursor: not-allowed;
+}
+
+.calendar-cell.day-active {
+  cursor: pointer;
+  font-weight: 600;
+  color: #1e1e1e;
+  background-color: #FFF;
+}
+
+.calendar-cell.day-active:hover {
+  background-color: #5A2A3A;
+  color: #FBEEE6;
+}
+
+.calendar-cell.day-selected {
+  background-color: #5A2A3A !important;
+  color: #FBEEE6 !important;
+  font-weight: 700;
+}
+
+/* --- Listado de Horarios --- */
+.hours-list {
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 5px;
+  margin-bottom: 0.5rem;
+}
+
+.hours-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.hours-list::-webkit-scrollbar-track {
+  background: #FBEEE6;
+  border-radius: 10px;
+}
+
+.hours-list::-webkit-scrollbar-thumb {
+  background: #5A2A3A;
+  border-radius: 10px;
+}
+
+.hour-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #FBEEE6;
+  border: 1px solid #d7a7aa;
+  padding: 11px 18px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #5A2A3A;
+}
+
+.hour-item:hover {
+  border-color: #5A2A3A;
+  background-color: #FFF;
+}
+
+.hour-item.selected {
+  background-color: #5A2A3A;
+  color: #FBEEE6;
+  border-color: #5A2A3A;
+}
+
+.hour-item.selected i,
+.hour-item i {
+  color: inherit;
+}
+
+/* --- Inputs Redondeados (Píldora) --- */
+.form-pill-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.form-pill-control {
+  border-radius: 50px;
+  border: 1px solid #d7a7aa;
+  background-color: #FFF;
+  padding: 11px 20px 11px 44px;
+  color: #1e1e1e;
+  transition: border-color 0.3s;
+  width: 100%;
+}
+
+.form-pill-control:focus {
+  border-color: #5A2A3A;
+  box-shadow: none;
+  outline: none;
+}
+
+.form-pill-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7A3E4E;
+}
+
+.form-pill-textarea {
+  border-radius: 20px;
+  padding-left: 18px;
+}
+
+/* --- Pantalla de Éxito: Modal Overlay --- */
+.booking-success-overlay {
+  display: none !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+
+.booking-success-overlay.active {
+  display: flex !important;
+}
+
+.booking-success-modal {
+  position: relative;
+  background-color: #5A2A3A;
+  /* dark wine */
+  color: #FBEEE6;
+  width: 100%;
+  max-width: 440px;
+  margin: 1.5rem;
+  padding: 2.5rem 2rem 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  animation: modalScaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalScaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FBEEE6;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.modal-close-btn:hover {
+  background: #FBEEE6;
+  color: #5A2A3A;
+}
+
+.modal-logo-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #FBEEE6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  border: 4px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-logo-circle img {
+  height: 50px;
+  width: auto;
+}
+
+.modal-title {
+  font-family: "DM Serif Display", serif;
+  font-size: 1.8rem;
+  color: #FBEEE6;
+  margin-bottom: 1rem;
+}
+
+.modal-summary-box {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin: 1.5rem 0;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.modal-summary-item {
+  display: flex;
+  margin-bottom: 8px;
+  font-size: 0.92rem;
+  color: #FBEEE6;
+  line-height: 1.4;
+}
+
+.modal-summary-item:last-child {
+  margin-bottom: 0;
+}
+
+.modal-summary-label {
+  font-weight: 600;
+  width: 85px;
+  color: #d7a7aa;
+  /* light rose tint */
+}
+
+.modal-summary-val {
+  flex: 1;
+  font-weight: 400;
+}
+
+.modal-thankyou {
+  font-size: 0.95rem;
+  color: #e0d0d5;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+}
+
+.btn-modal-home {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FBEEE6;
+  color: #5A2A3A;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 28px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn-modal-home:hover {
+  background-color: #7A3E4E;
+  color: #FBEEE6;
+}
+
+/* Botones de reserva */
+.btn-booking-next {
+  background-color: #5A2A3A;
+  color: #FBEEE6;
+  padding: 11px 28px;
+  font-weight: 600;
+  border-radius: 50px;
+  border: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.btn-booking-next:hover:not(:disabled) {
+  background-color: #7A3E4E;
+  color: #FBEEE6;
+}
+
+.btn-booking-next:disabled {
+  background-color: #d7a7aa;
+  color: #FFF;
+  cursor: not-allowed;
+}
+
+.btn-booking-prev {
+  background-color: transparent;
+  color: #5A2A3A;
+  padding: 11px 24px;
+  font-weight: 600;
+  border-radius: 50px;
+  border: 1px solid #5A2A3A;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-booking-prev:hover {
+  background-color: rgba(90, 42, 58, 0.05);
+}
+
+/* ==========================================================================
+   Admin Panel Styles
+   ========================================================================== */
+
+/* Variables de paleta admin (reutiliza colores del proyecto) */
+:root {
+  --cream: #FBEEE6;
+  --rose: #F6EEE8;
+  --wine: #5A2A3A;
+  --wine-lt: #7A3E4E;
+  --border: #d7a7aa;
+}
+
+body.admin-page {
+  background-color: #f0e8e2;
+  min-height: 100vh;
+}
+
+/* --- Login --- */
+#loginScreen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #5A2A3A 0%, #3a1525 100%);
+}
+
+.login-card {
+  background: #FBEEE6;
+  border-radius: 1.5rem;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+.login-logo {
+  font-family: "DM Serif Display", serif;
+  color: #5A2A3A;
+  font-size: 1.8rem;
+  margin-bottom: 0.25rem;
+}
+
+.login-sub {
+  color: #7A3E4E;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.login-input {
+  width: 100%;
+  border: 1px solid #d7a7aa;
+  border-radius: 50px;
+  padding: 11px 20px;
+  font-family: "Montserrat", sans-serif;
+  margin-bottom: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.login-input:focus {
+  border-color: #5A2A3A;
+}
+
+.login-btn {
+  width: 100%;
+  background: #5A2A3A;
+  color: #FBEEE6;
+  border: none;
+  border-radius: 50px;
+  padding: 12px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.login-btn:hover {
+  background: #7A3E4E;
+}
+
+.login-error {
+  color: #c0392b;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  display: none;
+}
+
+/* --- Admin shell --- */
+#adminShell {
+  display: none;
+}
+
+.admin-topbar {
+  background: #5A2A3A;
+  color: #FBEEE6;
+  padding: 14px 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-topbar-brand {
+  font-family: "DM Serif Display", serif;
+  font-size: 1.3rem;
+}
+
+.admin-topbar-sub {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  letter-spacing: 1px;
+}
+
+/* --- Tabs --- */
+.admin-tabs {
+  background: #F6EEE8;
+  border-bottom: 2px solid #d7a7aa;
+  padding: 0 2rem;
+  display: flex;
+}
+
+.admin-tab {
+  padding: 14px 20px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #7A3E4E;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-tab:hover {
+  color: #5A2A3A;
+}
+
+.admin-tab.active {
+  color: #5A2A3A;
+  border-bottom-color: #5A2A3A;
+}
+
+.tab-badge {
+  background: #5A2A3A;
+  color: #FBEEE6;
+  border-radius: 50px;
+  padding: 1px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+/* --- Contenido --- */
+.admin-content {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+/* --- Tarjeta de turno --- */
+.booking-item {
+  background: #FBEEE6;
+  border: 1px solid #d7a7aa;
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: box-shadow 0.2s;
+}
+
+.booking-item:hover {
+  box-shadow: 0 4px 12px rgba(90, 42, 58, 0.12);
+}
+
+.booking-item-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #F6EEE8;
+  border: 1px solid #d7a7aa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5A2A3A;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.booking-item-body {
+  flex: 1;
+}
+
+.booking-item-name {
+  font-weight: 700;
+  color: #5A2A3A;
+  font-size: 1rem;
+  margin-bottom: 2px;
+}
+
+.booking-item-meta {
+  font-size: 0.82rem;
+  color: #666;
+}
+
+.booking-item-meta span {
+  margin-right: 12px;
+}
+
+.booking-item-notes {
+  font-size: 0.82rem;
+  color: #888;
+  font-style: italic;
+  margin-top: 4px;
+}
+
+.booking-item-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+  align-items: flex-start;
+}
+
+.btn-accept {
+  background: #5A2A3A;
+  color: #FBEEE6;
+  border: none;
+  border-radius: 50px;
+  padding: 7px 18px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-accept:hover {
+  background: #7A3E4E;
+}
+
+.btn-reject {
+  background: transparent;
+  color: #5A2A3A;
+  border: 1px solid #d7a7aa;
+  border-radius: 50px;
+  padding: 7px 18px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-reject:hover {
+  border-color: #5A2A3A;
+  background: rgba(90, 42, 58, 0.05);
+}
+
+/* --- Status badges --- */
+.status-badge {
+  display: inline-block;
+  border-radius: 50px;
+  padding: 3px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.status-accepted {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-rejected {
+  background: #fce4ec;
+  color: #c62828;
+}
+
+/* --- Calendario admin --- */
+.calendar-month-header {
+  font-family: "DM Serif Display", serif;
+  color: #5A2A3A;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cal-nav {
+  background: #FBEEE6;
+  border: 1px solid #d7a7aa;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #5A2A3A;
+  transition: all 0.2s;
+}
+
+.cal-nav:hover {
+  background: #5A2A3A;
+  color: #FBEEE6;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.cal-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.cal-cell.cal-header {
+  font-weight: 700;
+  color: #5A2A3A;
+  font-size: 0.75rem;
+}
+
+.cal-cell.cal-empty {
+  color: #ccc;
+}
+
+.cal-cell.cal-today {
+  border: 2px solid #5A2A3A;
+  font-weight: 700;
+}
+
+.cal-cell.cal-has-booking {
+  background: #5A2A3A;
+  color: #FBEEE6;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.cal-cell.cal-has-booking:hover {
+  background: #7A3E4E;
+}
+
+.day-bookings-list {
+  margin: 2rem auto 0;
+  width: 70%;
+  max-width: 700px;
+  min-width: 320px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #7A3E4E;
+  opacity: 0.6;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* ==========================================================================
+   Admin Layout: Sidebar + main  (altura exacta de pantalla)
+   ========================================================================== */
+
+/* Shell: columna que llena la pantalla. Con navbar sticky, el layout ocupa el resto. */
+#adminShell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.admin-shell-layout {
+  display: flex;
+  flex: 1;
+  background: #f0e8e2;
+  position: relative;
+  /* para el toggle button absoluto */
+  /* Altura = viewport - altura del navbar (~80px) */
+  height: calc(100vh - 80px);
+  overflow: hidden;
+}
+
+/* --- Sidebar --- */
+.admin-sidebar {
+  width: 210px;
+  min-width: 210px;
+  background: #FBEEE6;
+  border-right: 1px solid #d7a7aa;
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+  overflow-y: auto;
+  overflow-x: clip;
+  /* clip no crea stacking context, no corta z-index */
+  transition: width 0.2s ease, min-width 0.2s ease;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+/* Sidebar colapsado — solo iconos */
+.admin-sidebar.collapsed {
+  width: 56px;
+  min-width: 56px;
+}
+
+.admin-sidebar.collapsed .sidebar-collapsible-text {
+  display: none;
+}
+
+.admin-sidebar.collapsed .admin-sidebar-profile {
+  justify-content: center;
+  padding: 0 0 1rem;
+}
+
+.admin-sidebar.collapsed .sidebar-profile-text {
+  display: none;
+}
+
+.admin-sidebar.collapsed .sidebar-avatar {
+  margin: 0 auto;
+}
+
+.admin-sidebar.collapsed .admin-sidebar-link {
+  justify-content: center;
+  padding: 9px 0;
+}
+
+.admin-sidebar.collapsed .admin-sidebar-sublink {
+  justify-content: center;
+  padding: 7px 0;
+}
+
+.admin-sidebar.collapsed .admin-sidebar-submenu {
+  display: none !important;
+}
+
+/* Botón toggle — posicionado sobre el borde del sidebar desde el layout container */
+.sidebar-toggle-btn {
+  position: absolute;
+  top: 50%;
+  left: 210px;
+  /* = ancho del sidebar expandido */
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #FBEEE6;
+  border: 1px solid #d7a7aa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #5A2A3A;
+  font-size: 0.65rem;
+  z-index: 20;
+  transition: left 0.2s ease, background 0.15s;
+}
+
+.sidebar-toggle-btn:hover {
+  background: #5A2A3A;
+  color: #FBEEE6;
+}
+
+/* Cuando el sidebar está colapsado, el botón se mueve */
+.admin-sidebar.collapsed+.sidebar-toggle-btn {
+  left: 56px;
+}
+
+/* Avatar peluquera */
+.sidebar-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top;
+  border: 2px solid #d7a7aa;
+  flex-shrink: 0;
+}
+
+/* Perfil */
+.admin-sidebar-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 1rem 1rem;
+  border-bottom: 1px solid #d7a7aa;
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-profile-text {
+  overflow: hidden;
+}
+
+.admin-sidebar-role {
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #a07080;
+  white-space: nowrap;
+}
+
+.admin-sidebar-name {
+  font-family: "DM Serif Display", serif;
+  color: #5A2A3A;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.admin-sidebar-section-label {
+  font-size: 0.62rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #b08090;
+  padding: 0 1rem;
+  margin: 0.75rem 0 0.3rem;
+}
+
+.admin-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 1rem;
+  color: #7A3E4E;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: none;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  width: 100%;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.admin-sidebar-link:hover {
+  color: #5A2A3A;
+  background: rgba(90, 42, 58, 0.05);
+}
+
+.admin-sidebar-link.active {
+  color: #5A2A3A;
+  border-left-color: #5A2A3A;
+  background: rgba(90, 42, 58, 0.07);
+  font-weight: 700;
+}
+
+.admin-sidebar-submenu {
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
+  display: none;
+}
+
+.admin-sidebar-submenu.open {
+  display: block;
+}
+
+.admin-sidebar-sublink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 1rem 7px 2.2rem;
+  color: #9a5060;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.admin-sidebar-sublink:hover {
+  color: #5A2A3A;
+  background: rgba(90, 42, 58, 0.04);
+}
+
+.admin-sidebar-sublink.active {
+  color: #5A2A3A;
+  font-weight: 700;
+}
+
+/* --- Main content area --- */
+.admin-main {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* --- Sections & sub-panels --- */
+.admin-section {
+  display: none;
+}
+
+.admin-section.active {
+  display: block;
+}
+
+.admin-sub-panel {
+  display: none;
+}
+
+.admin-sub-panel.active {
+  display: block;
+}
+
+/* --- Calendario admin --- */
+.cal-admin-wrap {
+  width: 70%;
+  max-width: 700px;
+  min-width: 320px;
+  margin: 1.5rem auto;
+}
+
+.cal-admin-wrap .calendar-month-header {
+  font-size: 1.4rem;
+  margin-bottom: 0.8rem;
+  justify-content: center;
+}
+
+.cal-admin-wrap .cal-grid {
+  gap: 4px;
+  margin-bottom: 1.2rem;
+}
+
+.cal-admin-wrap .cal-cell {
+  aspect-ratio: 1;
+  height: auto;
+  font-size: 0.95rem;
+}
+
+.cal-admin-wrap .cal-cell.cal-header {
+  font-size: 0.85rem;
+}
+
+/* --- Cards de selección de servicio --- */
+.service-select-card {
+  background-color: #FBEEE6;
+  border: 1px solid #d7a7aa;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.service-select-card:hover {
+  box-shadow: 0 6px 15px rgba(90, 42, 58, 0.1);
+  transform: translateY(-2px);
+}
+
+.service-select-card.selected {
+  border-color: #5A2A3A;
+  box-shadow: 0 8px 20px rgba(90, 42, 58, 0.15);
+}
+
+.service-select-img {
+  height: 140px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.service-select-title {
+  font-family: "DM Serif Display", serif;
+  color: #5A2A3A;
+  font-size: 1.15rem;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.service-select-price {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  color: #5A2A3A;
+  font-size: 0.95rem;
+}
+
+.service-select-duration {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.75rem;
+  color: #7A3E4E;
+  margin-top: 1px;
+}
+
+.service-select-text {
+  font-family: "Playfair Display", serif;
+  color: #1E1E1E;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.btn-select-service {
+  width: 100%;
+  background-color: transparent;
+  color: #5A2A3A;
+  border: 1px solid #d7a7aa;
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "Montserrat", sans-serif;
+  margin-top: auto;
+}
+
+.btn-select-service:hover {
+  background-color: rgba(90, 42, 58, 0.05);
+  border-color: #5A2A3A;
+}
+
+.service-select-card.selected .btn-select-service {
+  background-color: #5A2A3A;
+  color: #FBEEE6;
+  border-color: #5A2A3A;
+}
+
+
 
 .button {
   background-color: #5A2A3A;
