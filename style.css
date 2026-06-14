@@ -45,8 +45,15 @@ h5{
 
 
 
-footer h5 {
+footer {
+  background-color: #FBEEE6;
+  padding: 40px 0 20px;
+}
+
+footer h5,
+.footer-title {
   font-size: 20px;
+  font-family: "DM Serif Display", serif;
   color: #552D3F;
   margin-bottom: 15px;
   padding-left: 0;
@@ -85,11 +92,17 @@ footer a:hover {
 }
 
 .linea-footer {
-    border: none; /* elimina estilo default */
+    border: none;
     height: 1px;
     width: 60%;
     margin: 0 auto;
     background: linear-gradient(to right, transparent, #552D3F, transparent);
+}
+
+.copy-text p {
+  font-family: "Playfair Display", serif;
+  color: #552D3F;
+  font-size: 14px;
 }
 
 
@@ -303,3 +316,553 @@ body.login-page {
   font-family:"Playfair Display", serif;
 
 }
+
+
+body.booking-page {
+  background-color: #121212;
+  min-height: 100vh;
+  padding-top: 100px;
+  padding-bottom: 50px;
+}
+
+body.booking-page #navbar nav {
+  background-color: #FBEEE6 !important;
+}
+
+.booking-card {
+  background-color: #F6EEE8;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+}
+
+/* --- Stepper --- */
+.stepper-container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.stepper-line {
+  position: absolute;
+  top: 25px;
+  left: 45px;
+  right: 45px;
+  height: 2px;
+  background-color: #d7a7aa;
+  z-index: 0;
+}
+
+.stepper-line-fill {
+  position: absolute;
+  top: 25px;
+  left: 45px;
+  width: 0%;
+  height: 2px;
+  background-color: #5A2A3A;
+  z-index: 0;
+  transition: width 0.4s ease;
+}
+
+.stepper-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+  flex: 1;
+}
+
+.stepper-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #FBEEE6;
+  border: 2px solid #d7a7aa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7A3E4E;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.stepper-step.active .stepper-circle,
+.stepper-step.completed .stepper-circle {
+  background-color: #5A2A3A;
+  border-color: #5A2A3A;
+  color: #FBEEE6;
+}
+
+.stepper-text {
+  margin-top: 8px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #7A3E4E;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  text-align: center;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+.stepper-step.active .stepper-text {
+  opacity: 1;
+  font-weight: 700;
+  color: #5A2A3A;
+}
+
+/* --- Contenido de Pasos --- */
+.booking-step-content { display: none; }
+.booking-step-content.active { display: block; }
+
+/* --- Calendario Inline --- */
+.calendar-container {
+  background-color: #FBEEE6;
+  border: 1px solid #d7a7aa;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 1.5rem;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.calendar-nav-btn {
+  background-color: #FBEEE6;
+  border: 1px solid #d7a7aa;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5A2A3A;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar-nav-btn:hover {
+  background-color: #5A2A3A;
+  color: #FBEEE6;
+  border-color: #5A2A3A;
+}
+
+.calendar-row { display: flex; width: 100%; }
+
+.calendar-cell {
+  flex: 1;
+  aspect-ratio: 1.1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.88rem;
+  border: 1px solid #e8cdcc;
+  background-color: #FBEEE6;
+  transition: all 0.2s ease;
+}
+
+.calendar-cell.header {
+  border: none;
+  background-color: transparent;
+  color: #5A2A3A;
+  font-weight: 600;
+}
+
+.calendar-cell.day-disabled { color: #c0b0b8; background-color: #f2e7e0; cursor: not-allowed; }
+.calendar-cell.day-active { cursor: pointer; font-weight: 600; color: #1e1e1e; background-color: #FFF; }
+.calendar-cell.day-active:hover { background-color: #5A2A3A; color: #FBEEE6; }
+.calendar-cell.day-selected { background-color: #5A2A3A !important; color: #FBEEE6 !important; font-weight: 700; }
+
+/* --- Listado de Horarios --- */
+.hours-list {
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 5px;
+  margin-bottom: 0.5rem;
+}
+
+.hours-list::-webkit-scrollbar { width: 6px; }
+.hours-list::-webkit-scrollbar-track { background: #FBEEE6; border-radius: 10px; }
+.hours-list::-webkit-scrollbar-thumb { background: #5A2A3A; border-radius: 10px; }
+
+.hour-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #FBEEE6;
+  border: 1px solid #d7a7aa;
+  padding: 11px 18px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #5A2A3A;
+}
+
+.hour-item:hover { border-color: #5A2A3A; background-color: #FFF; }
+.hour-item.selected { background-color: #5A2A3A; color: #FBEEE6; border-color: #5A2A3A; }
+.hour-item.selected i, .hour-item i { color: inherit; }
+
+/* --- Inputs Redondeados (Píldora) --- */
+.form-pill-group { position: relative; margin-bottom: 1rem; }
+
+.form-pill-control {
+  border-radius: 50px;
+  border: 1px solid #d7a7aa;
+  background-color: #FFF;
+  padding: 11px 20px 11px 44px;
+  color: #1e1e1e;
+  transition: border-color 0.3s;
+  width: 100%;
+}
+
+.form-pill-control:focus { border-color: #5A2A3A; box-shadow: none; outline: none; }
+
+.form-pill-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7A3E4E;
+}
+
+.form-pill-textarea { border-radius: 20px; padding-left: 18px; }
+
+/* --- Columna Derecha --- */
+.booking-right-col { overflow: hidden; height: 100%; background-color: #1e1e1e; }
+.booking-right-img { width: 100%; height: 100%; object-fit: cover; min-height: 580px; display: block; }
+
+.booking-right-gradient {
+  position: absolute; bottom: 0; left: 0; width: 100%; height: 60%;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 70%, transparent 100%);
+  z-index: 1;
+}
+
+.booking-right-text-container {
+  position: absolute; bottom: 35px; left: 30px; right: 30px; color: #FBEEE6; z-index: 2;
+}
+
+.booking-right-title { font-size: 2rem; margin-bottom: 8px; color: #FBEEE6 !important; }
+.booking-right-subtitle { font-size: 0.9rem; opacity: 0.85; margin-bottom: 0; }
+
+/* --- Pantalla de Éxito --- */
+.success-icon-container { font-size: 3.5rem; color: #5A2A3A; margin-bottom: 1rem; }
+
+.booking-summary-box {
+  background-color: #FBEEE6;
+  border-radius: 12px;
+  border: 1px solid #d7a7aa;
+  padding: 18px 20px;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.booking-summary-title {
+  font-size: 1.1rem;
+  color: #5A2A3A;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #d7a7aa;
+  padding-bottom: 6px;
+}
+
+.booking-summary-item { display: flex; margin-bottom: 6px; font-size: 0.9rem; color: #1e1e1e; }
+.booking-summary-label { font-weight: 600; width: 90px; color: #5A2A3A; }
+.booking-summary-val { flex: 1; }
+
+/* Botones de reserva */
+.btn-booking-next {
+  background-color: #5A2A3A;
+  color: #FBEEE6;
+  padding: 11px 28px;
+  font-weight: 600;
+  border-radius: 50px;
+  border: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.btn-booking-next:hover:not(:disabled) { background-color: #7A3E4E; color: #FBEEE6; }
+.btn-booking-next:disabled { background-color: #d7a7aa; color: #FFF; cursor: not-allowed; }
+
+.btn-booking-prev {
+  background-color: transparent;
+  color: #5A2A3A;
+  padding: 11px 24px;
+  font-weight: 600;
+  border-radius: 50px;
+  border: 1px solid #5A2A3A;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-booking-prev:hover { background-color: rgba(90,42,58,0.05); }
+
+/* ==========================================================================
+   Admin Panel Styles
+   ========================================================================== */
+
+/* Variables de paleta admin (reutiliza colores del proyecto) */
+:root {
+    --cream:   #FBEEE6;
+    --rose:    #F6EEE8;
+    --wine:    #5A2A3A;
+    --wine-lt: #7A3E4E;
+    --border:  #d7a7aa;
+}
+
+body.admin-page {
+    background-color: #f0e8e2;
+    min-height: 100vh;
+}
+
+/* --- Login --- */
+#loginScreen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #5A2A3A 0%, #3a1525 100%);
+}
+
+.login-card {
+    background: #FBEEE6;
+    border-radius: 1.5rem;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    text-align: center;
+}
+
+.login-logo { font-family: "DM Serif Display", serif; color: #5A2A3A; font-size: 1.8rem; margin-bottom: 0.25rem; }
+.login-sub  { color: #7A3E4E; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 2rem; }
+
+.login-input {
+    width: 100%;
+    border: 1px solid #d7a7aa;
+    border-radius: 50px;
+    padding: 11px 20px;
+    font-family: "Montserrat", sans-serif;
+    margin-bottom: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.login-input:focus { border-color: #5A2A3A; }
+
+.login-btn {
+    width: 100%;
+    background: #5A2A3A;
+    color: #FBEEE6;
+    border: none;
+    border-radius: 50px;
+    padding: 12px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.login-btn:hover { background: #7A3E4E; }
+.login-error { color: #c0392b; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
+
+/* --- Admin shell --- */
+#adminShell { display: none; }
+
+.admin-topbar {
+    background: #5A2A3A;
+    color: #FBEEE6;
+    padding: 14px 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.admin-topbar-brand { font-family: "DM Serif Display", serif; font-size: 1.3rem; }
+.admin-topbar-sub   { font-size: 0.75rem; opacity: 0.7; letter-spacing: 1px; }
+
+.logout-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #FBEEE6;
+    border-radius: 50px;
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.logout-btn:hover { background: rgba(255,255,255,0.1); }
+
+/* --- Tabs --- */
+.admin-tabs {
+    background: #F6EEE8;
+    border-bottom: 2px solid #d7a7aa;
+    padding: 0 2rem;
+    display: flex;
+}
+.admin-tab {
+    padding: 14px 20px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #7A3E4E;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.admin-tab:hover { color: #5A2A3A; }
+.admin-tab.active { color: #5A2A3A; border-bottom-color: #5A2A3A; }
+
+.tab-badge {
+    background: #5A2A3A;
+    color: #FBEEE6;
+    border-radius: 50px;
+    padding: 1px 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+/* --- Contenido --- */
+.admin-content { padding: 2rem; max-width: 900px; margin: 0 auto; }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* --- Tarjeta de turno --- */
+.booking-item {
+    background: #FBEEE6;
+    border: 1px solid #d7a7aa;
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: box-shadow 0.2s;
+}
+.booking-item:hover { box-shadow: 0 4px 12px rgba(90,42,58,0.12); }
+
+.booking-item-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: #F6EEE8;
+    border: 1px solid #d7a7aa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #5A2A3A;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.booking-item-body { flex: 1; }
+.booking-item-name { font-weight: 700; color: #5A2A3A; font-size: 1rem; margin-bottom: 2px; }
+.booking-item-meta { font-size: 0.82rem; color: #666; }
+.booking-item-meta span { margin-right: 12px; }
+.booking-item-notes { font-size: 0.82rem; color: #888; font-style: italic; margin-top: 4px; }
+.booking-item-actions { display: flex; gap: 8px; flex-shrink: 0; align-items: flex-start; }
+
+.btn-accept {
+    background: #5A2A3A;
+    color: #FBEEE6;
+    border: none;
+    border-radius: 50px;
+    padding: 7px 18px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.btn-accept:hover { background: #7A3E4E; }
+
+.btn-reject {
+    background: transparent;
+    color: #5A2A3A;
+    border: 1px solid #d7a7aa;
+    border-radius: 50px;
+    padding: 7px 18px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-reject:hover { border-color: #5A2A3A; background: rgba(90,42,58,0.05); }
+
+/* --- Status badges --- */
+.status-badge {
+    display: inline-block;
+    border-radius: 50px;
+    padding: 3px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+.status-accepted { background: #e8f5e9; color: #2e7d32; }
+.status-rejected  { background: #fce4ec; color: #c62828; }
+
+/* --- Calendario admin --- */
+.calendar-month-header {
+    font-family: "DM Serif Display", serif;
+    color: #5A2A3A;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.cal-nav {
+    background: #FBEEE6;
+    border: 1px solid #d7a7aa;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #5A2A3A;
+    transition: all 0.2s;
+}
+.cal-nav:hover { background: #5A2A3A; color: #FBEEE6; }
+
+.cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 1.5rem;
+}
+.cal-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+.cal-cell.cal-header    { font-weight: 700; color: #5A2A3A; font-size: 0.75rem; }
+.cal-cell.cal-empty     { color: #ccc; }
+.cal-cell.cal-today     { border: 2px solid #5A2A3A; font-weight: 700; }
+.cal-cell.cal-has-booking {
+    background: #5A2A3A;
+    color: #FBEEE6;
+    cursor: pointer;
+    font-weight: 700;
+}
+.cal-cell.cal-has-booking:hover { background: #7A3E4E; }
+
+.day-bookings-list { margin-top: 1rem; }
+.empty-state { text-align: center; padding: 3rem 1rem; color: #7A3E4E; opacity: 0.6; }
+.empty-state i { font-size: 3rem; display: block; margin-bottom: 0.5rem; }
