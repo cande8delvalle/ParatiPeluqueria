@@ -97,7 +97,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Subpaso 2b: Horarios Disponibles -->
+                                <!-- lista de  Horarios Disponibles -->
                                 <div id="subStepHours" style="display: none;">
                                     <h3 class="hours-title">Elegí tu horario</h3>
                                     <p class="hours-subtitle">Seleccioná el horario que mejor se adapte a vos.</p>
@@ -114,7 +114,7 @@
                                 </div>
                             </div>
 
-                            <!-- Paso 3: Tus Datos (Formulario de Reserva) -->
+                            <!-- Tercer paso tus Datos personales -->
                             <div class="booking-step-content" id="stepContent3">
                                 <h3 class="booking-title-main">Ingresá tus datos</h3>
                                 <p class="text-muted mb-4" style="font-family: 'Montserrat', sans-serif; font-size: 0.95rem;">
@@ -146,37 +146,6 @@
                                 </form>
                             </div>
 
-                            <!-- Pantalla de Éxito / Confirmación -->
-                            <div class="booking-step-content" id="stepContentSuccess">
-                                <div class="text-center py-4">
-                                    <div class="success-icon-container">
-                                        <i class="bi bi-check-circle-fill"></i>
-                                    </div>
-                                    <h3 class="booking-title-main">¡Turno Reservado!</h3>
-                                    <p class="lead text-muted mb-4" style="font-family: 'Montserrat', sans-serif; font-size: 1rem;">
-                                        Tu cita ha sido confirmada con éxito. Te esperamos en el salón.
-                                    </p>
-                                    
-                                    <div class="booking-summary-box">
-                                        <div class="booking-summary-title">Resumen de tu Reserva</div>
-                                        <div class="booking-summary-item">
-                                            <span class="booking-summary-label">Fecha:</span>
-                                            <span class="booking-summary-val" id="summaryDate">-</span>
-                                        </div>
-                                        <div class="booking-summary-item">
-                                            <span class="booking-summary-label">Horario:</span>
-                                            <span class="booking-summary-val" id="summaryTime">-</span>
-                                        </div>
-                                        <div class="booking-summary-item">
-                                            <span class="booking-summary-label">Cliente:</span>
-                                            <span class="booking-summary-val" id="summaryName">-</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <a href="index.html" class="btn-booking-next text-decoration-none justify-content-center">Volver al Inicio <i class="bi bi-house"></i></a>
-                                </div>
-                            </div>
-
                         </div>
 
                     </div>
@@ -184,6 +153,45 @@
             </div>
         </div>
     </main>
+
+    <!-- Pantalla de Éxito / Confirmación (Modal Overlay) -->
+    <div class="booking-step-content booking-success-overlay" id="stepContentSuccess">
+        <div class="booking-success-modal">
+            <a href="index.html" class="modal-close-btn">
+                <i class="bi bi-x-lg"></i>
+            </a>
+            
+            <div class="modal-logo-circle">
+                <img src="img/logo.png" alt="Para Ti Logo">
+            </div>
+            
+            <h3 class="modal-title">Turno Reservado</h3>
+            
+            <div class="modal-summary-box">
+                <div class="modal-summary-item">
+                    <span class="modal-summary-label">Fecha:</span>
+                    <span class="modal-summary-val" id="summaryDate">-</span>
+                </div>
+                <div class="modal-summary-item">
+                    <span class="modal-summary-label">Horario:</span>
+                    <span class="modal-summary-val" id="summaryTime">-</span>
+                </div>
+                <div class="modal-summary-item">
+                    <span class="modal-summary-label">Cliente:</span>
+                    <span class="modal-summary-val" id="summaryName">-</span>
+                </div>
+            </div>
+            
+            <p class="modal-thankyou">
+                Gracias por elegirnos.<br>
+                ¡Nos vemos pronto!
+            </p>
+            
+            <a href="index.html" class="btn-modal-home">
+                Volver al Inicio
+            </a>
+        </div>
+    </div>
 
     <!-- El footer dinámico se inyecta aquí -->
     <div id="footer"></div>
