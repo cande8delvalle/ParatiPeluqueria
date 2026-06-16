@@ -7,11 +7,294 @@ body {
   padding-top: 140px;
   /* 80px navbar height + 60px visual spacing */
   padding-bottom: 80px;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  background-image: url("img/home.png");
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+  color: #FBEEE6;
+}
+
+#Home h1 {
+  font-size: 4.5rem;
+}
+
+#Home p {
+  font-size: 1.75rem;
+  line-height: 1.4;
+}
+
+/* Responsivo para celulares y tablets */
+@media (max-width: 768px) {
+  #Home {
+    padding-top: 120px;
+    padding-bottom: 60px;
+    min-height: 60vh;
+  }
+
+  #Home h1 {
+    font-size: 2.5rem;
+  }
+
+  #Home p {
+    font-size: 1.25rem;
+  }
+
+  /* Sección Servicios en Móvil */
+  #Servicios {
+    padding: 60px 0;
+  }
+
+  #Servicios h1 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+  }
+
+  .card.servicio-card {
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+
+  .card.servicio-card .card-img-top {
+    height: 220px;
+    /* Tamaño optimizado para pantallas pequeñas */
+  }
+
+  .card.servicio-card .card-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .card.servicio-card .card-text {
+    font-size: 0.95rem;
+  }
+
+  /* Fuentes de Sobre Mí en celulares */
+  #SobreMi h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+
+  #SobreMi p {
+    font-size: 1.1rem;
+  }
+}
+
+#Servicios {
+  background-image: url("img/servicios.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #121212;
+  padding: 90px 0;
+}
+
+#Servicios h1 {
+  font-family: "DM Serif Display", serif;
+  font-size: 4.5rem;
+  color: #FBEEE6;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.card.servicio-card {
+  background-color: #FBEEE6;
+  border: none;
+  border-radius: 0;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.card.servicio-card .card-img-top {
+  height: 300px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 0;
+
+}
+
+.card.servicio-card .card-body {
+  padding: 20px 0 0 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.card.servicio-card .card-title {
+  font-family: "DM Serif Display", serif;
+  font-size: 1.75rem;
+  color: #552D3F;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.card.servicio-card .card-text {
+  font-family: "Playfair Display", serif;
+  font-size: 1.05rem;
+  color: #552D3F;
+  line-height: 1.5;
+  margin-bottom: 0;
+  flex-grow: 1;
+}
+
+#SobreMi {
+  background-image: linear-gradient(to right, rgba(18, 18, 18, 0.95) 45%, rgba(18, 18, 18, 0.1) 85%), url("img/sobreMi.png");
+  background-size: cover;
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-color: #121212;
+  padding: 120px 0;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+}
+
+#SobreMi h1 {
+  font-family: "DM Serif Display", serif;
+  font-size: 4rem;
+  color: #614D59;
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+#SobreMi p {
+  font-family: "Playfair Display", serif;
+  font-size: 1.2rem;
+  color: #FBEEE6;
+  line-height: 1.6;
+  text-align: left;
+}
+
+/* Responsivo para la sección Sobre Mí (cuando la columna col-lg-6 se expande a pantalla completa) */
+@media (max-width: 991.98px) {
+  #SobreMi {
+    background-image: linear-gradient(rgba(18, 18, 18, 0.85), rgba(18, 18, 18, 0.85)), url("img/sobreMi.png");
+    background-position: center center;
+    padding: 80px 0;
+    min-height: auto;
+  }
+}
+
+#Portafolio {
+  background-color: #121212;
+  padding: 90px 0;
+}
+
+#Portafolio h2 {
+  font-family: "DM Serif Display", serif;
+  font-size: 4.5rem;
+  color: #FBEEE6;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+#portfolioCarousel {
+  position: relative;
+  padding: 0 45px; /* Espacio para que las flechas queden a los lados sin encimarse */
+}
+
+.card.portfolio-card {
+  background-color: #FBEEE6;
+  border: none;
+  border-radius: 0; /* Bordes rectos de la captura */
+  padding: 24px; /* Inset padding como en servicios */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card.portfolio-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.card.portfolio-card .portfolio-img {
+  height: 220px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 0;
+}
+
+.card.portfolio-card .card-body {
+  padding: 20px 0 0 0; /* Sin padding horizontal */
+  text-align: center;
+}
+
+.card.portfolio-card .card-title {
+  font-family: "DM Serif Display", serif;
+  font-size: 1.6rem;
+  color: #552D3F;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+/* Flechas de navegación del carrusel */
+#Portafolio .carousel-control-prev,
+#Portafolio .carousel-control-next {
+  width: 45px;
+  height: 45px;
+  background-color: rgba(90, 42, 58, 0.85); /* Burgundy semitransparente */
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#Portafolio .carousel-control-prev:hover,
+#Portafolio .carousel-control-next:hover {
+  opacity: 1;
+  background-color: rgba(90, 42, 58, 1);
+}
+
+#Portafolio .carousel-control-prev {
+  left: 0;
+}
+
+#Portafolio .carousel-control-next {
+  right: 0;
+}
+
+/* Responsivo para el Portafolio */
+@media (max-width: 768px) {
+  #Portafolio {
+    padding: 60px 0;
+  }
+  #Portafolio h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+  }
+  #portfolioCarousel {
+    padding: 0 35px;
+  }
+  .card.portfolio-card {
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  .card.portfolio-card .portfolio-img {
+    height: 180px;
+  }
+  .card.portfolio-card .card-title {
+    font-size: 1.25rem;
+  }
 }
 
 section[id] {
   scroll-margin-top: 80px;
-  /* Prevents section headers from getting covered when clicking nav links */
 }
 
 /* Navbar: ocultar items según contexto */
@@ -78,8 +361,9 @@ a {
 }
 
 .nav-link:hover {
-  color: #816f7a;
+  color: #816f7a !important;
 }
+
 
 /* Centrado y mayúsculas de opciones de menú */
 @media (min-width: 992px) {
@@ -100,6 +384,7 @@ a {
   letter-spacing: 1.5px;
   color: #7A3E4E;
 }
+
 
 /* Botón Iniciar Sesión redondeado */
 .nav-login-btn {
@@ -123,10 +408,12 @@ a {
 @media (max-width: 991.98px) {
   .navbar-collapse {
     position: absolute !important;
-    top: 80px; /* Altura exacta del navbar */
+    top: 80px;
+    /* Altura exacta del navbar */
     left: 0;
     right: 0;
-    background-color: #FBEEE6 !important; /* Fondo sólido igual al navbar para evitar transparencia y solapamiento */
+    background-color: #FBEEE6 !important;
+    /* Fondo sólido igual al navbar para evitar transparencia y solapamiento */
     padding: 1.5rem 1.25rem !important;
     border-radius: 0 0 1.25rem 1.25rem !important;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
@@ -136,24 +423,29 @@ a {
 
   .navbar-collapse .nav-public {
     display: flex !important;
-    flex-direction: column !important; /* Modo lista vertical para sitio público */
+    flex-direction: column !important;
+    /* Modo lista vertical para sitio público */
     align-items: center !important;
-    gap: 18px !important; /* Más separación entre las opciones */
+    gap: 18px !important;
+    /* Más separación entre las opciones */
     margin-bottom: 20px !important;
     width: 100% !important;
   }
 
   .navbar-collapse .nav-admin {
-    display: none !important; /* Oculto por defecto en sitio público */
+    display: none !important;
+    /* Oculto por defecto en sitio público */
   }
 
   body.admin-page .navbar-collapse .nav-public {
-    display: none !important; /* Oculto en panel de administración */
+    display: none !important;
+    /* Oculto en panel de administración */
   }
 
   body.admin-page .navbar-collapse .nav-admin {
     display: flex !important;
-    flex-direction: column !important; /* Modo lista vertical para panel admin */
+    flex-direction: column !important;
+    /* Modo lista vertical para panel admin */
     align-items: center !important;
     gap: 18px !important;
     margin-bottom: 20px !important;
