@@ -1,7 +1,9 @@
 fetch("navbar.html")
   .then(res => res.text())
   .then(data => {
-    document.getElementById("navbar").innerHTML = data;
+    const navbarEl = document.getElementById("navbar");
+    if (!navbarEl) return;
+    navbarEl.innerHTML = data;
 
     const isIndex = window.location.pathname.endsWith("index.html") || 
                     window.location.pathname === "/" || 
@@ -43,8 +45,24 @@ fetch("navbar.html")
 fetch("footer.html")
   .then(res => res.text())
   .then(data => {
-    document.getElementById("footer").innerHTML = data;
+    const footerEl = document.getElementById("footer");
+    if (footerEl) {
+      footerEl.innerHTML = data;
+    }
   });
+
+// CONFIGURACIÓN GLOBAL DE EMAILJS
+const EMAILJS_PUBLIC_KEY = 'nT3RJhFUfjBhzDJI8';
+const EMAILJS_SERVICE_ID = 'service_2pchi1s';
+const EMAILJS_TEMPLATE_ID = 'template_h3chgdh'; // Para recuperación de contraseña
+const EMAILJS_TEMPLATE_SOLICITADO_ID = 'template_solicitado'; // Para nuevo turno solicitado
+const EMAILJS_TEMPLATE_CONFIRMADO_ID = 'template_confirmado'; // Para turno confirmado
+
+// Inicializar EmailJS si está disponible
+if (typeof window.emailjs !== "undefined" && typeof window.emailjs.init === "function") {
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+  console.log('EmailJS inicializado correctamente a nivel global.');
+}
 
 
 // Días laborables: 0=Dom, 1=Lun, 2=Mar, 3=Mié, 4=Jue, 5=Vie, 6=Sáb
@@ -495,6 +513,51 @@ function confirmBooking(event) {
     document.querySelector(".stepper-container").style.display = "none";
 }
 
+/* --- ENVÍO DE EMAIL NOTIFICACIONES DE TURNOS (EMAILJS) --- */
+
+function sendBookingConfirmationToClient(booking) {
+    if (typeof window.emailjs === "undefined" || typeof window.emailjs.send !== "function") {
+        console.warn("EmailJS no está disponible para enviar la confirmación al cliente.");
+        return;
+    }
+    
+    if (!booking.email) {
+        console.warn("El turno no tiene un correo de cliente asociado.");
+        return;
+    }
+
+    const servicesText = Array.isArray(booking.services) 
+        ? booking.services.join(", ") 
+        : (booking.services || "Sin especificar");
+
+    const messageText = `¡Hola ${booking.name}!\n\n` +
+        `Nos complace informarte que tu turno en Para Ti Peluquería ha sido confirmado.\n\n` +
+        `Detalles del turno:\n` +
+        `- Servicio(s): ${servicesText}\n` +
+        `- Fecha: ${booking.dateStr}\n` +
+        `- Hora: ${booking.time}\n\n` +
+        `¡Te esperamos en el salón Raquel Rodríguez!`;
+
+    const templateParams = {
+        subject: "Confirmación de Turno - Para Ti Peluquería",
+        message: messageText,
+        to_email: booking.email,
+        from_email: "paratipeluqueria04@gmail.com",
+        
+        // Variables individuales específicas para plantillas dedicadas
+        client_name: booking.name,
+        services: servicesText,
+        date_str: booking.dateStr,
+        time_str: booking.time
+    };
+
+    console.log("Enviando correo de confirmación al cliente con parámetros:", templateParams);
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_CONFIRMADO_ID, templateParams)
+        .then(() => console.log(`Confirmación de turno enviada con éxito al cliente: ${booking.email}`))
+        .catch(err => console.error(`Error enviando confirmación a ${booking.email}:`, err));
+}
+
 
 
 
@@ -504,38 +567,28 @@ function confirmBooking(event) {
    LS_KEY, MONTH_NAMES, getBookings, saveBookings ya están declarados arriba.
    ============================================================================= */
 
-const ADMIN_PASSWORD = "parati2026";  // ← Cambiar aquí la contraseña
 const LS_AUTH        = "paraTi_adminAuth";
 
 /* --- Autenticación --- */
-function doLogin() {
-    const pw = document.getElementById("adminPassword").value;
-    if (pw === ADMIN_PASSWORD) {
-        sessionStorage.setItem(LS_AUTH, "1");
-        showAdmin();
-    } else {
-        document.getElementById("loginError").style.display = "block";
-        document.getElementById("adminPassword").value = "";
-        document.getElementById("adminPassword").focus();
-    }
-}
-
 function doLogout() {
     sessionStorage.removeItem(LS_AUTH);
-    document.getElementById("adminShell").style.display  = "none";
-    document.getElementById("loginScreen").style.display = "flex";
-    document.getElementById("adminPassword").value = "";
+    window.location.href = "login.html";
 }
 
 function showAdmin() {
-    document.getElementById("loginScreen").style.display = "none";
-    document.getElementById("adminShell").style.display  = "block";
+    const adminShell = document.getElementById("adminShell");
+    if (adminShell) {
+        adminShell.style.display = "block";
+    }
 
     // Carga navbar (que ya sabe mostrarse en modo admin por body.admin-page)
     fetch("navbar.html")
         .then(r => r.text())
         .then(html => {
-            document.getElementById("navbar").innerHTML = html;
+            const navbarEl = document.getElementById("navbar");
+            if (navbarEl) {
+                navbarEl.innerHTML = html;
+            }
         });
 
     renderAll();
@@ -544,10 +597,19 @@ function showAdmin() {
 
 /* --- Gestión de estado de turnos --- */
 function updateBookingStatus(id, status) {
-    const bookings = getBookings().map(b => b.id === id ? { ...b, status } : b);
-    saveBookings(bookings);
-    renderAll();
-    renderAdminCalendar(calYear, calMonth);
+    const bookings = getBookings();
+    const booking = bookings.find(b => b.id === id);
+    if (booking) {
+        booking.status = status;
+        saveBookings(bookings);
+        renderAll();
+        renderAdminCalendar(calYear, calMonth);
+
+        // Enviar email al cliente si el turno es confirmado
+        if (status === "accepted") {
+            sendBookingConfirmationToClient(booking);
+        }
+    }
 }
 
 /* --- Navegación de secciones (navbar + sidebar) --- */
@@ -749,12 +811,13 @@ function showDayBookings(isoStr) {
 
 /* --- Init admin (solo en admin.html) --- */
 window.addEventListener("DOMContentLoaded", () => {
-    if (!document.getElementById("loginScreen")) return; // guard: no es admin.html
+    if (!document.getElementById("adminShell")) return; // guard: no es admin.html
 
     if (sessionStorage.getItem(LS_AUTH) === "1") {
         showAdmin();
+    } else {
+        window.location.href = "login.html";
     }
-    document.getElementById("adminPassword").focus();
 });
 
 /* --- Toggle sidebar --- */
@@ -787,6 +850,54 @@ function safeAtob(str) {
   }
 }
 
+const LS_ACCOUNTS = "paraTi_adminAccounts";
+
+function getAdminAccounts() {
+  let accounts = [];
+  try {
+    const data = localStorage.getItem(LS_ACCOUNTS);
+    if (data) {
+      accounts = JSON.parse(data);
+    }
+  } catch (e) {
+    console.error("Error parsing accounts:", e);
+  }
+  
+  // Si la lista está vacía o no es válida, insertamos los valores por defecto
+  if (!Array.isArray(accounts) || accounts.length === 0) {
+    accounts = [
+      {
+        name: safeBtoa("peluquera123"),
+        email: safeBtoa("peluqueria123@gmail.com"),
+        password: safeBtoa("peluquera123")
+      },
+      {
+        name: safeBtoa("peluquera123"),
+        email: safeBtoa("paratipeluqueria04@gmail.com"),
+        password: safeBtoa("peluquera123")
+      }
+    ];
+    saveAdminAccounts(accounts);
+  }
+  return accounts;
+}
+
+function saveAdminAccounts(accounts) {
+  localStorage.setItem(LS_ACCOUNTS, JSON.stringify(accounts));
+}
+
+function registerOrUpdateAccount(name, email, password) {
+  const accounts = getAdminAccounts();
+  const existingIndex = accounts.findIndex(acc => acc.email === email);
+  if (existingIndex !== -1) {
+    accounts[existingIndex].name = name;
+    accounts[existingIndex].password = password;
+  } else {
+    accounts.push({ name, email, password });
+  }
+  saveAdminAccounts(accounts);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // --- Procesamiento de parámetros URL para compatibilidad file:// ---
   const urlParams = new URLSearchParams(window.location.search);
@@ -803,6 +914,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sessionStorage.setItem('adminName', u);
     sessionStorage.setItem('adminPassword', p);
     sessionStorage.setItem('adminEmail', e);
+    registerOrUpdateAccount(u, e, p);
     stateChanged = true;
     console.log('Parámetros de registro leídos e integrados en almacenamiento local.');
   }
@@ -810,8 +922,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // 2. Cambio de contraseña recibido en login.html
   if (urlParams.has('passUpdate') && urlParams.has('p')) {
     const p = urlParams.get('p');
+    const e = urlParams.get('e');
     localStorage.setItem('adminPassword', p);
     sessionStorage.setItem('adminPassword', p);
+    const targetEmailEncoded = e || localStorage.getItem('verificationEmail') || sessionStorage.getItem('verificationEmail') || localStorage.getItem('lastResetEmail');
+    if (targetEmailEncoded) {
+      const accounts = getAdminAccounts();
+      const accIndex = accounts.findIndex(acc => acc.email === targetEmailEncoded);
+      if (accIndex !== -1) {
+        accounts[accIndex].password = p;
+        saveAdminAccounts(accounts);
+      }
+      localStorage.removeItem('lastResetEmail');
+    }
     stateChanged = true;
     console.log('Cambio de contraseña leído e integrado en almacenamiento local.');
   }
@@ -847,17 +970,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   // -------------------------------------------------------------
 
-  const EMAILJS_PUBLIC_KEY = 'nT3RJhFUfjBhzDJI8';
-  const EMAILJS_SERVICE_ID = 'service_2pchi1s';
-  const EMAILJS_TEMPLATE_ID = 'template_h3chgdh';
-  const EMAILJS_AVAILABLE = window.emailjs && typeof window.emailjs.send === 'function';
-
-  if (EMAILJS_AVAILABLE) {
-    emailjs.init(EMAILJS_PUBLIC_KEY);
-    console.log('EmailJS inicializado correctamente');
-  } else {
-    console.warn('EmailJS no está disponible en esta página');
-  }
+  const EMAILJS_AVAILABLE = typeof window.emailjs !== 'undefined' && typeof window.emailjs.send === 'function';
 
   function createCustomAlert() {
     if (document.getElementById('customAlertOverlay')) return;
@@ -890,7 +1003,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (callback === 'redirectLoginFromPasswordChange') {
         const p = localStorage.getItem('adminPassword') || sessionStorage.getItem('adminPassword') || '';
-        window.location.href = 'login.html?passUpdate=1&p=' + encodeURIComponent(p);
+        const e = localStorage.getItem('lastResetEmail') || '';
+        window.location.href = 'login.html?passUpdate=1&p=' + encodeURIComponent(p) + '&e=' + encodeURIComponent(e);
       }
       if (callback === 'redirectVerify') {
         const c = localStorage.getItem('verificationCode') || sessionStorage.getItem('verificationCode') || '';
@@ -953,16 +1067,11 @@ document.addEventListener('DOMContentLoaded', () => {
     resetPasswordButton.addEventListener('click', () => {
       const email = document.getElementById('resetEmailInput').value.trim();
       const error = document.getElementById('resetEmailError');
-      const encodedEmails = ['cGFyYXRpcGVsdXF1ZXJpYTA0QGdtYWlsLmNvbQ=='];
-      const registeredEmails = encodedEmails.map(e => safeAtob(e));
+      
+      const accounts = getAdminAccounts();
+      const registeredEmails = accounts.map(acc => safeAtob(acc.email).toLowerCase());
 
-      // Agregar email registrado en localStorage o sessionStorage si existe
-      const customEmailEncoded = localStorage.getItem('adminEmail') || sessionStorage.getItem('adminEmail');
-      if (customEmailEncoded) {
-        registeredEmails.push(safeAtob(customEmailEncoded));
-      }
-
-      if (registeredEmails.includes(email)) {
+      if (registeredEmails.includes(email.toLowerCase())) {
         error.classList.add('d-none');
 
         // Generar código aleatorio de 6 dígitos
@@ -982,6 +1091,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const templateParams = {
           email: email,
           to_email: email,
+          from_email: 'paratipeluqueria04@gmail.com',
           verification_code: verificationCode,
           code: verificationCode
         };
@@ -1072,12 +1182,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (inputCode === storedCode) {
         error.classList.add('d-none');
         localStorage.removeItem('verificationCode');
-        localStorage.removeItem('verificationEmail');
         localStorage.removeItem('verificationTime');
         sessionStorage.removeItem('verificationCode');
-        sessionStorage.removeItem('verificationEmail');
         sessionStorage.removeItem('verificationTime');
-        showCustomAlert('C\u00f3digo verificado', 'El c\u00f3digo es correcto.', 'redirectChangePassword');
+        showCustomAlert('Código verificado', 'El código es correcto.', 'redirectChangePassword');
       } else {
         showCustomAlert('Código incorrecto', 'El código que ingresaste no es válido. Por favor intenta de nuevo o reenvía el código.');
       }
@@ -1106,6 +1214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const templateParams = {
           email: email,
           to_email: email,
+          from_email: 'paratipeluqueria04@gmail.com',
           verification_code: newCode,
           code: newCode
         };
@@ -1181,7 +1290,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (newPassword === confirmPassword) {
         error.classList.add('d-none');
-        // Limpiamos los datos de verificaci\u00f3n ya que complet\u00f3 el proceso
+        
+        const encPass = safeBtoa(newPassword);
+
+        // Buscamos cuál fue el email verificado para actualizar su contraseña en el array
+        const verifiedEmailEncoded = localStorage.getItem('verificationEmail') || sessionStorage.getItem('verificationEmail');
+        if (verifiedEmailEncoded) {
+          const accounts = getAdminAccounts();
+          const accIndex = accounts.findIndex(acc => acc.email === verifiedEmailEncoded);
+          if (accIndex !== -1) {
+            accounts[accIndex].password = encPass;
+            saveAdminAccounts(accounts);
+          }
+        }
+
+        // Limpiamos los datos de verificación ya que completó el proceso
         localStorage.removeItem('verificationCode');
         localStorage.removeItem('verificationEmail');
         localStorage.removeItem('verificationTime');
@@ -1190,11 +1313,10 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionStorage.removeItem('verificationTime');
 
         // Actualizamos la contraseña de administrador registrada (codificada)
-        const encPass = safeBtoa(newPassword);
         localStorage.setItem('adminPassword', encPass);
         sessionStorage.setItem('adminPassword', encPass);
 
-        showCustomAlert('Contrase\u00f1a cambiada', 'Tu contrase\u00f1a ha sido restablecida con \u00e9xito.', 'redirectLoginFromPasswordChange');
+        showCustomAlert('Contraseña cambiada', 'Tu contraseña ha sido restablecida con éxito.', 'redirectLoginFromPasswordChange');
       } else {
         error.classList.remove('d-none');
         showCustomAlert('Las contrase\u00f1as no coinciden', 'Las contrase\u00f1as que ingresaste no son iguales. Por favor intenta de nuevo.');
@@ -1234,6 +1356,7 @@ document.addEventListener('DOMContentLoaded', () => {
       sessionStorage.setItem('adminEmail', encEmail);
       sessionStorage.setItem('adminPassword', encPassword);
       sessionStorage.setItem('adminName', encName);
+      registerOrUpdateAccount(encName, encEmail, encPassword);
       sessionStorage.removeItem('isAdminCodeVerified');
 
       console.log('Registro exitoso. Guardado en localStorage. adminName:', name);
@@ -1256,20 +1379,27 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      const defaultUserEncoded = 'cGVsdXF1ZXJhMTIz'; // 'peluquera123'
-      const defaultPasswordEncoded = 'cGVsdXF1ZXJhMTIz'; // 'peluquera123'
+      // Validar contra la lista de cuentas
+      const accounts = getAdminAccounts();
+      const matchingAccount = accounts.find(acc => {
+        const accName = safeAtob(acc.name);
+        const accEmail = safeAtob(acc.email);
+        const accPass = safeAtob(acc.password);
+        return (username === accName || username === accEmail) && password === accPass;
+      });
 
-      const storedUserEncoded = localStorage.getItem('adminName') || sessionStorage.getItem('adminName') || defaultUserEncoded;
-      const storedPasswordEncoded = localStorage.getItem('adminPassword') || sessionStorage.getItem('adminPassword') || defaultPasswordEncoded;
-
-      const storedUser = safeAtob(storedUserEncoded);
-      const storedPassword = safeAtob(storedPasswordEncoded);
-
-      console.log('Intento de login. Usuario ingresado:', username);
-      console.log('Usuario esperado recuperado:', storedUser);
-
-      if (username === storedUser && password === storedPassword) {
+      if (matchingAccount) {
         error.classList.add('d-none');
+        sessionStorage.setItem('paraTi_adminAuth', '1');
+        
+        // Guardamos los datos de la cuenta logueada en la sesión actual
+        localStorage.setItem('adminName', matchingAccount.name);
+        localStorage.setItem('adminEmail', matchingAccount.email);
+        localStorage.setItem('adminPassword', matchingAccount.password);
+        sessionStorage.setItem('adminName', matchingAccount.name);
+        sessionStorage.setItem('adminEmail', matchingAccount.email);
+        sessionStorage.setItem('adminPassword', matchingAccount.password);
+
         window.location.href = 'admin.html';
       } else {
         error.classList.remove('d-none');
