@@ -95,28 +95,30 @@ let selectedDate = null;
 let selectedTime = null;
 let currentStep  = 1;
 
-// Listado de servicios dinámicos con precio y duración
-const SERVICES_DATA = [
+/* --- GESTIÓN DE SERVICIOS DINÁMICOS EN LOCALSTORAGE --- */
+const LS_SERVICES_KEY = "paraTi_services";
+
+const DEFAULT_SERVICES = [
     {
         id: "corte",
         name: "Corte",
         price: 15000,
-        duration: "45 min",
+        duration: "15 min",
         desc: "Renovación, movimiento y definición adaptados a tu estilo único.",
         img: "img/corte.jpg"
     },
     {
         id: "lavado_modelado",
         name: "Lavado y Modelado",
-        price: 12000,
-        duration: "40 min",
+        price: 30000,
+        duration: "70 min",
         desc: "Relajación profunda combinada con un acabado natural y con volumen.",
         img: "img/lavadoModelado.jpg"
     },
     {
         id: "color",
         name: "Color",
-        price: 25000,
+        price: 50000,
         duration: "90 min",
         desc: "Cobertura perfecta, tono uniforme y nutrición para tu fibra capilar.",
         img: "img/color.jpg"
@@ -124,28 +126,71 @@ const SERVICES_DATA = [
     {
         id: "brushing",
         name: "Brushing y Planchita",
-        price: 10000,
-        duration: "30 min",
-        desc: "Modelado profesional con secador para lograr volumen, brillo y movimiento natural.",
+        price: 18000,
+        duration: "45 min",
+        desc: "Peinado profesional con secado que aporta brillo, suavidad y movimiento.",
         img: "img/brusing.jpg"
     },
     {
         id: "alisado",
         name: "Alisado",
-        price: 18000,
-        duration: "60 min",
+        price: 22000,
+        duration: "120 min",
         desc: "Lacio perfecto, libre de frizz y con un brillo sedoso gracias al planchado profesional.",
         img: "img/alisado.jpg"
     },
     {
-        id: "peinado_especial",
-        name: "Peinado Especial",
-        price: 20000,
-        duration: "60 min",
+        id: "peinados",
+        name: "Peinados",
+        price: 25000,
+        duration: "90 min",
         desc: "Peinados recogidos, semirecogidos y trenzas diseñados especialmente para tus eventos y fiestas.",
         img: "img/peinados.jpg"
+    },
+    {
+        id: "reflejos",
+        name: "Reflejos e Iluminación",
+        price: 45000,
+        duration: "120 min",
+        desc: "Aportá luz y movimiento a tu cabello. Ideal para un cambio natural que resalte tus facciones.",
+        img: "img/reflejosIluminacion.jpg"
+    },
+    {
+        id: "mechas",
+        name: "Mechas Californianas",
+        price: 50000,
+        duration: "150 min",
+        desc: "Un degradé moderno que ilumina de medios a puntas, logrando un contraste ideal con un acabado fresco y lleno de estilo.",
+        img: "img/mechasCalifornianas.jpg"
+    },
+    {
+        id: "keratina",
+        name: "Shock de Keratina",
+        price: 35000,
+        duration: "90 min",
+        desc: "Este tratamiento sella la fibra capilar, repara en profundidad y te deja el pelo ultra lacio con un movimiento espectacular.",
+        img: "img/shockKeratina.jpg"
     }
 ];
+
+function getServices() {
+    const stored = localStorage.getItem(LS_SERVICES_KEY);
+    if (!stored) {
+        localStorage.setItem(LS_SERVICES_KEY, JSON.stringify(DEFAULT_SERVICES));
+        return JSON.parse(JSON.stringify(DEFAULT_SERVICES));
+    }
+    return JSON.parse(stored);
+}
+
+function saveServices(services) {
+    localStorage.setItem(LS_SERVICES_KEY, JSON.stringify(services));
+}
+
+function formatPrice(value) {
+    return new Intl.NumberFormat("es-AR", { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
+}
+
+let SERVICES_DATA = getServices();
 
 let selectedServices = []; // Almacena los IDs de servicios seleccionados
 
@@ -207,12 +252,17 @@ function isDateAvailable(year, month, day, holidaySet) {
     );
 }
 
-//Calendario 
+//Calendario y Servicios Públicos
 window.addEventListener("DOMContentLoaded", () => {
-    // Solo corre en la página de reservas (verifica que el calendario exista)
-    if (!document.getElementById("calendarGrid")) return;
+    // Si existe el grid de servicios en el index, renderizarlo
+    if (document.getElementById("servicesGridPublic")) {
+        renderPublicServicesList();
+    }
 
-    initBookingPage();
+    // Solo corre en la página de reservas (verifica que el calendario exista)
+    if (document.getElementById("calendarGrid")) {
+        initBookingPage();
+    }
 });
 
 async function initBookingPage() {
@@ -366,7 +416,25 @@ function selectTime(time, element) {
     document.getElementById("btnNextToData").disabled = false;
 }
 
-// Renderizado de servicios
+// Renderizado de servicios para el público (index.html)
+function renderPublicServicesList() {
+    const container = document.getElementById("servicesGridPublic");
+    if (!container) return;
+    
+    container.innerHTML = SERVICES_DATA.map(s => `
+        <div class="col-12 col-sm-6 col-lg-4">
+          <div class="card servicio-card">
+            <img src="${s.img}" class="card-img-top servicio-img" alt="${s.name}">
+            <div class="card-body text-center">
+              <h5 class="card-title">${s.name}</h5>
+              <p class="card-text">${s.desc}</p>
+            </div>
+          </div>
+        </div>
+    `).join("");
+}
+
+// Renderizado de servicios para reserva (reservar.html)
 function renderServicesList() {
     const container = document.getElementById("servicesGrid");
     if (!container) return;
@@ -379,7 +447,7 @@ function renderServicesList() {
                     <div class="d-flex justify-content-between align-items-start mb-2">
                         <h5 class="service-select-title">${s.name}</h5>
                         <div class="text-end">
-                            <div class="service-select-price">$${s.price.toFixed(2).replace(".", ",")}</div>
+                            <div class="service-select-price">$${formatPrice(s.price)}</div>
                             <div class="service-select-duration">${s.duration}</div>
                         </div>
                     </div>
@@ -593,6 +661,95 @@ function showAdmin() {
 
     renderAll();
     renderAdminCalendar(calYear, calMonth);
+    renderAdminServices();
+}
+
+/* --- Administración de Servicios en Panel --- */
+function renderAdminServices() {
+    const container = document.getElementById("adminServicesList");
+    if (!container) return;
+
+    const services = getServices();
+    container.innerHTML = services.map(s => `
+        <div class="admin-service-row">
+            <!-- Servicio Column (Image + Name input) -->
+            <div class="admin-col-service">
+                <div class="d-flex align-items-center gap-3">
+                    <img src="${s.img}" alt="${s.name}" class="admin-service-thumb">
+                    <div class="flex-grow-1">
+                        <label class="admin-field-label">Nombre del servicio</label>
+                        <input type="text" class="form-control admin-field-input" name="name_${s.id}" value="${s.name}" required>
+                    </div>
+                </div>
+            </div>
+            <!-- Descripción Column -->
+            <div class="admin-col-desc">
+                <label class="admin-field-label">Descripción breve</label>
+                <textarea class="form-control admin-field-textarea" name="desc_${s.id}" rows="2" required>${s.desc}</textarea>
+            </div>
+            <!-- Duración Column -->
+            <div class="admin-col-duration">
+                <label class="admin-field-label">Duración</label>
+                <div class="d-flex align-items-center gap-1">
+                    <input type="number" class="form-control admin-field-input text-center" name="duration_${s.id}" value="${parseInt(s.duration) || 0}" required>
+                    <span class="admin-field-suffix">min</span>
+                </div>
+            </div>
+            <!-- Precio Column -->
+            <div class="admin-col-price">
+                <label class="admin-field-label">Precio</label>
+                <div class="d-flex align-items-center gap-1">
+                    <input type="text" class="form-control admin-field-input text-center" name="price_${s.id}" value="$${formatPrice(s.price)}" onfocus="this.value = this.value.replace(/[^0-9]/g, '')" onblur="if(this.value) this.value = '$' + new Intl.NumberFormat('es-AR').format(this.value)" required>
+                </div>
+            </div>
+        </div>
+    `).join("");
+}
+
+function saveAdminServices(event) {
+    event.preventDefault();
+
+    const services = getServices();
+    const form = event.target;
+    
+    const updatedServices = services.map(s => {
+        const nameInput = form.querySelector(`[name="name_${s.id}"]`);
+        const descInput = form.querySelector(`[name="desc_${s.id}"]`);
+        const durationInput = form.querySelector(`[name="duration_${s.id}"]`);
+        const priceInput = form.querySelector(`[name="price_${s.id}"]`);
+        
+        let name = s.name;
+        let desc = s.desc;
+        let duration = s.duration;
+        let price = s.price;
+        
+        if (nameInput) name = nameInput.value.trim();
+        if (descInput) desc = descInput.value.trim();
+        if (durationInput) duration = durationInput.value.trim() + " min";
+        if (priceInput) {
+            const cleanPrice = parseInt(priceInput.value.replace(/[^0-9]/g, '')) || 0;
+            price = cleanPrice;
+        }
+        
+        return {
+            ...s,
+            name,
+            desc,
+            duration,
+            price
+        };
+    });
+    
+    saveServices(updatedServices);
+    SERVICES_DATA = updatedServices; // actualiza la variable en memoria
+    
+    if (window.showCustomAlert) {
+        window.showCustomAlert("Servicios actualizados", "Los cambios en los servicios han sido guardados con éxito.");
+    } else {
+        alert("Los cambios en los servicios han sido guardados con éxito.");
+    }
+    
+    renderAdminServices();
 }
 
 /* --- Gestión de estado de turnos --- */
@@ -1026,6 +1183,7 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.classList.remove('hidden');
     overlay.dataset.callback = action || '';
   }
+  window.showCustomAlert = showCustomAlert;
 
   function fallbackSendCode(email, verificationCode) {
     const encCode = safeBtoa(verificationCode);
