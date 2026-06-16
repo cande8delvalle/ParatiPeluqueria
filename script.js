@@ -98,52 +98,52 @@ let currentStep  = 1;
 // Listado de servicios dinámicos con precio y duración
 const SERVICES_DATA = [
     {
-        id: "semipermanente",
-        name: "Semipermanente",
+        id: "corte",
+        name: "Corte",
         price: 15000,
         duration: "45 min",
-        desc: "Color duradero y brillo perfecto por más tiempo.",
+        desc: "Renovación, movimiento y definición adaptados a tu estilo único.",
         img: "img/corte.jpg"
     },
     {
-        id: "tradicional",
-        name: "Esmaltado Tradicional",
-        price: 10000,
-        duration: "30 min",
-        desc: "Opción clásica y delicada para un look natural.",
-        img: "img/tradii.jpeg"
-    },
-    {
-        id: "capping",
-        name: "Capping U-Dip",
-        price: 18000,
-        duration: "60 min",
-        desc: "Refuerza tus uñas naturales con mayor resistencia y duración.",
-        img: "img/cappiPortada.jpeg"
-    },
-    {
-        id: "construccion",
-        name: "Sistema de Construcción",
-        price: 25000,
-        duration: "90 min",
-        desc: "Largo, forma y estructura para uñas más definidas y duraderas.",
-        img: "img/contrucion.jpeg"
-    },
-    {
-        id: "spa_manos",
-        name: "Spa de Manos",
+        id: "lavado_modelado",
+        name: "Lavado y Modelado",
         price: 12000,
         duration: "40 min",
-        desc: "Cuidado, hidratación y suavidad para manos impecables.",
-        img: "img/spamanos.jpeg"
+        desc: "Relajación profunda combinada con un acabado natural y con volumen.",
+        img: "img/lavadoModelado.jpg"
     },
     {
-        id: "spa_pies",
-        name: "Spa de Pies",
-        price: 15000,
-        duration: "50 min",
-        desc: "Relajación y cuidado profundo para lucir pies impecables.",
-        img: "img/spaP.jpeg"
+        id: "color",
+        name: "Color",
+        price: 25000,
+        duration: "90 min",
+        desc: "Cobertura perfecta, tono uniforme y nutrición para tu fibra capilar.",
+        img: "img/color.jpg"
+    },
+    {
+        id: "brushing",
+        name: "Brushing y Planchita",
+        price: 10000,
+        duration: "30 min",
+        desc: "Modelado profesional con secador para lograr volumen, brillo y movimiento natural.",
+        img: "img/brusing.jpg"
+    },
+    {
+        id: "alisado",
+        name: "Alisado",
+        price: 18000,
+        duration: "60 min",
+        desc: "Lacio perfecto, libre de frizz y con un brillo sedoso gracias al planchado profesional.",
+        img: "img/alisado.jpg"
+    },
+    {
+        id: "peinado_especial",
+        name: "Peinado Especial",
+        price: 20000,
+        duration: "60 min",
+        desc: "Peinados recogidos, semirecogidos y trenzas diseñados especialmente para tus eventos y fiestas.",
+        img: "img/peinados.jpg"
     }
 ];
 
