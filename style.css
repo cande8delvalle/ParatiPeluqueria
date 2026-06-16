@@ -4,12 +4,14 @@ body {
 }
 
 #Home {
-  padding-top: 140px; /* 80px navbar height + 60px visual spacing */
+  padding-top: 140px;
+  /* 80px navbar height + 60px visual spacing */
   padding-bottom: 80px;
 }
 
 section[id] {
-  scroll-margin-top: 80px; /* Prevents section headers from getting covered when clicking nav links */
+  scroll-margin-top: 80px;
+  /* Prevents section headers from getting covered when clicking nav links */
 }
 
 /* Navbar: ocultar items según contexto */
@@ -50,9 +52,10 @@ h5 {
   font-size: 3rem;
 }
 
-a{
-  color:#7A3E4E
+a {
+  color: #7A3E4E
 }
+
 .navbar {
 
   display: flex;
@@ -79,9 +82,19 @@ a{
 }
 
 /* Centrado y mayúsculas de opciones de menú */
+@media (min-width: 992px) {
+  .nav-public.mx-auto {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 60px;
+    /* Incrementa la separación entre las opciones */
+  }
+}
+
 .nav-public.mx-auto .nav-link {
-  font-family: "Montserrat", sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1.5px;
@@ -93,8 +106,7 @@ a{
   border: 1px solid #7A3E4E !important;
   border-radius: 50px !important;
   padding: 8px 25px !important;
-  font-family: "Montserrat", sans-serif !important;
-  font-size: 15px !important;
+  font-size: 16px !important;
   font-weight: 600 !important;
   color: #7A3E4E !important;
   background-color: transparent !important;
@@ -105,6 +117,71 @@ a{
 .nav-login-btn:hover {
   background-color: #7A3E4E !important;
   color: #FBEEE6 !important;
+}
+
+/* Ajustes de menú colapsable (hamburguesa) en dispositivos móviles */
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    position: absolute !important;
+    top: 80px; /* Altura exacta del navbar */
+    left: 0;
+    right: 0;
+    background-color: #FBEEE6 !important; /* Fondo sólido igual al navbar para evitar transparencia y solapamiento */
+    padding: 1.5rem 1.25rem !important;
+    border-radius: 0 0 1.25rem 1.25rem !important;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
+    z-index: 1000 !important;
+    width: 100% !important;
+  }
+
+  .navbar-collapse .nav-public {
+    display: flex !important;
+    flex-direction: column !important; /* Modo lista vertical para sitio público */
+    align-items: center !important;
+    gap: 18px !important; /* Más separación entre las opciones */
+    margin-bottom: 20px !important;
+    width: 100% !important;
+  }
+
+  .navbar-collapse .nav-admin {
+    display: none !important; /* Oculto por defecto en sitio público */
+  }
+
+  body.admin-page .navbar-collapse .nav-public {
+    display: none !important; /* Oculto en panel de administración */
+  }
+
+  body.admin-page .navbar-collapse .nav-admin {
+    display: flex !important;
+    flex-direction: column !important; /* Modo lista vertical para panel admin */
+    align-items: center !important;
+    gap: 18px !important;
+    margin-bottom: 20px !important;
+    width: 100% !important;
+  }
+
+  .navbar-collapse .nav-link {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    padding: 8px 0 !important;
+    font-size: 18px !important;
+  }
+
+  .navbar-collapse .navbar-nav {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  .navbar-collapse .nav-login-btn {
+    display: inline-block !important;
+    width: 100% !important;
+    max-width: 220px !important;
+    text-align: center !important;
+    margin: 10px auto !important;
+  }
 }
 
 .Portafolio-icon {
@@ -377,6 +454,7 @@ footer a:hover {
   color: #1E1E1E;
   font-size: 0.95rem;
 }
+
 /*Login*/
 body.login-page {
   background-image: url("img/servicios.png");
@@ -385,6 +463,7 @@ body.login-page {
   background-repeat: no-repeat;
   min-height: 100vh;
 }
+
 .login-page {
   display: flex;
   justify-content: center;
@@ -1582,8 +1661,9 @@ body.admin-page {
   text-decoration: none;
   font-family: "Playfair Display", serif;
 }
-.btn:hover{
-  background-color:#7A3E4E;
+
+.btn:hover {
+  background-color: #7A3E4E;
 }
 
 /* Botones deshabilitados */
@@ -1605,9 +1685,11 @@ body.admin-page {
   z-index: 2000;
   padding: 1rem;
 }
+
 .custom-alert-overlay.hidden {
   display: none;
 }
+
 .custom-alert-box {
   background: rgba(251, 238, 230, 0.98);
   border: 1px solid #d7b2b7;
@@ -1619,11 +1701,13 @@ body.admin-page {
   text-align: center;
   font-family: "Playfair Display", serif;
 }
+
 .custom-alert-title {
   margin-bottom: 16px;
   font-size: 1.6rem;
   color: #7A3E4E;
 }
+
 .custom-alert-message {
   color: #4a4043;
   font-size: 1rem;
@@ -1631,10 +1715,12 @@ body.admin-page {
   margin-bottom: 24px;
   white-space: pre-wrap;
 }
+
 .custom-alert-actions {
   display: flex;
   justify-content: center;
 }
+
 .custom-alert-button {
   background-color: #5A2A3A;
   color: #FBEEE6;
@@ -1644,6 +1730,7 @@ body.admin-page {
   cursor: pointer;
   font-family: "Playfair Display", serif;
 }
+
 .custom-alert-button:hover {
   background-color: #7A3E4E;
 }
@@ -1730,4 +1817,3 @@ body.admin-page {
 #adminCodeModal .btn-close {
   color: #7A3E4E;
 }
-
