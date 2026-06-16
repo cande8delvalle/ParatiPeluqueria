@@ -873,77 +873,9 @@ body.admin-page {
   min-height: 100vh;
 }
 
-/* --- Login --- */
-#loginScreen {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #5A2A3A 0%, #3a1525 100%);
-}
-
-.login-card {
-  background: #FBEEE6;
-  border-radius: 1.5rem;
-  padding: 2.5rem 2rem;
-  width: 100%;
-  max-width: 380px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-  text-align: center;
-}
-
-.login-logo {
-  font-family: "DM Serif Display", serif;
-  color: #5A2A3A;
-  font-size: 1.8rem;
-  margin-bottom: 0.25rem;
-}
-
-.login-sub {
-  color: #7A3E4E;
-  font-size: 0.8rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 2rem;
-}
-
-.login-input {
-  width: 100%;
-  border: 1px solid #d7a7aa;
-  border-radius: 50px;
-  padding: 11px 20px;
-  font-family: "Montserrat", sans-serif;
-  margin-bottom: 1rem;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.login-input:focus {
-  border-color: #5A2A3A;
-}
-
-.login-btn {
-  width: 100%;
-  background: #5A2A3A;
-  color: #FBEEE6;
-  border: none;
-  border-radius: 50px;
-  padding: 12px;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.login-btn:hover {
-  background: #7A3E4E;
-}
-
-.login-error {
-  color: #c0392b;
-  font-size: 0.85rem;
-  margin-top: 0.5rem;
-  display: none;
+/* --- Login page styling --- */
+.login-page {
+  background-color: #f0e8e2;
 }
 
 /* --- Admin shell --- */

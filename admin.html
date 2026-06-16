@@ -14,24 +14,8 @@
 </head>
 <body class="admin-page">
 
-<!--login temporal-->
-<div id="loginScreen">
-    <div class="login-card">
-        <div class="login-logo">Para Ti</div>
-        <div class="login-sub">Panel de peluquera</div>
-        <input type="password" id="adminPassword" class="login-input"
-               placeholder="Contraseña" onkeydown="if(event.key==='Enter') doLogin()">
-        <button class="login-btn" onclick="doLogin()">
-            <i class="bi bi-lock-fill me-2"></i> Ingresar
-        </button>
-        <div class="login-error" id="loginError">Contraseña incorrecta</div>
-        <div style="margin-top:1.5rem; font-size:0.75rem; color:#aaa;">
-            <a href="index.html" style="color:#aaa;">← Volver al sitio</a>
-        </div>
-    </div>
-</div>
 
-<div id="adminShell">
+<div id="adminShell" style="display: none;">
 
     <div id="navbar"></div>
 
