@@ -3,6 +3,15 @@ body {
   color: #7A3E4E;
 }
 
+#Home {
+  padding-top: 140px; /* 80px navbar height + 60px visual spacing */
+  padding-bottom: 80px;
+}
+
+section[id] {
+  scroll-margin-top: 80px; /* Prevents section headers from getting covered when clicking nav links */
+}
+
 /* Navbar: ocultar items según contexto */
 .nav-admin {
   display: none;
@@ -67,6 +76,35 @@ a{
 
 .nav-link:hover {
   color: #816f7a;
+}
+
+/* Centrado y mayúsculas de opciones de menú */
+.nav-public.mx-auto .nav-link {
+  font-family: "Montserrat", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #7A3E4E;
+}
+
+/* Botón Iniciar Sesión redondeado */
+.nav-login-btn {
+  border: 1px solid #7A3E4E !important;
+  border-radius: 50px !important;
+  padding: 8px 25px !important;
+  font-family: "Montserrat", sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #7A3E4E !important;
+  background-color: transparent !important;
+  transition: all 0.3s ease !important;
+  display: inline-block !important;
+}
+
+.nav-login-btn:hover {
+  background-color: #7A3E4E !important;
+  color: #FBEEE6 !important;
 }
 
 .Portafolio-icon {

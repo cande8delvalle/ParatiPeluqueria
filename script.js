@@ -51,6 +51,19 @@ fetch("footer.html")
     }
   });
 
+// CONFIGURACIÓN GLOBAL DE EMAILJS
+const EMAILJS_PUBLIC_KEY = 'nT3RJhFUfjBhzDJI8';
+const EMAILJS_SERVICE_ID = 'service_2pchi1s';
+const EMAILJS_TEMPLATE_ID = 'template_h3chgdh'; // Para recuperación de contraseña
+const EMAILJS_TEMPLATE_SOLICITADO_ID = 'template_solicitado'; // Para nuevo turno solicitado
+const EMAILJS_TEMPLATE_CONFIRMADO_ID = 'template_confirmado'; // Para turno confirmado
+
+// Inicializar EmailJS si está disponible
+if (typeof window.emailjs !== "undefined" && typeof window.emailjs.init === "function") {
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+  console.log('EmailJS inicializado correctamente a nivel global.');
+}
+
 
 // Días laborables: 0=Dom, 1=Lun, 2=Mar, 3=Mié, 4=Jue, 5=Vie, 6=Sáb
 // Ajustar según los días que trabaja el salón (por ej. sin lunes → quitar el 1)
@@ -500,6 +513,51 @@ function confirmBooking(event) {
     document.querySelector(".stepper-container").style.display = "none";
 }
 
+/* --- ENVÍO DE EMAIL NOTIFICACIONES DE TURNOS (EMAILJS) --- */
+
+function sendBookingConfirmationToClient(booking) {
+    if (typeof window.emailjs === "undefined" || typeof window.emailjs.send !== "function") {
+        console.warn("EmailJS no está disponible para enviar la confirmación al cliente.");
+        return;
+    }
+    
+    if (!booking.email) {
+        console.warn("El turno no tiene un correo de cliente asociado.");
+        return;
+    }
+
+    const servicesText = Array.isArray(booking.services) 
+        ? booking.services.join(", ") 
+        : (booking.services || "Sin especificar");
+
+    const messageText = `¡Hola ${booking.name}!\n\n` +
+        `Nos complace informarte que tu turno en Para Ti Peluquería ha sido confirmado.\n\n` +
+        `Detalles del turno:\n` +
+        `- Servicio(s): ${servicesText}\n` +
+        `- Fecha: ${booking.dateStr}\n` +
+        `- Hora: ${booking.time}\n\n` +
+        `¡Te esperamos en el salón Raquel Rodríguez!`;
+
+    const templateParams = {
+        subject: "Confirmación de Turno - Para Ti Peluquería",
+        message: messageText,
+        to_email: booking.email,
+        from_email: "paratipeluqueria04@gmail.com",
+        
+        // Variables individuales específicas para plantillas dedicadas
+        client_name: booking.name,
+        services: servicesText,
+        date_str: booking.dateStr,
+        time_str: booking.time
+    };
+
+    console.log("Enviando correo de confirmación al cliente con parámetros:", templateParams);
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_CONFIRMADO_ID, templateParams)
+        .then(() => console.log(`Confirmación de turno enviada con éxito al cliente: ${booking.email}`))
+        .catch(err => console.error(`Error enviando confirmación a ${booking.email}:`, err));
+}
+
 
 
 
@@ -539,10 +597,19 @@ function showAdmin() {
 
 /* --- Gestión de estado de turnos --- */
 function updateBookingStatus(id, status) {
-    const bookings = getBookings().map(b => b.id === id ? { ...b, status } : b);
-    saveBookings(bookings);
-    renderAll();
-    renderAdminCalendar(calYear, calMonth);
+    const bookings = getBookings();
+    const booking = bookings.find(b => b.id === id);
+    if (booking) {
+        booking.status = status;
+        saveBookings(bookings);
+        renderAll();
+        renderAdminCalendar(calYear, calMonth);
+
+        // Enviar email al cliente si el turno es confirmado
+        if (status === "accepted") {
+            sendBookingConfirmationToClient(booking);
+        }
+    }
 }
 
 /* --- Navegación de secciones (navbar + sidebar) --- */
@@ -903,17 +970,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   // -------------------------------------------------------------
 
-  const EMAILJS_PUBLIC_KEY = 'nT3RJhFUfjBhzDJI8';
-  const EMAILJS_SERVICE_ID = 'service_2pchi1s';
-  const EMAILJS_TEMPLATE_ID = 'template_h3chgdh';
-  const EMAILJS_AVAILABLE = window.emailjs && typeof window.emailjs.send === 'function';
-
-  if (EMAILJS_AVAILABLE) {
-    emailjs.init(EMAILJS_PUBLIC_KEY);
-    console.log('EmailJS inicializado correctamente');
-  } else {
-    console.warn('EmailJS no está disponible en esta página');
-  }
+  const EMAILJS_AVAILABLE = typeof window.emailjs !== 'undefined' && typeof window.emailjs.send === 'function';
 
   function createCustomAlert() {
     if (document.getElementById('customAlertOverlay')) return;
