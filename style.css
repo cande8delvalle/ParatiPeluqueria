@@ -5,7 +5,7 @@ body {
 
 #Home {
   padding-top: 140px;
-  /* 80px navbar height + 60px visual spacing */
+  /* Altura del navbar (80px) + margen de holgura visual (60px) */
   padding-bottom: 80px;
   min-height: 80vh;
   display: flex;
@@ -26,7 +26,7 @@ body {
   line-height: 1.4;
 }
 
-/* Responsivo para celulares y tablets */
+/* Diseño responsivo para celulares y tablets, que no se rompa nada */
 @media (max-width: 768px) {
   #Home {
     padding-top: 120px;
@@ -42,7 +42,7 @@ body {
     font-size: 1.25rem;
   }
 
-  /* Sección Servicios en Móvil */
+  /* Sección Servicios en Móvil: ajustamos márgenes */
   #Servicios {
     padding: 60px 0;
   }
@@ -59,7 +59,7 @@ body {
 
   .card.servicio-card .card-img-top {
     height: 220px;
-    /* Tamaño optimizado para pantallas pequeñas */
+    /* Tamaño optimizado para pantallas chicas */
   }
 
   .card.servicio-card .card-title {
@@ -71,7 +71,7 @@ body {
     font-size: 0.95rem;
   }
 
-  /* Fuentes de Sobre Mí en celulares */
+  /* Fuentes de la biografía de Raquel en celus */
   #SobreMi h1 {
     font-size: 2.5rem;
     margin-bottom: 20px;
@@ -297,7 +297,7 @@ section[id] {
   scroll-margin-top: 80px;
 }
 
-/* Navbar: ocultar items según contexto */
+/* Ocultamos cosas del navbar según si sos cliente o Raquel */
 .nav-admin {
   display: none;
 }
@@ -311,14 +311,14 @@ body.admin-page .nav-admin {
   align-items: center;
 }
 
-/* Admin nav link activo */
+/* Estilo para la solapa del panel de control que está seleccionada */
 body.admin-page .admin-nav-link.active {
   color: #5A2A3A;
   border-bottom: 2px solid #5A2A3A;
   font-weight: 600;
 }
 
-/* En admin el navbar es sticky (no fixed) para que el layout quede debajo */
+/* En el panel de control usamos sticky en vez de fixed para que el menú de la izquierda no quede tapado */
 body.admin-page,
 body.admin-page html {
   height: 100%;

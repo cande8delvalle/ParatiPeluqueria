@@ -22,10 +22,10 @@
 
     <div class="admin-shell-layout" id="adminShellLayout">
 
-        <!-- sidebar -->
+        <!-- Menú lateral de navegación, che -->
         <aside class="admin-sidebar" id="adminSidebar">
 
-            <!--  peluquera -->
+            <!-- Avatar y nombre de la peluquera Raquel -->
             <div class="admin-sidebar-profile">
                 <img src="img/sobreMi.png" alt="Raquel Rodríguez" class="sidebar-avatar">
                 <div class="sidebar-profile-text">
@@ -79,10 +79,10 @@
             <i class="bi bi-chevron-left" id="sidebarToggleIcon"></i>
         </button>
 
-        <!-- ---- container main---- -->
+        <!-- Contenedor principal para las distintas secciones del panel, acá pasa la magia -->
         <main class="admin-main">
 
-            <!-- Servicios -->
+            <!-- Sección de servicios: acá la peluquera edita los precios y nombres -->
             <div class="admin-section" id="sectionServicios">
                 <h4 style="font-family:'DM Serif Display',serif; color:#5A2A3A; margin-bottom:1.5rem;">
                     Administrar Servicios
@@ -95,7 +95,7 @@
                         <div class="admin-header-col admin-col-price text-center">Precio</div>
                     </div>
                     <div id="adminServicesList">
-                        <!-- Rellenado dinámicamente con JS -->
+                        <!-- Estos inputs se rellenan dinámicamente con JS, ni se gasten en escribir a mano -->
                     </div>
                     <div class="d-flex justify-content-end mt-4">
                         <button type="submit" class="btn-accept shadow">
@@ -105,10 +105,10 @@
                 </form>
             </div>
 
-            <!--  Turnos -->
+            <!-- Sección de administración de turnos -->
             <div class="admin-section active" id="sectionTurnos">
 
-                <!-- Pendientes -->
+                <!-- Turnos que esperan que la peluquera les dé el ok -->
                 <div class="admin-sub-panel active" id="panelPending">
                     <h4 style="font-family:'DM Serif Display',serif; color:#5A2A3A; margin-bottom:1.5rem;">
                         Turnos Pendientes
@@ -116,7 +116,7 @@
                     <div id="pendingList"></div>
                 </div>
 
-                <!-- Calendario -->
+                <!-- Vista mensual para ver qué días están ocupados -->
                 <div class="admin-sub-panel" id="panelCalendar">
                     <h4 style="font-family:'DM Serif Display',serif; color:#5A2A3A; margin-bottom:1rem;">
                         Calendario
@@ -132,7 +132,7 @@
                     <div class="day-bookings-list" id="dayBookingsList"></div>
                 </div>
 
-                <!-- Historial -->
+                <!-- Turnos ya procesados (aceptados o rebotados) para archivo -->
                 <div class="admin-sub-panel" id="panelHistory">
                     <h4 style="font-family:'DM Serif Display',serif; color:#5A2A3A; margin-bottom:1.5rem;">
                         Historial de Turnos
