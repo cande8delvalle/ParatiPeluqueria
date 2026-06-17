@@ -5,7 +5,7 @@ body {
 
 #Home {
   padding-top: 140px;
-  /* 80px navbar height + 60px visual spacing */
+  /* Altura del navbar (80px) + margen de holgura visual (60px) */
   padding-bottom: 80px;
   min-height: 80vh;
   display: flex;
@@ -26,7 +26,7 @@ body {
   line-height: 1.4;
 }
 
-/* Responsivo para celulares y tablets */
+/* Diseño responsivo para celulares y tablets, que no se rompa nada */
 @media (max-width: 768px) {
   #Home {
     padding-top: 120px;
@@ -42,7 +42,7 @@ body {
     font-size: 1.25rem;
   }
 
-  /* Sección Servicios en Móvil */
+  /* Sección Servicios en Móvil: ajustamos márgenes */
   #Servicios {
     padding: 60px 0;
   }
@@ -59,7 +59,7 @@ body {
 
   .card.servicio-card .card-img-top {
     height: 220px;
-    /* Tamaño optimizado para pantallas pequeñas */
+    /* Tamaño optimizado para pantallas chicas */
   }
 
   .card.servicio-card .card-title {
@@ -71,7 +71,7 @@ body {
     font-size: 0.95rem;
   }
 
-  /* Fuentes de Sobre Mí en celulares */
+  /* Fuentes de la biografía de Raquel en celus */
   #SobreMi h1 {
     font-size: 2.5rem;
     margin-bottom: 20px;
@@ -379,7 +379,7 @@ section[id] {
   scroll-margin-top: 80px;
 }
 
-/* Navbar: ocultar items según contexto */
+/* Ocultamos cosas del navbar según si sos cliente o Raquel */
 .nav-admin {
   display: none;
 }
@@ -393,14 +393,14 @@ body.admin-page .nav-admin {
   align-items: center;
 }
 
-/* Admin nav link activo */
+/* Estilo para la solapa del panel de control que está seleccionada */
 body.admin-page .admin-nav-link.active {
   color: #5A2A3A;
   border-bottom: 2px solid #5A2A3A;
   font-weight: 600;
 }
 
-/* En admin el navbar es sticky (no fixed) para que el layout quede debajo */
+/* En el panel de control usamos sticky en vez de fixed para que el menú de la izquierda no quede tapado */
 body.admin-page,
 body.admin-page html {
   height: 100%;
@@ -2285,4 +2285,152 @@ body.admin-page {
 
 #adminCodeModal .btn-close {
   color: #7A3E4E;
+}
+
+/* --- Admin Services Section --- */
+.admin-services-table-header {
+  display: flex;
+  padding: 10px 16px;
+  border-bottom: 1px solid #d7a7aa;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #5A2A3A;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.admin-header-col {
+  padding: 0 10px;
+}
+
+.admin-col-service {
+  flex: 1.5;
+  min-width: 250px;
+}
+
+.admin-col-desc {
+  flex: 2.5;
+  min-width: 280px;
+}
+
+.admin-col-duration {
+  flex: 0.9;
+  min-width: 120px;
+}
+
+.admin-col-price {
+  flex: 1.1;
+  min-width: 140px;
+}
+
+.admin-service-row {
+  display: flex;
+  align-items: center;
+  padding: 20px 16px;
+  border-bottom: 1px solid #e5d7d0;
+  background-color: transparent;
+  transition: background-color 0.2s;
+  gap: 15px;
+}
+
+.admin-service-row:hover {
+  background-color: rgba(251, 238, 230, 0.4);
+}
+
+.admin-service-thumb {
+  width: 110px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #d7a7aa;
+  flex-shrink: 0;
+}
+
+.admin-field-label {
+  display: block;
+  font-size: 0.72rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  color: #a07080;
+  margin-bottom: 4px;
+  text-transform: capitalize;
+}
+
+.admin-field-input,
+.admin-field-textarea {
+  background-color: #FBF7F5 !important;
+  border: 1px solid #e2d2ca !important;
+  border-radius: 12px !important;
+  color: #5A2A3A !important;
+  font-family: "Playfair Display", serif !important;
+  font-size: 0.95rem !important;
+  padding: 10px 14px !important;
+  transition: all 0.2s ease !important;
+}
+
+.admin-field-input:focus,
+.admin-field-textarea:focus {
+  background-color: #ffffff !important;
+  border-color: #5A2A3A !important;
+  box-shadow: 0 0 0 0.2rem rgba(90, 42, 58, 0.15) !important;
+}
+
+.admin-field-textarea {
+  min-height: 70px;
+  resize: vertical;
+  line-height: 1.4;
+}
+
+.admin-field-suffix {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.85rem;
+  color: #5A2A3A;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.admin-field-prefix {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  color: #5A2A3A;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .admin-services-table-header {
+    display: none !important;
+  }
+  
+  .admin-service-row {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+    background-color: #FBEEE6;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    border: 1px solid #d7a7aa;
+    box-shadow: 0 4px 12px rgba(90, 42, 58, 0.04);
+  }
+  
+  .admin-service-row:hover {
+    background-color: #FBEEE6;
+  }
+  
+  .admin-service-row > div {
+    width: 100% !important;
+    min-width: 0 !important;
+    flex: none !important;
+    margin-bottom: 10px;
+  }
+  
+  .admin-service-row > div:last-child {
+    margin-bottom: 0;
+  }
+  
+  .admin-service-thumb {
+    width: 100%;
+    height: 150px;
+    margin-bottom: 10px;
+  }
 }
