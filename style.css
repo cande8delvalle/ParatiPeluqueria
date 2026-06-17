@@ -186,10 +186,11 @@ body {
 
 #Portafolio {
   background-color: #121212;
+  /* Fondo oscuro */
   padding: 90px 0;
 }
 
-#Portafolio h2 {
+#Portafolio h1 {
   font-family: "DM Serif Display", serif;
   font-size: 4.5rem;
   color: #FBEEE6;
@@ -197,55 +198,64 @@ body {
   margin-bottom: 50px;
 }
 
-#portfolioCarousel {
+#testimonialCarousel {
+  max-width: 650px;
+  margin: 0 auto;
   position: relative;
-  padding: 0 45px; /* Espacio para que las flechas queden a los lados sin encimarse */
+  padding: 0 45px;
+  /* Espacio para las flechas a los costados */
 }
 
-.card.portfolio-card {
-  background-color: #FBEEE6;
-  border: none;
-  border-radius: 0; /* Bordes rectos de la captura */
-  padding: 24px; /* Inset padding como en servicios */
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+.testimonial-card {
+  background-color: #FBEEE6 !important;
+  /* Color crema de fondo */
+  border: none !important;
+  border-radius: 0 !important;
+  /* Bordes rectos */
+  padding: 24px !important;
+  /* Relleno uniforme */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
   transition: all 0.3s ease;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  max-width: 560px;
+  margin: 0 auto;
 }
 
-.card.portfolio-card:hover {
+.testimonial-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 }
 
-.card.portfolio-card .portfolio-img {
-  height: 220px;
-  object-fit: cover;
-  width: 100%;
-  border-radius: 0;
+.testimonial-card .quote-icon {
+  display: none !important;
+  /* Oculta la comilla gigante */
 }
 
-.card.portfolio-card .card-body {
-  padding: 20px 0 0 0; /* Sin padding horizontal */
+.testimonial-card img {
+  width: 100% !important;
+  height: 320px !important;
+  /* Altura de la foto */
+  object-fit: cover !important;
+  border-radius: 0 !important;
+  /* Foto con bordes rectos */
+}
+
+.testimonial-card .lead {
+  font-family: "DM Serif Display", serif;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #552D3F !important;
+  margin-top: 20px;
+  margin-bottom: 0;
   text-align: center;
 }
 
-.card.portfolio-card .card-title {
-  font-family: "DM Serif Display", serif;
-  font-size: 1.6rem;
-  color: #552D3F;
-  font-weight: bold;
-  margin-bottom: 0;
-}
-
-/* Flechas de navegación del carrusel */
+/* Flechas de navegación */
 #Portafolio .carousel-control-prev,
 #Portafolio .carousel-control-next {
   width: 45px;
   height: 45px;
-  background-color: rgba(90, 42, 58, 0.85); /* Burgundy semitransparente */
-  border-radius: 50%;
+  background-color: rgba(90, 42, 58, 0.85) !important;
+  /* Color burgundy semitransparente */
+  border-radius: 50% !important;
   top: 50%;
   transform: translateY(-50%);
   opacity: 0.8;
@@ -258,15 +268,33 @@ body {
 #Portafolio .carousel-control-prev:hover,
 #Portafolio .carousel-control-next:hover {
   opacity: 1;
-  background-color: rgba(90, 42, 58, 1);
+  background-color: rgba(90, 42, 58, 1) !important;
 }
 
 #Portafolio .carousel-control-prev {
-  left: 0;
+  left: 0 !important;
 }
 
 #Portafolio .carousel-control-next {
-  right: 0;
+  right: 0 !important;
+}
+
+#Portafolio .carousel-indicators {
+  bottom: -45px !important;
+}
+
+#Portafolio .carousel-indicators button {
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  background-color: #FBEEE6 !important;
+  /* Puntos de navegación color crema */
+  border: none !important;
+  opacity: 0.5;
+}
+
+#Portafolio .carousel-indicators .active {
+  opacity: 1 !important;
 }
 
 /* Responsivo para el Portafolio */
@@ -274,23 +302,77 @@ body {
   #Portafolio {
     padding: 60px 0;
   }
-  #Portafolio h2 {
+
+  #Portafolio h1 {
     font-size: 2.5rem;
     margin-bottom: 30px;
   }
-  #portfolioCarousel {
+
+  #testimonialCarousel {
     padding: 0 35px;
   }
-  .card.portfolio-card {
-    padding: 15px;
-    margin-bottom: 15px;
+
+  .testimonial-card {
+    padding: 15px !important;
   }
-  .card.portfolio-card .portfolio-img {
-    height: 180px;
+
+  .testimonial-card img {
+    height: 220px !important;
+    /* Altura reducida en móviles */
   }
-  .card.portfolio-card .card-title {
-    font-size: 1.25rem;
+
+  .testimonial-card .lead {
+    font-size: 1.4rem;
   }
+}
+
+.quote-icon {
+  font-size: 4rem;
+  color: #FBEEE6;
+  opacity: 0.2;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 40px;
+  height: 40px;
+  background-color: #6366f1;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.carousel-control-prev {
+  left: -20px;
+}
+
+.carousel-control-next {
+  right: -20px;
+}
+
+.carousel-indicators {
+  bottom: -50px;
+}
+
+.carousel-indicators button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #6366f1;
+  opacity: 0.5;
+}
+
+.carousel-indicators .active {
+  opacity: 1;
 }
 
 section[id] {
@@ -482,6 +564,225 @@ a {
   color: #6a11cb;
 }
 
+/*Contacto*/
+
+.faq-section {
+  background-image: linear-gradient(rgba(18, 18, 18, 0.82), rgba(18, 18, 18, 0.82)), url("img/contact.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 100px 0;
+  color: #FBEEE6;
+}
+
+.faq-intro {
+  text-align: left;
+  padding-right: 40px;
+}
+
+.faq-label {
+  font-size: 0 !important;
+  display: inline-block;
+  text-transform: uppercase;
+  margin-bottom: 25px;
+}
+
+.faq-label::before {
+  content: "PREGUNTAS";
+  font-family: "Playfair Display", serif;
+  font-size: 0.95rem;
+  letter-spacing: 1.5px;
+  color: #FBEEE6;
+  margin-right: 8px;
+}
+
+.faq-label::after {
+  content: "FRECUENTES";
+  font-family: "Playfair Display", serif;
+  font-size: 0.95rem;
+  letter-spacing: 1.5px;
+  color: #552D3F;
+  background-color: #FBEEE6;
+  padding: 3px 8px;
+  font-weight: 600;
+}
+
+.faq-intro h2 {
+  font-family: "DM Serif Display", serif;
+  color: #8C4E5E;
+  font-size: 3.5rem;
+  line-height: 1.15;
+  margin: 20px 0;
+}
+
+.faq-intro p {
+  font-family: "Playfair Display", serif;
+  color: #FBEEE6;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  max-width: 440px;
+  margin: 0 0 35px 0;
+}
+
+.faq-btn {
+  background-color: #552D3F !important;
+  color: #FBEEE6 !important;
+  padding: 12px 30px !important;
+  text-decoration: none !important;
+  font-family: "Playfair Display", serif;
+  font-size: 0.95rem;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s ease !important;
+  border: 1px solid #552D3F;
+}
+
+.faq-btn:hover {
+  background-color: #FBEEE6 !important;
+  color: #552D3F !important;
+  border-color: #FBEEE6;
+}
+
+.button {
+  background-color: #5A2A3A;
+  color: #FBEEE6;
+  padding: 10px 25px;
+  text-decoration: none;
+  font-family: "Playfair Display", serif;
+}
+
+.button.btn :hover {
+  color: #d7a7aa;
+}
+
+/* Accordion Custom Styling */
+.accordion {
+  counter-reset: faq-counter;
+}
+
+.accordion-item {
+  background-color: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(251, 238, 230, 0.25) !important;
+  counter-increment: faq-counter;
+}
+
+.accordion-item:first-child {
+  border-top: 1px solid rgba(251, 238, 230, 0.25) !important;
+}
+
+.accordion-button {
+  background-color: transparent !important;
+  color: #FBEEE6 !important;
+  font-family: "Playfair Display", serif;
+  font-size: 1.4rem;
+  padding: 24px 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  width: 100%;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: transparent !important;
+  color: #FBEEE6 !important;
+}
+
+.accordion-button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.accordion-button::before {
+  content: counter(faq-counter);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #FBEEE6;
+  border-radius: 50%;
+  margin-right: 20px;
+  font-size: 1rem;
+  font-family: "DM Serif Display", serif;
+  color: #FBEEE6;
+  flex-shrink: 0;
+}
+
+.accordion-button::after {
+  background-image: none !important;
+  content: "↓" !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background-color: #FBEEE6 !important;
+  color: #552D3F !important;
+  border-radius: 50%;
+  font-size: 0.95rem;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.accordion-button:not(.collapsed)::after {
+  transform: rotate(180deg);
+}
+
+.accordion-body {
+  background-color: transparent !important;
+  color: rgba(251, 238, 230, 0.8) !important;
+  font-family: "Playfair Display", serif;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  padding: 0 0 24px 54px !important;
+}
+
+/* Responsive FAQ Section */
+@media (max-width: 991.98px) {
+  .faq-intro {
+    padding-right: 0;
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .faq-section {
+    padding: 60px 0;
+  }
+  .faq-intro {
+    text-align: center;
+  }
+  .faq-intro h2 {
+    font-size: 2.6rem;
+  }
+  .faq-intro p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .accordion-button {
+    font-size: 1.15rem;
+    padding: 18px 0 !important;
+  }
+  .accordion-button::before {
+    width: 30px;
+    height: 30px;
+    margin-right: 15px;
+    font-size: 0.9rem;
+  }
+  .accordion-body {
+    font-size: 1rem;
+    padding: 0 0 18px 45px !important;
+  }
+}
+
 .cta {
   background-color: #f8f9fa;
 }
@@ -622,130 +923,6 @@ footer a:hover {
   font-size: 0.95rem;
 }
 
-/*Contacto*/
-.contact-card {
-  background-color: #F7F5F2;
-  padding: 40px 35px;
-  border-radius: 25px;
-  max-width: 420px;
-  width: 100%;
-}
-
-.contact-title {
-  font-family: "DM Serif Display", serif;
-  color: #963541;
-  font-size: 1.8rem;
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.contact-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: "Playfair Display", serif;
-  color: #C65C6A;
-  text-decoration: none;
-  border-bottom: 1px solid #C65C6A;
-  padding-bottom: 10px;
-  margin-bottom: 25px;
-
-}
-
-.contact-item i {
-  color: #C65C6A;
-  font-size: 1.3rem;
-  transition: opacity 0.3s ease;
-}
-
-.contact-item:hover {
-
-  opacity: 0.7;
-}
-
-
-.faq-section {
-  background-color: #f8d8d8;
-  padding: 90px 0;
-}
-
-.faq-intro {
-  text-align: center;
-  padding-left: 20px;
-}
-
-.faq-label {
-  font-family: "Playfair Display", serif;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  color: #963541;
-  background-color: #f7f6f2;
-  padding: 4px 8px;
-}
-
-.faq-intro h2 {
-  font-family: "DM Serif Display", serif;
-  color: #C65C6A;
-  font-size: 2.2rem;
-  margin: 15px 0;
-}
-
-.faq-intro p {
-  font-family: "Playfair Display", serif;
-  color: #1E1E1E;
-  max-width: 320px;
-  margin: 0 auto 25px;
-}
-
-.faq-btn {
-  background-color: #C65C6A;
-  color: #F7F5F2;
-  padding: 10px 25px;
-  text-decoration: none;
-  font-family: "Playfair Display", serif;
-}
-
-.button {
-  background-color: #5A2A3A;
-  color: #FBEEE6;
-  padding: 10px 25px;
-  text-decoration: none;
-  font-family: "Playfair Display", serif;
-}
-
-.button.btn :hover {
-  color: #d7a7aa;
-}
-
-.faq-btn:hover {
-  background-color: #963541;
-  color: #F7F5F2;
-}
-
-.accordion-item {
-  background-color: transparent;
-  border: none;
-  border-bottom: 1px solid #d7a7aa;
-}
-
-.accordion-button {
-  background-color: transparent;
-  font-family: "DM Serif Display", serif;
-  color: #1E1E1E;
-  box-shadow: none;
-}
-
-.accordion-button:not(.collapsed) {
-  background-color: transparent;
-  color: #963541;
-  box-shadow: none;
-}
-
-.accordion-body {
-  font-family: "Playfair Display", serif;
-  color: #1E1E1E;
-  font-size: 0.95rem;
-}
 
 /*Login*/
 body.login-page {
