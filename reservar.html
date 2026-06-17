@@ -18,7 +18,7 @@
 </head>
 
 <body class="booking-page">
-    <!-- El navbar dinámico se inyecta aquí -->
+    <!-- Acá metemos el navbar dinámico que traemos con fetch -->
     <div id="navbar"></div>
 
     <main class="container my-5">
@@ -26,10 +26,10 @@
             <div class="col-xl-10">
                 <div class="card booking-card">
                     <div class="row g-0">
-                        <!-- Proceso de Reserva (Ancho Completo) -->
+                        <!-- Proceso de Reserva (ocupa todo el ancho, che) -->
                         <div class="col-12 p-4 p-md-5">
                             
-                            <!-- Progreso barrita -->
+                            <!-- La barra que muestra por qué paso de la reserva vas -->
                             <div class="stepper-container">
                                 <div class="stepper-line"></div>
                                 <div class="stepper-line-fill" id="stepperLineFill"></div>
@@ -56,24 +56,24 @@
                                 </div>
                             </div>
 
-                            <!-- Primer paso- seleccionar servicio -->
+                            <!-- Paso 1: Elegir el servicio o los servicios que querés hacerte -->
                             <div class="booking-step-content active" id="stepContent1">
                                 <h3 class="booking-title-main">¿Qué servicio deseás?</h3>
                                 <p class="text-muted mb-4" style="font-family: 'Montserrat', sans-serif; font-size: 0.95rem;">
                                     Elegí el servicio que mejor se adapte a vos.
                                 </p>
                                 <div class="row g-3" id="servicesGrid">
-                                    <!-- Las tarjetas se generan dinámicamente desde script.js -->
+                                    <!-- Las cards de servicios las inyectamos acá dinámicamente desde script.js -->
                                 </div>
                                 <div class="d-flex justify-content-end mt-4">
                                     <button class="btn-booking-next" id="btnNextToCalendar" onclick="goToStep(2)" disabled>Siguiente <i class="bi bi-arrow-right"></i></button>
                                 </div>
                             </div>
 
-                            <!-- Segundo paso - Seleccionar Día y Hora  -->
+                            <!-- Paso 2: Elegir el día y después la hora que te queden cómodos -->
                             <div class="booking-step-content" id="stepContent2">
                                 
-                                <!-- Calendario -->
+                                <!-- Sub-paso A: El calendario interactivo -->
                                 <div id="subStepCalendar">
                                     <h3 class="booking-title-main">Seleccioná un Día</h3>
                                     <p class="text-muted mb-4" style="font-family: 'Montserrat', sans-serif; font-size: 0.95rem;">
@@ -86,7 +86,7 @@
                                             <button class="calendar-nav-btn" onclick="nextMonth()"><i class="bi bi-chevron-right"></i></button>
                                         </div>
                                         <div class="calendar-grid" id="calendarGrid">
-                                            <!-- Rellenado dinámicamente con JS -->
+                                            <!-- El script dibuja los días habilitados del mes acá -->
                                         </div>
                                     </div>
                                     
@@ -96,13 +96,13 @@
                                     </div>
                                 </div>
 
-                                <!-- lista de  Horarios Disponibles -->
+                                <!-- Sub-paso B: Los horarios que quedan libres para el día elegido -->
                                 <div id="subStepHours" style="display: none;">
                                     <h3 class="hours-title">Elegí tu horario</h3>
                                     <p class="hours-subtitle">Seleccioná el horario que mejor se adapte a vos.</p>
                                     
                                     <div class="hours-list" id="hoursList">
-                                        <!-- Rellenado dinámicamente con JS -->
+                                        <!-- Los botones de horario se meten acá al vuelo -->
                                     </div>
                                     <p class="hours-scroll-text">Desliza hacia abajo para ver más horarios disponibles <i class="bi bi-chevron-down"></i></p>
                                     
@@ -113,7 +113,7 @@
                                 </div>
                             </div>
 
-                            <!-- Tercer paso tus Datos personales -->
+                            <!-- Paso 3: Completar con tus datos para mandarte la confirmación -->
                             <div class="booking-step-content" id="stepContent3">
                                 <h3 class="booking-title-main">Ingresá tus datos</h3>
                                 <p class="text-muted mb-4" style="font-family: 'Montserrat', sans-serif; font-size: 0.95rem;">
@@ -153,7 +153,7 @@
         </div>
     </main>
 
-    <!-- Pantalla de Éxito / Confirmación (Modal Overlay) -->
+    <!-- Cartelito de confirmación exitosa cuando termina de agendar -->
     <div class="booking-step-content booking-success-overlay" id="stepContentSuccess">
         <div class="booking-success-modal">
             <a href="index.html" class="modal-close-btn">
@@ -196,7 +196,7 @@
         </div>
     </div>
 
-    <!-- El footer dinámico se inyecta aquí -->
+    <!-- El footer dinámico se carga acá -->
     <div id="footer"></div>
 
     <script src="script.js"></script>

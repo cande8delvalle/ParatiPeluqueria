@@ -18,7 +18,7 @@ fetch("navbar.html")
       });
     }
     
-    //  menú hamburguesa
+    // Manejo del menú hamburguesa en móviles, tranqui
     const hamburger = document.getElementById('hamburger-menu');
     const navbarMenu = document.getElementById('navbar-menu');
     const navMobile = document.getElementById('nav-mobile');
@@ -29,7 +29,7 @@ fetch("navbar.html")
         navbarMenu.classList.toggle('active');
       });
 
-      // cierra el menu alk hacer click en un link
+      // Cerramos el menú cuando tocan cualquier link, así no estorba
       if (navMobile) {
         const mobileLinks = navMobile.querySelectorAll('a');
         mobileLinks.forEach(link => {
@@ -51,25 +51,25 @@ fetch("footer.html")
     }
   });
 
-// CONFIGURACIÓN GLOBAL DE EMAILJS
+// CONFIGURACIÓN GLOBAL DE EMAILJS - Claves para mandar mails
 const EMAILJS_PUBLIC_KEY = 'nT3RJhFUfjBhzDJI8';
 const EMAILJS_SERVICE_ID = 'service_2pchi1s';
-const EMAILJS_TEMPLATE_ID = 'template_h3chgdh'; // Para recuperación de contraseña
-const EMAILJS_TEMPLATE_SOLICITADO_ID = 'template_solicitado'; // Para nuevo turno solicitado
-const EMAILJS_TEMPLATE_CONFIRMADO_ID = 'template_confirmado'; // Para turno confirmado
+const EMAILJS_TEMPLATE_ID = 'template_h3chgdh'; // Template para cuando se olvidan la contraseña
+const EMAILJS_TEMPLATE_SOLICITADO_ID = 'template_solicitado'; // Template para avisar de un turno nuevo
+const EMAILJS_TEMPLATE_CONFIRMADO_ID = 'template_confirmado'; // Template para confirmar el turno al cliente
 
-// Inicializar EmailJS si está disponible
+// Arrancamos EmailJS si está cargado en la ventana
 if (typeof window.emailjs !== "undefined" && typeof window.emailjs.init === "function") {
   emailjs.init(EMAILJS_PUBLIC_KEY);
   console.log('EmailJS inicializado correctamente a nivel global.');
 }
 
 
-// Días laborables: 0=Dom, 1=Lun, 2=Mar, 3=Mié, 4=Jue, 5=Vie, 6=Sáb
-// Ajustar según los días que trabaja el salón (por ej. sin lunes → quitar el 1)
-const WORKING_DAYS = [2, 3, 4, 5, 6]; // Mar a Sáb (sin Lunes = día del peluquero)
+// Días que se labura: 0=Dom, 1=Lun, 2=Mar, 3=Mié, 4=Jue, 5=Vie, 6=Sáb
+// Ajustalo según los días que abra la pelu (ej: si los lunes no se labura, sacás el 1)
+const WORKING_DAYS = [2, 3, 4, 5, 6]; // De martes a sábado a full. Los lunes se descansa
 
-// Horarios de trabajo disponibles
+// Lista de horarios disponibles para agendar
 const ALL_TIMES = [
     "09:00 - 09:30",
     "09:30 - 10:00",
@@ -95,28 +95,30 @@ let selectedDate = null;
 let selectedTime = null;
 let currentStep  = 1;
 
-// Listado de servicios dinámicos con precio y duración
-const SERVICES_DATA = [
+/* --- GESTIÓN DE SERVICIOS DINÁMICOS EN LOCALSTORAGE --- */
+const LS_SERVICES_KEY = "paraTi_services";
+
+const DEFAULT_SERVICES = [
     {
         id: "corte",
         name: "Corte",
         price: 15000,
-        duration: "45 min",
+        duration: "15 min",
         desc: "Renovación, movimiento y definición adaptados a tu estilo único.",
         img: "img/corte.jpg"
     },
     {
         id: "lavado_modelado",
         name: "Lavado y Modelado",
-        price: 12000,
-        duration: "40 min",
+        price: 30000,
+        duration: "70 min",
         desc: "Relajación profunda combinada con un acabado natural y con volumen.",
         img: "img/lavadoModelado.jpg"
     },
     {
         id: "color",
         name: "Color",
-        price: 25000,
+        price: 50000,
         duration: "90 min",
         desc: "Cobertura perfecta, tono uniforme y nutrición para tu fibra capilar.",
         img: "img/color.jpg"
@@ -124,28 +126,71 @@ const SERVICES_DATA = [
     {
         id: "brushing",
         name: "Brushing y Planchita",
-        price: 10000,
-        duration: "30 min",
-        desc: "Modelado profesional con secador para lograr volumen, brillo y movimiento natural.",
+        price: 18000,
+        duration: "45 min",
+        desc: "Peinado profesional con secado que aporta brillo, suavidad y movimiento.",
         img: "img/brusing.jpg"
     },
     {
         id: "alisado",
         name: "Alisado",
-        price: 18000,
-        duration: "60 min",
+        price: 22000,
+        duration: "120 min",
         desc: "Lacio perfecto, libre de frizz y con un brillo sedoso gracias al planchado profesional.",
         img: "img/alisado.jpg"
     },
     {
-        id: "peinado_especial",
-        name: "Peinado Especial",
-        price: 20000,
-        duration: "60 min",
+        id: "peinados",
+        name: "Peinados",
+        price: 25000,
+        duration: "90 min",
         desc: "Peinados recogidos, semirecogidos y trenzas diseñados especialmente para tus eventos y fiestas.",
         img: "img/peinados.jpg"
+    },
+    {
+        id: "reflejos",
+        name: "Reflejos e Iluminación",
+        price: 45000,
+        duration: "120 min",
+        desc: "Aportá luz y movimiento a tu cabello. Ideal para un cambio natural que resalte tus facciones.",
+        img: "img/reflejosIluminacion.jpg"
+    },
+    {
+        id: "mechas",
+        name: "Mechas Californianas",
+        price: 50000,
+        duration: "150 min",
+        desc: "Un degradé moderno que ilumina de medios a puntas, logrando un contraste ideal con un acabado fresco y lleno de estilo.",
+        img: "img/mechasCalifornianas.jpg"
+    },
+    {
+        id: "keratina",
+        name: "Shock de Keratina",
+        price: 35000,
+        duration: "90 min",
+        desc: "Este tratamiento sella la fibra capilar, repara en profundidad y te deja el pelo ultra lacio con un movimiento espectacular.",
+        img: "img/shockKeratina.jpg"
     }
 ];
+
+function getServices() {
+    const stored = localStorage.getItem(LS_SERVICES_KEY);
+    if (!stored) {
+        localStorage.setItem(LS_SERVICES_KEY, JSON.stringify(DEFAULT_SERVICES));
+        return JSON.parse(JSON.stringify(DEFAULT_SERVICES));
+    }
+    return JSON.parse(stored);
+}
+
+function saveServices(services) {
+    localStorage.setItem(LS_SERVICES_KEY, JSON.stringify(services));
+}
+
+function formatPrice(value) {
+    return new Intl.NumberFormat("es-AR", { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
+}
+
+let SERVICES_DATA = getServices();
 
 let selectedServices = []; // Almacena los IDs de servicios seleccionados
 
@@ -158,20 +203,19 @@ const MONTH_NAMES = [
 ];
 const DAY_LETTERS = ["D","L","M","M","J","V","S"];
 
-// Feriados obtengo de API: https://date.nager.at/swagger/index.html
-
+// Traemos los feriados de la API pública para no laburar al cohete en días patrios
 async function fetchHolidays(year) {
-    if (holidaysCache[year]) return holidaysCache[year]; // ya en caché
+    if (holidaysCache[year]) return holidaysCache[year]; // Si ya lo tenemos guardado en memoria, no gastamos datos
 
     try {
         const res = await fetch(`https://date.nager.at/api/v3/PublicHolidays/${year}/AR`);
         if (!res.ok) throw new Error("No se pudo obtener feriados");
         const data = await res.json();
-        // Guardamos solo las fechas en un Set para búsqueda O(1)
+        // Metemos las fechas en un Set para chequear al toque sin bucles lentos
         holidaysCache[year] = new Set(data.map(h => h.date)); // "YYYY-MM-DD"
     } catch (e) {
         console.warn("Feriados no disponibles, se usan solo días laborables:", e.message);
-        holidaysCache[year] = new Set(); // fallback vacío → igual funciona
+        holidaysCache[year] = new Set(); // Si falla la API, queda vacío y asumimos que se labura igual
     }
 
     return holidaysCache[year];
@@ -183,15 +227,14 @@ function isHoliday(year, month, day, holidaySet) {
     return holidaySet.has(`${year}-${mm}-${dd}`);
 }
 
-//disponibilidad- se podria ampliar para tomar desde backend o desde google calendar
-
+// Chequeo de disponibilidad (se podría linkear a Google Calendar a futuro)
 function isDayFullyBooked(year, month, day) {
     const yStr = String(year);
     const mStr = String(month + 1).padStart(2, "0");
     const dStr = String(day).padStart(2, "0");
     const dateISO = `${yStr}-${mStr}-${dStr}`;
     
-    // Considerar ocupados los turnos pendientes o aceptados
+    // Si el turno está pendiente o aceptado, ese horario ya fue, no se puede elegir
     const bookings = getBookings().filter(b => b.dateISO === dateISO && b.status !== "rejected");
     return bookings.length >= ALL_TIMES.length;
 }
@@ -200,25 +243,30 @@ function isDateAvailable(year, month, day, holidaySet) {
     const date = new Date(year, month, day);
     date.setHours(0, 0, 0, 0);
     return (
-        date >= today &&                              // no es pasado
-        WORKING_DAYS.includes(date.getDay()) &&       // es día laborable
-        !isHoliday(year, month, day, holidaySet) &&   // no es feriado
-        !isDayFullyBooked(year, month, day)           // no está completamente ocupado
+        date >= today &&                              // Que no sea un día que ya pasó
+        WORKING_DAYS.includes(date.getDay()) &&       // Chequeamos que caiga en día de laburo
+        !isHoliday(year, month, day, holidaySet) &&   // Que no sea feriado nacional
+        !isDayFullyBooked(year, month, day)           // Que no esté hasta las manos de turnos
     );
 }
 
-//Calendario 
+// Arrancamos todo cuando se termina de cargar el DOM
 window.addEventListener("DOMContentLoaded", () => {
-    // Solo corre en la página de reservas (verifica que el calendario exista)
-    if (!document.getElementById("calendarGrid")) return;
+    // Si está el grid de servicios público (index.html), los pintamos ahí
+    if (document.getElementById("servicesGridPublic")) {
+        renderPublicServicesList();
+    }
 
-    initBookingPage();
+    // Si está el calendario de reservas (reservar.html), cargamos el flujo de reserva
+    if (document.getElementById("calendarGrid")) {
+        initBookingPage();
+    }
 });
 
 async function initBookingPage() {
-    // Pre-carga feriados del año actual (y del siguiente por si el usuario navega)
+    // Traemos los feriados del año en curso y del que viene en paralelo
     await fetchHolidays(currentYear);
-    fetchHolidays(currentYear + 1); // en background, sin await
+    fetchHolidays(currentYear + 1); // En background para que no trabe nada
 
     renderServicesList();
     renderCalendar(currentYear, currentMonth);
@@ -234,7 +282,7 @@ async function renderCalendar(year, month) {
     const grid = document.getElementById("calendarGrid");
     grid.innerHTML = "";
 
-    // Encabezado D L M M J V S
+    // Dibujamos las letritas de los días de la semana de la cabecera
     const headerRow = document.createElement("div");
     headerRow.className = "calendar-row";
     DAY_LETTERS.forEach(d => {
@@ -302,7 +350,7 @@ function prevMonth() {
 function nextMonth() {
     if (currentMonth === 11) { currentMonth = 0; currentYear++; }
     else currentMonth++;
-    fetchHolidays(currentYear); // pre-fetch si cambiamos de año
+    fetchHolidays(currentYear); // Traemos los feriados del año nuevo para agilizar
     renderCalendar(currentYear, currentMonth);
 }
 
@@ -313,7 +361,7 @@ function selectDate(year, month, day, cellEl) {
     document.getElementById("btnNextToHours").disabled = false;
 }
 
-//Horarios
+// --- SECCIÓN DE HORARIOS ---
 
 
 function populateHours() {
@@ -321,7 +369,7 @@ function populateHours() {
     if (!container) return;
     container.innerHTML = "";
 
-    // Filtrar horarios ya reservados para el día seleccionado
+    // Quitamos los horarios que ya están ocupados para ese día
     let availableTimes = ALL_TIMES;
     if (selectedDate) {
         const y = selectedDate.getFullYear();
@@ -366,7 +414,25 @@ function selectTime(time, element) {
     document.getElementById("btnNextToData").disabled = false;
 }
 
-// Renderizado de servicios
+// Dibuja los servicios en el index público
+function renderPublicServicesList() {
+    const container = document.getElementById("servicesGridPublic");
+    if (!container) return;
+    
+    container.innerHTML = SERVICES_DATA.map(s => `
+        <div class="col-12 col-sm-6 col-lg-4">
+          <div class="card servicio-card">
+            <img src="${s.img}" class="card-img-top servicio-img" alt="${s.name}">
+            <div class="card-body text-center">
+              <h5 class="card-title">${s.name}</h5>
+              <p class="card-text">${s.desc}</p>
+            </div>
+          </div>
+        </div>
+    `).join("");
+}
+
+// Dibuja los servicios elegibles en el panel de reserva
 function renderServicesList() {
     const container = document.getElementById("servicesGrid");
     if (!container) return;
@@ -379,7 +445,7 @@ function renderServicesList() {
                     <div class="d-flex justify-content-between align-items-start mb-2">
                         <h5 class="service-select-title">${s.name}</h5>
                         <div class="text-end">
-                            <div class="service-select-price">$${s.price.toFixed(2).replace(".", ",")}</div>
+                            <div class="service-select-price">$${formatPrice(s.price)}</div>
                             <div class="service-select-duration">${s.duration}</div>
                         </div>
                     </div>
@@ -399,20 +465,20 @@ function toggleService(id) {
         selectedServices.splice(idx, 1);
     }
     
-    // Cambiar clase selected
+    // Le ponemos o sacamos la clase 'selected' a la card para pintarla
     const card = document.querySelector(`.service-select-card[data-service-id="${id}"]`);
     if (card) {
         card.classList.toggle("selected");
     }
     
-    // Habilitar/deshabilitar botón Siguiente del Step 1
+    // Si eligió al menos un servicio, lo dejamos pasar al siguiente paso
     const btnNext = document.getElementById("btnNextToCalendar");
     if (btnNext) {
         btnNext.disabled = selectedServices.length === 0;
     }
 }
 
-//navegacion step by step
+// Navegación por pasos (pasito a pasito)
 
 function goToStep(step) {
     currentStep = step;
@@ -451,7 +517,7 @@ function updateStepper(step) {
 
 
 
-/* --- PERSISTENCIA EN LOCALSTORAGE ----------------------------------------- */
+/* --- PERSISTENCIA EN LOCALSTORAGE - GUARDAR LOS DATOS EN EL NAVEGADOR --- */
 
 const LS_KEY = "paraTi_bookings";
 
@@ -463,7 +529,7 @@ function saveBookings(bookings) {
     localStorage.setItem(LS_KEY, JSON.stringify(bookings));
 }
 
-/* --- CONFIRMACIÓN FINAL --------------------------------------------------- */
+/* --- CONFIRMACIÓN FINAL - AGENDAR EL TURNO Y MANDAR EL AVISO --- */
 
 function confirmBooking(event) {
     event.preventDefault();
@@ -477,16 +543,16 @@ function confirmBooking(event) {
     let dateStr = selectedDate.toLocaleDateString("es-ES", options);
     dateStr = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
 
-    // Obtener nombres de servicios seleccionados
+    // Buscamos los nombres legibles de cada servicio a partir de su ID
     const serviceNames = selectedServices.map(id => {
         const s = SERVICES_DATA.find(x => x.id === id);
         return s ? s.name : id;
     });
 
-    // Guardar en localStorage
+    // Metemos el turno en localStorage como pendiente
     const booking = {
-        id: Date.now(),                            // ID único por timestamp
-        status: "pending",                         // pending | accepted | rejected
+        id: Date.now(),                            // ID único usando la hora actual para que no se pisen
+        status: "pending",                         // Estados: pendiente, aceptado o rechazado
         dateISO: selectedDate.toISOString().split("T")[0],
         dateStr,
         time: selectedTime,
@@ -502,7 +568,7 @@ function confirmBooking(event) {
     bookings.push(booking);
     saveBookings(bookings);
 
-    // Mostrar pantalla de éxito
+    // Le clavamos los datos al resumen del modal y lo mostramos
     document.getElementById("summaryServices").innerText = serviceNames.join(", ");
     document.getElementById("summaryDate").innerText = dateStr;
     document.getElementById("summaryTime").innerText = selectedTime;
@@ -513,7 +579,7 @@ function confirmBooking(event) {
     document.querySelector(".stepper-container").style.display = "none";
 }
 
-/* --- ENVÍO DE EMAIL NOTIFICACIONES DE TURNOS (EMAILJS) --- */
+/* --- ENVÍO DE EMAIL CON NOTIFICACIONES (EMAILJS) - AVISOS POR CORREO --- */
 
 function sendBookingConfirmationToClient(booking) {
     if (typeof window.emailjs === "undefined" || typeof window.emailjs.send !== "function") {
@@ -563,13 +629,13 @@ function sendBookingConfirmationToClient(booking) {
 
 
 /* =============================================================================
-   ADMIN PANEL — Solo corre en admin.html
+   PANEL DE CONTROL DE LA PELUQUERA (Solo corre en admin.html)
    LS_KEY, MONTH_NAMES, getBookings, saveBookings ya están declarados arriba.
    ============================================================================= */
 
 const LS_AUTH        = "paraTi_adminAuth";
 
-/* --- Autenticación --- */
+/* --- Manejo de la sesión de Raquel --- */
 function doLogout() {
     sessionStorage.removeItem(LS_AUTH);
     window.location.href = "login.html";
@@ -581,7 +647,7 @@ function showAdmin() {
         adminShell.style.display = "block";
     }
 
-    // Carga navbar (que ya sabe mostrarse en modo admin por body.admin-page)
+    // Cargamos el menú superior (que se adapta si sos admin)
     fetch("navbar.html")
         .then(r => r.text())
         .then(html => {
@@ -593,9 +659,98 @@ function showAdmin() {
 
     renderAll();
     renderAdminCalendar(calYear, calMonth);
+    renderAdminServices();
 }
 
-/* --- Gestión de estado de turnos --- */
+/* --- DIBUJAR Y GUARDAR SERVICIOS EDITADOS EN EL PANEL --- */
+function renderAdminServices() {
+    const container = document.getElementById("adminServicesList");
+    if (!container) return;
+
+    const services = getServices();
+    container.innerHTML = services.map(s => `
+        <div class="admin-service-row">
+            <!-- Servicio Column (Image + Name input) -->
+            <div class="admin-col-service">
+                <div class="d-flex align-items-center gap-3">
+                    <img src="${s.img}" alt="${s.name}" class="admin-service-thumb">
+                    <div class="flex-grow-1">
+                        <label class="admin-field-label">Nombre del servicio</label>
+                        <input type="text" class="form-control admin-field-input" name="name_${s.id}" value="${s.name}" required>
+                    </div>
+                </div>
+            </div>
+            <!-- Descripción Column -->
+            <div class="admin-col-desc">
+                <label class="admin-field-label">Descripción breve</label>
+                <textarea class="form-control admin-field-textarea" name="desc_${s.id}" rows="2" required>${s.desc}</textarea>
+            </div>
+            <!-- Duración Column -->
+            <div class="admin-col-duration">
+                <label class="admin-field-label">Duración</label>
+                <div class="d-flex align-items-center gap-1">
+                    <input type="number" class="form-control admin-field-input text-center" name="duration_${s.id}" value="${parseInt(s.duration) || 0}" required>
+                    <span class="admin-field-suffix">min</span>
+                </div>
+            </div>
+            <!-- Precio Column -->
+            <div class="admin-col-price">
+                <label class="admin-field-label">Precio</label>
+                <div class="d-flex align-items-center gap-1">
+                    <input type="text" class="form-control admin-field-input text-center" name="price_${s.id}" value="$${formatPrice(s.price)}" onfocus="this.value = this.value.replace(/[^0-9]/g, '')" onblur="if(this.value) this.value = '$' + new Intl.NumberFormat('es-AR').format(this.value)" required>
+                </div>
+            </div>
+        </div>
+    `).join("");
+}
+
+function saveAdminServices(event) {
+    event.preventDefault();
+
+    const services = getServices();
+    const form = event.target;
+    
+    const updatedServices = services.map(s => {
+        const nameInput = form.querySelector(`[name="name_${s.id}"]`);
+        const descInput = form.querySelector(`[name="desc_${s.id}"]`);
+        const durationInput = form.querySelector(`[name="duration_${s.id}"]`);
+        const priceInput = form.querySelector(`[name="price_${s.id}"]`);
+        
+        let name = s.name;
+        let desc = s.desc;
+        let duration = s.duration;
+        let price = s.price;
+        
+        if (nameInput) name = nameInput.value.trim();
+        if (descInput) desc = descInput.value.trim();
+        if (durationInput) duration = durationInput.value.trim() + " min";
+        if (priceInput) {
+            const cleanPrice = parseInt(priceInput.value.replace(/[^0-9]/g, '')) || 0;
+            price = cleanPrice;
+        }
+        
+        return {
+            ...s,
+            name,
+            desc,
+            duration,
+            price
+        };
+    });
+    
+    saveServices(updatedServices);
+    SERVICES_DATA = updatedServices; // Refrescamos los datos en la memoria RAM para que se entere todo el script
+    
+    if (window.showCustomAlert) {
+        window.showCustomAlert("Servicios actualizados", "Los cambios en los servicios han sido guardados con éxito.");
+    } else {
+        alert("Los cambios en los servicios han sido guardados con éxito.");
+    }
+    
+    renderAdminServices();
+}
+
+/* --- ACEPTAR O REBOTAR TURNOS --- */
 function updateBookingStatus(id, status) {
     const bookings = getBookings();
     const booking = bookings.find(b => b.id === id);
@@ -605,14 +760,14 @@ function updateBookingStatus(id, status) {
         renderAll();
         renderAdminCalendar(calYear, calMonth);
 
-        // Enviar email al cliente si el turno es confirmado
+        // Mandamos mail al cliente si Raquel aprueba el turno
         if (status === "accepted") {
             sendBookingConfirmationToClient(booking);
         }
     }
 }
 
-/* --- Navegación de secciones (navbar + sidebar) --- */
+/* --- MOVERSE ENTRE SECCIONES DEL PANEL (SERVICIOS / TURNOS) --- */
 function switchSection(section) {
     // Navbar links
     document.querySelectorAll(".admin-nav-link").forEach(l => l.classList.remove("active"));
@@ -628,7 +783,7 @@ function switchSection(section) {
     const sidebarEl = document.getElementById(sidebarId);
     if (sidebarEl) sidebarEl.classList.add("active");
 
-    // Submenú turnos visible solo cuando la sección es turnos
+    // El submenú de turnos se despliega solo si estamos en esa solapa
     const submenu = document.getElementById("submenuTurnos");
     if (submenu) submenu.classList.toggle("open", section === "turnos");
 
@@ -637,11 +792,11 @@ function switchSection(section) {
     const sectionEl = document.getElementById(`section${section.charAt(0).toUpperCase() + section.slice(1)}`);
     if (sectionEl) sectionEl.classList.add("active");
 
-    // Si cambia a turnos, activar Pendientes por default
+    // Si tocan 'Turnos', entran directo a ver los que están pendientes
     if (section === "turnos") switchSubPanel("turnos", "pending");
 }
 
-/* --- Navegación de sub-paneles (sidebar sub-items) --- */
+/* --- MOVERSE ENTRE PENDIENTES / CALENDARIO / HISTORIAL --- */
 function switchSubPanel(section, panel) {
     // Sub-links del sidebar
     ["subPending", "subCalendar", "subHistory"].forEach(id => {
@@ -659,10 +814,10 @@ function switchSubPanel(section, panel) {
     if (panelEl) panelEl.classList.add("active");
 }
 
-/* --- LEGACY: switchTab alias (por compatibilidad) --- */
+/* --- VIEJO ALIAS SWITCHTAB PARA NO ROMPER NADA VIEJO --- */
 function switchTab(name) { switchSubPanel("turnos", name); }
 
-/* --- Render listas --- */
+/* --- DIBUJAR PANTALLAS DE LISTADOS --- */
 function renderAll() {
     const bookings = getBookings();
     const pending  = bookings.filter(b => b.status === "pending");
@@ -1026,6 +1181,7 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.classList.remove('hidden');
     overlay.dataset.callback = action || '';
   }
+  window.showCustomAlert = showCustomAlert;
 
   function fallbackSendCode(email, verificationCode) {
     const encCode = safeBtoa(verificationCode);

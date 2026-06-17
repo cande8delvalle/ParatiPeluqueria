@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<!--Especifica el Idioma-->
+<!-- Seteamos el idioma en español, obvio -->
 <html lang="es">
-<!--contine toda la config de la pagina-->
+<!-- Acá metemos toda la config y los links de la página -->
 
 <head>
   <meta charset="UTF-8">
@@ -19,7 +19,7 @@
   <link rel="icon" type="image/png" href="img/logo.ico" />
 </head>
 
-<!--Contenido visible de la pagina-->
+<!-- De acá para abajo empieza lo que posta ve el cliente -->
 
 <body>
   <div id="navbar"></div>
@@ -52,113 +52,13 @@
         </div>
       </div>
 
-      <div class="row g-5 justify-content-center">
-
-        <div class="col-12 col-sm-6 col-lg-4">
-          <div class="card servicio-card">
-            <img src="img/corte.jpg" class="card-img-top servicio-img" alt="Corte">
-            <div class="card-body text-center">
-              <h5 class="card-title">Corte</h5>
-              <p class="card-text">
-                Renovación, movimiento y
-                definición adaptados a tu estilo
-                único.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-lg-4">
-          <div class="card servicio-card">
-            <img src="img/lavadoModelado.jpg" class="card-img-top servicio-img" alt="Lavado y Modelado">
-            <div class="card-body text-center">
-              <h5 class="card-title">Lavado y Modelado</h5>
-              <p class="card-text">Relajación profunda combinada con un acabado natural y con volumen.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-lg-4">
-          <div class="card servicio-card">
-            <img src="img/color.jpg" class="card-img-top servicio-img" alt="Color">
-            <div class="card-body text-center">
-              <h5 class="card-title">Color</h5>
-              <p class="card-text">Cobertura perfecta, tono uniforme y nutrición para tu fibra capilar.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-lg-4">
-          <div class="card servicio-card">
-            <img src="img/brusing.jpg" class="card-img-top servicio-img" alt="Peinado / Brushing">
-            <div class="card-body text-center">
-              <h5 class="card-title">Brushing y Planchita</h5>
-              <p class="card-text">Modelado profesional con secador para lograr volumen, brillo y movimiento natural.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-lg-4">
-          <div class="card servicio-card">
-            <img src="img/alisado.jpg" class="card-img-top servicio-img" alt="Alisado / Planchado">
-            <div class="card-body text-center">
-              <h5 class="card-title">Alisado</h5>
-              <p class="card-text">Lacio perfecto, libre de frizz y con un brillo sedoso gracias al planchado
-                profesional.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-lg-4">
-          <div class="card servicio-card">
-            <img src="img/peinados.jpg" class="card-img-top servicio-img" alt="Peinado Especial">
-            <div class="card-body text-center">
-              <h5 class="card-title">Peinados</h5>
-              <p class="card-text">Peinados recogidos, semirecogidos y trenzas diseñados especialmente para tus eventos
-                y fiestas.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-lg-4">
-          <div class="card servicio-card">
-            <img src="img/reflejosIluminacion.jpg" class="card-img-top servicio-img" alt="Peinado Especial">
-            <div class="card-body text-center">
-              <h5 class="card-title">Reflejos e Iluminación</h5>
-              <p class="card-text">Aportá luz y movimiento a tu cabello. Ideal para un cambio natural que resalte tus
-                facciones.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-lg-4">
-          <div class="card servicio-card">
-            <img src="img/mechasCalifornianas.jpg" class="card-img-top servicio-img" alt="Peinado Especial">
-            <div class="card-body text-center">
-              <h5 class="card-title">Mechas Californianas</h5>
-              <p class="card-text">Un degradé moderno que ilumina de
-                medios a puntas, logrando un contraste ideal con un acabado fresco y lleno de estilo.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-lg-4">
-          <div class="card servicio-card">
-            <img src="img/shockKeratina.jpg" class="card-img-top servicio-img" alt="Peinado Especial">
-            <div class="card-body text-center">
-              <h5 class="card-title">Shock de Keratina</h5>
-              <p class="card-text">Este tratamiento sella la fibra capilar, repara en profundidad y te deja el pelo
-                ultra lacio con un movimiento espectacular.</p>
-            </div>
-          </div>
-        </div>
-
+      <div class="row g-5 justify-content-center" id="servicesGridPublic">
+        <!-- Cargamos los servicios dinámicamente con JS desde el localStorage, un golazo -->
       </div>
     </div>
   </section>
 
-  <!-- About Section -->
+  <!-- Sección Sobre Mí: Raquel cuenta cómo empezó todo este laburo -->
   <section id="SobreMi">
     <div class="container">
       <div class="row align-items-center">
@@ -178,7 +78,7 @@
     </div>
   </section>
 
-  <!-- Portafolio Section -->
+  <!-- Sección Portafolio: carrusel para mostrar fotos de laburos anteriores -->
 
   <section id="Portafolio">
     <div class="container">
@@ -239,9 +139,9 @@
     </div>
   </section>
 
-  <!--Contacto Section-->
+  <!-- Sección de Contacto y Preguntas Frecuentes, dos pájaros de un tiro -->
 
-  <section id="Contacto" class="faq-section">
+  <section class="faq-section" id="Contacto">
     <div class="container">
       <div class="row align-items-center">
 
